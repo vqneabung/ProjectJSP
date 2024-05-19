@@ -25,8 +25,10 @@
                 <th>Password</th>
                 <th>Address</th>
                 <th>Status</th>
+                <th>Remove</th>
             </tr>
             <c:forEach var="user" items="${requestScope.users}">
+                <c:if test= "${user.status != 0}" >
                 <tr>
                     <th>${user.userID}</th>
                     <th>${user.userName}</th>
@@ -37,8 +39,9 @@
                     <th>${user.password}</th>
                     <th>${user.address}</th>
                     <th>${user.status}</th>
-                    <th><a href="RemoveUserServlet?id= + acc.getId()")">remove</a></th>
+                    <th><a href="RemoveUserServlet?userID=${user.userID}">remove</a></th>
                 </tr>
+                </c:if>
             </c:forEach>
         </table> 
     </body>

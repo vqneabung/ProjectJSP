@@ -93,7 +93,6 @@ public class UserDAO {
                     String address = rs.getString("UserAddress");
                     int status = rs.getInt("UserStatus");
 
-
                     user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status);
                 }
             }

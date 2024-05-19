@@ -16,6 +16,10 @@
         <servlet-name>ManageUserServlet</servlet-name>
         <servlet-class>controller.admin.management.user.ManageUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RemoveUserServlet</servlet-name>
+        <servlet-class>controller.admin.management.user.RemoveUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>ManageUserServlet</servlet-name>
         <url-pattern>/ManageUserServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveUserServlet</servlet-name>
+        <url-pattern>/RemoveUserServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
