@@ -70,9 +70,7 @@ public class UpdateUserServlet extends HttpServlet {
                     request.getRequestDispatcher(url).forward(request, response);
                 } else {
                     out.print("<h1>Something wrong</h1>");
-
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
