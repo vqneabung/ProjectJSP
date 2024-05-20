@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.web.login;
+package controller.admin.management.user;
 
 import dao.UserDAO;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import model.UserDTO;
  *
  * @author VQN
  */
-public class RegisterServlet extends HttpServlet {
+public class InsertUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +32,30 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegisterServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String fullName = request.getParameter("insert_fullname");
+            String userName = request.getParameter("insert_username");
+            String email = request.getParameter("insert_email");
+            String phone = request.getParameter("insert_phone");
+            String address = request.getParameter("insert_address");
+            String password = request.getParameter("insert_password");
+            String stringRoleID = request.getParameter("insert_role");
+            int roleID = Integer.parseInt(stringRoleID);
+
+            UserDAO ud = new UserDAO();
+            UserDTO user = ud.getUser(email);
+            if (user == null) { //email khong trung
+                int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address);
+                if (rs >= 1) {
+                    out.print("<p>Da insert thanh cong </p>");
+                    out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                } else {
+                    out.print("<p>something wrong</p>");
+                    out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                }
+            } else {
+                out.print("email trung");
+                out.print("<a href='jsp/admin/admin_home.jsp'>back</a>");
+            }
         }
     }
 
@@ -71,34 +85,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try (PrintWriter out = response.getWriter()) {
-            
-            String fullName = request.getParameter("register_fullname");
-            String userName = request.getParameter("register_username");
-            String email = request.getParameter("register_email");
-            String phone = request.getParameter("register_phone");
-            String address = request.getParameter("register_address");
-            String password = request.getParameter("register_password");
-            int roleID = 1;
-
-            UserDAO ud = new UserDAO();
-            UserDTO user = ud.getUser(email);
-            if (user == null) { //email khong trung
-                int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address);
-                if (rs >= 1) {
-                    out.print("<p>Ban da la thanh vien </p>");
-                    out.print("<p><a href='jsp/home/login.jsp'>login</a></p>");
-                } else {
-                    out.print("<p>something wrong</p>");
-                    out.print("<p><a href='jsp/home/login.jsp'>login</a></p>");
-                }
-            } else {
-                out.print("email trung");
-                out.print("<a href='ProjectJSP/jsp/home/login.jsp'>back</a>");
-            }
-
-        }
-
+        processRequest(request, response);
     }
 
     /**

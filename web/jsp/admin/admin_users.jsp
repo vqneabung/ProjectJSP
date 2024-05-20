@@ -26,13 +26,14 @@
                 <th>Address</th>
                 <th>Status</th>
                 <th>Remove</th>
+                <th>Update</th>
             </tr>
             <c:forEach var="user" items="${requestScope.users}">
                 <c:if test= "${user.status != 0}" >
                 <tr>
                     <th>${user.userID}</th>
                     <th>${user.userName}</th>
-                    <th>${user.fullName} Name</th>
+                    <th>${user.fullName}</th>
                     <th>${user.email}</th>
                     <th>${user.phone}</th>
                     <th>${user.roleID == 1 ? "User" : "Admin"}</th>
@@ -40,7 +41,11 @@
                     <th>${user.address}</th>
                     <th>${user.status}</th>
                     <th><a href="RemoveUserServlet?userID=${user.userID}">remove</a></th>
+                    <th><a href="UpdateUserServlet?userID=${user.userID}">update</a></th>
                 </tr>
+                </c:if>
+                <c:if test="${requestScope.update_status} != null">
+                    <p>Update successful</p>
                 </c:if>
             </c:forEach>
         </table> 

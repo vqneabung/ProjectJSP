@@ -20,6 +20,14 @@
         <servlet-name>RemoveUserServlet</servlet-name>
         <servlet-class>controller.admin.management.user.RemoveUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertUserServlet</servlet-name>
+        <servlet-class>controller.admin.management.user.InsertUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <servlet-class>controller.admin.management.user.UpdateUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -40,13 +48,22 @@
         <servlet-name>RemoveUserServlet</servlet-name>
         <url-pattern>/RemoveUserServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertUserServlet</servlet-name>
+        <url-pattern>/InsertUserServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserServlet</servlet-name>
+        <url-pattern>/UpdateUserServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>jsp/home/home.jsp</welcome-file>
+        <welcome-file>jsp/home/login.jsp</welcome-file>
         <welcome-file>jsp/home.jsp</welcome-file>
+        <welcome-file>jsp/home/home.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

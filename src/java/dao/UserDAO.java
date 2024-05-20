@@ -20,10 +20,16 @@ public class UserDAO {
 
     public static final String GET_DATA = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus from [dbo].[Users]";
 
+    public static final String GET_USER_BY_EMAIL = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus from [dbo].[Users] Where UserEmail=?";
+
+    public static final String GET_USER_BY_ID = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus from [dbo].[Users] Where UserID=?";
+
     public static final String REMOVE_USER = "UPDATE Users SET UserStatus = 0 WHERE UserID = ?";
 
     public static final String INSERT_USER = "INSERT INTO Users (UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus)\n"
             + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
+
+    public static final String UPDATE_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?";
 
     public ArrayList<UserDTO> getAllAcounts() {
         ArrayList<UserDTO> userList = new ArrayList<>();
@@ -72,6 +78,7 @@ public class UserDAO {
         return userList;
     }
 
+    //Get user by email
     public UserDTO getUser(String email) {
         UserDTO user = null;
         int result = 0;
@@ -79,7 +86,7 @@ public class UserDAO {
         try {
             cn = DBUserUtils.makeConnection();
             if (cn != null) {
-                String sql = GET_DATA;
+                String sql = GET_USER_BY_EMAIL;
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, email);
                 ResultSet rs = pst.executeQuery();
@@ -87,6 +94,46 @@ public class UserDAO {
                     int userID = rs.getInt("UserID");
                     String username = rs.getString("UserName");
                     String fullName = rs.getString("UserFullName");
+                    String phone = rs.getString("UserPhone");
+                    int roleID = rs.getInt("UserRoleID");
+                    String password = rs.getString("UserPassword");
+                    String address = rs.getString("UserAddress");
+                    int status = rs.getInt("UserStatus");
+
+                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+
+    }
+
+    //Get user by id
+    public UserDTO getUser(int userID) {
+        UserDTO user = null;
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUserUtils.makeConnection();
+            if (cn != null) {
+                String sql = GET_USER_BY_ID;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
+                    String username = rs.getString("UserName");
+                    String fullName = rs.getString("UserFullName");
+                    String email = rs.getString("UserEmail");
                     String phone = rs.getString("UserPhone");
                     int roleID = rs.getInt("UserRoleID");
                     String password = rs.getString("UserPassword");
@@ -136,7 +183,7 @@ public class UserDAO {
         return result;
     }
 
-    public int insertUser(String userName, String fullName, String email, String phone, String password, int roleID, String address) {
+    public int insertUser(String userName, String fullName, String email, String phone, int roleID, String password, String address) {
         int rs = 0;
         Connection cn = null;
         try {
@@ -152,6 +199,42 @@ public class UserDAO {
                 pst.setInt(5, roleID);
                 pst.setString(6, password);
                 pst.setString(7, address);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
+    }
+
+    public int updateUser(String userName, String fullName, String email, String phone, String password, int roleID, String address, int status, int userID) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUserUtils.makeConnection();
+            if (cn != null) {
+                String sql = UPDATE_USER;
+                //UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, userName);
+                pst.setString(2, fullName);
+                pst.setString(3, email);
+                pst.setString(4, phone);
+                pst.setInt(5, roleID);
+                pst.setString(6, password);
+                pst.setString(7, address);
+                pst.setInt(8, status);
+                pst.setInt(9, userID);
 
                 rs = pst.executeUpdate();
             }
