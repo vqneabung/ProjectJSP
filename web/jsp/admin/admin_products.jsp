@@ -30,6 +30,7 @@
                 <th>Stock</th>
                 <th>Unit sold</th>
                 <th>Describe</th>
+                <th>Image</th>
                 <th>Status</th>
                 <th>Remove</th>
                 <th>Update</th>
@@ -51,6 +52,7 @@
                         <th>${product.productStock}</th>
                         <th>${product.productUnitSold}</th>
                         <th>${product.productDescribe}</th>
+                        <th>${product.productImage}</th>
                         <th>${product.isStatus == 1 ? "Activate" : "Deactivate"}</th>
                         <th><a href="RemoveProduceServlet?productID=${product.productID}">remove</a></th>
                         <th><a href="UpdateProductServlet?productID=${product.productID}">update</a></th>

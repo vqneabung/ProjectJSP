@@ -64,6 +64,18 @@
         <servlet-name>UserMealDAO</servlet-name>
         <servlet-class>dao.UserMealDAO</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertSpecMealProduct</servlet-name>
+        <servlet-class>controller.admin.management.specmeal.InsertSpecMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageSpecMealProduct</servlet-name>
+        <servlet-class>controller.admin.management.specmeal.ManageSpecMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveSpecMealServlet</servlet-name>
+        <servlet-class>controller.admin.management.specmeal.RemoveSpecMealServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -127,6 +139,18 @@
     <servlet-mapping>
         <servlet-name>UserMealDAO</servlet-name>
         <url-pattern>/UserMealDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertSpecMealProduct</servlet-name>
+        <url-pattern>/InsertSpecMealProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageSpecMealProduct</servlet-name>
+        <url-pattern>/ManageSpecMealProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveSpecMealServlet</servlet-name>
+        <url-pattern>/RemoveSpecMealServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
