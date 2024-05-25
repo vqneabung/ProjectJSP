@@ -51,6 +51,7 @@ public class UpdateUserServlet extends HttpServlet {
                 request.setAttribute("address", user.getAddress());
                 request.setAttribute("email", user.getEmail());
                 request.setAttribute("password", user.getPassword());
+                request.setAttribute("avatar", user.getAvatar());
                 request.getRequestDispatcher(url).forward(request, response);
             } else {
                 url = MANAGE_USER;
@@ -62,8 +63,9 @@ public class UpdateUserServlet extends HttpServlet {
                 String email = request.getParameter("update_email");
                 String roleID = request.getParameter("update_role");
                 String status = request.getParameter("update_status");
+                String avatar = request.getParameter("update_avatar");
 
-                result = ud.updateUser(username, fullName, email, phone, password, Integer.parseInt(roleID.trim()), address, Integer.parseInt(status), userID);
+                result = ud.updateUser(username, fullName, email, phone, password, Integer.parseInt(roleID.trim()), address, Integer.parseInt(status), userID, avatar);
 
                 if (result > 0) {
                     request.setAttribute("update_status", "Update successfully!");

@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.UserDTO;
-import utils.DBUserUtils;
+import utils.DBUtils;
 
 /**
  *
@@ -18,25 +18,25 @@ import utils.DBUserUtils;
  */
 public class UserDAO {
 
-    public static final String GET_DATA = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus from [dbo].[Users]";
+    public static final String GET_DATA = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar from [dbo].[Users]";
 
-    public static final String GET_USER_BY_EMAIL = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus from [dbo].[Users] Where UserEmail=?";
+    public static final String GET_USER_BY_EMAIL = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar from [dbo].[Users] Where UserEmail=?";
 
-    public static final String GET_USER_BY_ID = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus from [dbo].[Users] Where UserID=?";
+    public static final String GET_USER_BY_ID = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar from [dbo].[Users] Where UserID=?";
 
     public static final String REMOVE_USER = "UPDATE Users SET UserStatus = 0 WHERE UserID = ?";
 
-    public static final String INSERT_USER = "INSERT INTO Users (UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus)\n"
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
+    public static final String INSERT_USER = "INSERT INTO Users (UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar)\n"
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)";
 
-    public static final String UPDATE_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?";
+    public static final String UPDATE_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?, UserStatus = ?, , UserAvatar = ? WHERE UserID = ?";
 
     public ArrayList<UserDTO> getAllAcounts() {
         ArrayList<UserDTO> userList = new ArrayList<>();
 
         Connection cn = null;
         try {
-            cn = DBUserUtils.makeConnection();
+            cn = DBUtils.makeConnection();
             if (cn != null) {
                 //B2: Viet query va exec query
 
@@ -55,8 +55,9 @@ public class UserDAO {
                         String password = rs.getString("UserPassword");
                         String address = rs.getString("UserAddress");
                         int status = rs.getInt("UserStatus");
+                        String avatar = rs.getString("UserAvatar");
 
-                        UserDTO user = new UserDTO(userID, userName, fullName, email, phone, password, roleID, address, status);
+                        UserDTO user = new UserDTO(userID, userName, fullName, email, phone, password, roleID, address, status, avatar);
                         userList.add(user);
                     }
 
@@ -84,7 +85,7 @@ public class UserDAO {
         int result = 0;
         Connection cn = null;
         try {
-            cn = DBUserUtils.makeConnection();
+            cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = GET_USER_BY_EMAIL;
                 PreparedStatement pst = cn.prepareStatement(sql);
@@ -99,8 +100,9 @@ public class UserDAO {
                     String password = rs.getString("UserPassword");
                     String address = rs.getString("UserAddress");
                     int status = rs.getInt("UserStatus");
+                    String avatar = rs.getString("UserAvatar");
 
-                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status);
+                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status, avatar);
                 }
             }
         } catch (Exception e) {
@@ -124,7 +126,7 @@ public class UserDAO {
         int result = 0;
         Connection cn = null;
         try {
-            cn = DBUserUtils.makeConnection();
+            cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = GET_USER_BY_ID;
                 PreparedStatement pst = cn.prepareStatement(sql);
@@ -139,8 +141,9 @@ public class UserDAO {
                     String password = rs.getString("UserPassword");
                     String address = rs.getString("UserAddress");
                     int status = rs.getInt("UserStatus");
+                    String avatar = rs.getString("UserAvatar");
 
-                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status);
+                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status, avatar);
                 }
             }
         } catch (Exception e) {
@@ -162,7 +165,7 @@ public class UserDAO {
         int result = 0;
         Connection cn = null;
         try {
-            cn = DBUserUtils.makeConnection();
+            cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = REMOVE_USER;
                 PreparedStatement pst = cn.prepareStatement(sql);
@@ -183,11 +186,11 @@ public class UserDAO {
         return result;
     }
 
-    public int insertUser(String userName, String fullName, String email, String phone, int roleID, String password, String address) {
+    public int insertUser(String userName, String fullName, String email, String phone, int roleID, String password, String address, String avatar) {
         int rs = 0;
         Connection cn = null;
         try {
-            cn = DBUserUtils.makeConnection();
+            cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = INSERT_USER;
                 //INSERT INTO Users (UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus
@@ -199,6 +202,7 @@ public class UserDAO {
                 pst.setInt(5, roleID);
                 pst.setString(6, password);
                 pst.setString(7, address);
+                pst.setString(8, avatar);
 
                 rs = pst.executeUpdate();
             }
@@ -217,11 +221,11 @@ public class UserDAO {
         return rs;
     }
 
-    public int updateUser(String userName, String fullName, String email, String phone, String password, int roleID, String address, int status, int userID) {
+    public int updateUser(String userName, String fullName, String email, String phone, String password, int roleID, String address, int status, int userID, String avatar) {
         int rs = 0;
         Connection cn = null;
         try {
-            cn = DBUserUtils.makeConnection();
+            cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = UPDATE_USER;
                 //UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?
@@ -235,6 +239,8 @@ public class UserDAO {
                 pst.setString(7, address);
                 pst.setInt(8, status);
                 pst.setInt(9, userID);
+                pst.setString(10, avatar);
+
 
                 rs = pst.executeUpdate();
             }

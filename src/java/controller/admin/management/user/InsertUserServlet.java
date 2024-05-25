@@ -40,11 +40,12 @@ public class InsertUserServlet extends HttpServlet {
             String password = request.getParameter("insert_password");
             String stringRoleID = request.getParameter("insert_role");
             int roleID = Integer.parseInt(stringRoleID);
-
+            String avatar = request.getParameter("insert_avatar");
+            
             UserDAO ud = new UserDAO();
             UserDTO user = ud.getUser(email);
             if (user == null) { //email khong trung
-                int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address);
+                int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address, avatar);
                 if (rs >= 1) {
                     out.print("<p>Da insert thanh cong </p>");
                     out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");

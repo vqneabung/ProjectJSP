@@ -31,9 +31,9 @@ public class RemoveUserServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String deleteUserID = request.getParameter("userID");
+            String userID = request.getParameter("userID");
             UserDAO ud = new UserDAO();
-            int result = ud.removeUser(Integer.parseInt(deleteUserID.trim()));
+            int result = ud.removeUser(Integer.parseInt(userID.trim()));
             if (result > 0) {
                 response.sendRedirect("ManageUserServlet");
             } else {

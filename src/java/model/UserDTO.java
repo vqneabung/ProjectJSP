@@ -19,8 +19,9 @@ public class UserDTO {
     private int roleID;
     private String address;
     private int status;
+    private String avatar;
 
-    public UserDTO(int userID, String userName, String fullName, String email, String phone, String password, int roleID, String address, int status) {
+    public UserDTO(int userID, String userName, String fullName, String email, String phone, String password, int roleID, String address, int status, String avatar) {
         this.userID = userID;
         this.userName = userName;
         this.fullName = fullName;
@@ -30,6 +31,7 @@ public class UserDTO {
         this.roleID = roleID;
         this.address = address;
         this.status = status;
+        this.avatar = avatar;
     }
 
     public int getUserID() {
@@ -104,6 +106,12 @@ public class UserDTO {
         this.status = status;
     }
 
-    
-    
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
 }

@@ -14,8 +14,8 @@
     <body>
         <h1>Update user</h1>
         <form action="/ProjectJSP/UpdateUserServlet" method="post">
-            <p><input type="text" name="update_fullname" placeholder="Enter Fullname" value="${requestScope.userName}" required=""/>*</p>
-            <p><input type="text" name="update_username" placeholder="Enter Username" value="${requestScope.fullName}" required=""/>*</p>
+            <p><input type="text" name="update_fullname" placeholder="Enter Fullname" value="${requestScope.fullName}" required=""/>*</p>
+            <p><input type="text" name="update_username" placeholder="Enter Username" value="${requestScope.userName}" required=""/>*</p>
             <p><input type="email" name="update_email" placeholder="Enter Email" value="${requestScope.email}" required=""/>*</p>  
             <p><input type="text" name="update_phone" placeholder="Enter Phone" value="${requestScope.phone}" required=""/>*</p>
             <p><input type="password" name="update_password" placeholder="Enter password" value="${requestScope.password}" required=""/>*</p>

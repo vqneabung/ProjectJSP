@@ -28,6 +28,42 @@
         <servlet-name>UpdateUserServlet</servlet-name>
         <servlet-class>controller.admin.management.user.UpdateUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageProductServlet</servlet-name>
+        <servlet-class>controller.admin.management.product.ManageProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertProductServlet</servlet-name>
+        <servlet-class>controller.admin.management.product.InsertProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveProduceServlet</servlet-name>
+        <servlet-class>controller.admin.management.product.RemoveProduceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <servlet-class>controller.admin.management.product.UpdateProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertUserMealServlet</servlet-name>
+        <servlet-class>controller.admin.management.usermeal.InsertUserMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserMealServlet</servlet-name>
+        <servlet-class>controller.admin.management.usermeal.UpdateUserMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveUserMealServlet</servlet-name>
+        <servlet-class>controller.admin.management.usermeal.RemoveUserMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageUserMealServlet</servlet-name>
+        <servlet-class>controller.admin.management.usermeal.ManageUserMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserMealDAO</servlet-name>
+        <servlet-class>dao.UserMealDAO</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -55,6 +91,42 @@
     <servlet-mapping>
         <servlet-name>UpdateUserServlet</servlet-name>
         <url-pattern>/UpdateUserServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageProductServlet</servlet-name>
+        <url-pattern>/ManageProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertProductServlet</servlet-name>
+        <url-pattern>/InsertProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveProduceServlet</servlet-name>
+        <url-pattern>/RemoveProduceServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProductServlet</servlet-name>
+        <url-pattern>/UpdateProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertUserMealServlet</servlet-name>
+        <url-pattern>/InsertUserMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserMealServlet</servlet-name>
+        <url-pattern>/UpdateUserMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveUserMealServlet</servlet-name>
+        <url-pattern>/RemoveUserMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageUserMealServlet</servlet-name>
+        <url-pattern>/ManageUserMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserMealDAO</servlet-name>
+        <url-pattern>/UserMealDAO</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

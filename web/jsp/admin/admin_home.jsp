@@ -16,6 +16,8 @@
         <h1>Hello Admin</h1>
         <p><a href="/ProjectJSP/ManageUserServlet" >Manage User</a></p>
         <p><a href="admin_user_insert.jsp" >Insert User</a></p>
+        <p><a href="/ProjectJSP/ManageProductServlet" >Manage Product</a></p>
+        <p><a href="/ProjectJSP/InsertProductServlet" >Insert Product</a></p>
 
     </body>
 </html>

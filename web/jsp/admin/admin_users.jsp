@@ -14,8 +14,10 @@
     </head>
     <body>
         <h1>Manage User</h1>
+        <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
         <table border = "1">
             <tr>
+                <th>Avatar</th>
                 <th>UserID</th>
                 <th>Username</th>
                 <th>Full Name</th>
@@ -31,6 +33,7 @@
             <c:forEach var="user" items="${requestScope.users}">
                 <c:if test= "${user.status != 0}" >
                 <tr>
+                    <th><<img src="${user.avatar}" alt="${user.userID} image"/></th>
                     <th>${user.userID}</th>
                     <th>${user.userName}</th>
                     <th>${user.fullName}</th>
@@ -39,7 +42,7 @@
                     <th>${user.roleID == 1 ? "User" : "Admin"}</th>
                     <th>${user.password}</th>
                     <th>${user.address}</th>
-                    <th>${user.status}</th>
+                    <th>${user.status == 1 ? "Activate" : "Deactivate"}</th>
                     <th><a href="RemoveUserServlet?userID=${user.userID}">remove</a></th>
                     <th><a href="UpdateUserServlet?userID=${user.userID}">update</a></th>
                 </tr>

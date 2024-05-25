@@ -72,19 +72,20 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
-            
+
             String fullName = request.getParameter("register_fullname");
             String userName = request.getParameter("register_username");
             String email = request.getParameter("register_email");
             String phone = request.getParameter("register_phone");
             String address = request.getParameter("register_address");
             String password = request.getParameter("register_password");
+            String avatar = request.getParameter("register_avatar");
             int roleID = 1;
 
             UserDAO ud = new UserDAO();
             UserDTO user = ud.getUser(email);
             if (user == null) { //email khong trung
-                int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address);
+                int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address, avatar);
                 if (rs >= 1) {
                     out.print("<p>Ban da la thanh vien </p>");
                     out.print("<p><a href='jsp/home/login.jsp'>login</a></p>");
