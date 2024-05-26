@@ -18,6 +18,6 @@
         <p><a href="admin_user_insert.jsp" >Insert User</a></p>
         <p><a href="/ProjectJSP/ManageProductServlet" >Manage Product</a></p>
         <p><a href="/ProjectJSP/InsertProductServlet" >Insert Product</a></p>
-
+        <p><a href="/ProjectJSP/ManageSpecMealServlet" >Manage Spec Meal</a></p>
     </body>
 </html>

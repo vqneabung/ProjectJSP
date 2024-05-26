@@ -11,9 +11,9 @@ package model;
 public class DishDTO {
 
     private int dishID;
-    private int dishName;
+    private String dishName;
 
-    public DishDTO(int dishID, int dishName) {
+    public DishDTO(int dishID, String dishName) {
         this.dishID = dishID;
         this.dishName = dishName;
     }
@@ -26,11 +26,11 @@ public class DishDTO {
         this.dishID = dishID;
     }
 
-    public int getDishName() {
+    public String getDishName() {
         return dishName;
     }
 
-    public void setDishName(int dishName) {
+    public void setDishName(String dishName) {
         this.dishName = dishName;
     }
 

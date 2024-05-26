@@ -28,7 +28,7 @@ public class DayDAO {
 
     public static final String GET_DAY = "select [DayNum], [DayText] from Day WHERE DayNum = ?";
 
-    public ArrayList<DayDTO> getAllSpecMeal() {
+    public ArrayList<DayDTO> getAllDay() {
         ArrayList<DayDTO> dayList = new ArrayList<>();
 
         Connection cn = null;

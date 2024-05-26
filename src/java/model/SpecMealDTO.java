@@ -10,34 +10,32 @@ package model;
  */
 public class SpecMealDTO {
 
-    private int planSpecID;
-    private String planSpecName;
+    private int specPlanID;
+    private String specPlanName;
     private int weekNumber;
-    private DayDTO day;
     private int isStatus;
 
-    public SpecMealDTO(int planSpecID, String planSpecName, int weekNumber, DayDTO day, int isStatus) {
-        this.planSpecID = planSpecID;
-        this.planSpecName = planSpecName;
+    public SpecMealDTO(int specPlanID, String specPlanName, int weekNumber, int isStatus) {
+        this.specPlanID = specPlanID;
+        this.specPlanName = specPlanName;
         this.weekNumber = weekNumber;
-        this.day = day;
         this.isStatus = isStatus;
     }
 
-    public int getPlanSpecID() {
-        return planSpecID;
+    public int getSpecPlanID() {
+        return specPlanID;
     }
 
-    public void setPlanSpecID(int planSpecID) {
-        this.planSpecID = planSpecID;
+    public void setSpecPlanID(int specPlanID) {
+        this.specPlanID = specPlanID;
     }
 
-    public String getPlanSpecName() {
-        return planSpecName;
+    public String getSpecPlanName() {
+        return specPlanName;
     }
 
-    public void setPlanSpecName(String planSpecName) {
-        this.planSpecName = planSpecName;
+    public void setSpecPlanName(String specPlanName) {
+        this.specPlanName = specPlanName;
     }
 
     public int getWeekNumber() {
@@ -46,14 +44,6 @@ public class SpecMealDTO {
 
     public void setWeekNumber(int weekNumber) {
         this.weekNumber = weekNumber;
-    }
-
-    public DayDTO getDay() {
-        return day;
-    }
-
-    public void setDay(DayDTO day) {
-        this.day = day;
     }
 
     public int getIsStatus() {

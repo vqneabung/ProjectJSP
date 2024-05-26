@@ -4,16 +4,15 @@
  */
 package dao;
 
-import static dao.ProductDAO.GET_DATA;
+import static dao.ProductDAO.GET_PRODUCT_BY_NAME;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.CategoryDTO;
-import model.DayDTO;
+import model.DishDTO;
 import model.ProductDTO;
-import model.SpecMealDTO;
 import model.TypeDTO;
 import utils.DBUtils;
 
@@ -21,16 +20,14 @@ import utils.DBUtils;
  *
  * @author VQN
  */
-public class SpecMealDAO {
+public class DishDAO {
 
-    public static final String GET_DATA = "select [SpecPlanID],[SpecPlanName],[WeekNumber],[IsStatus] from SpecMeal";
+    public static final String GET_DISH = "select * from Dish where DishID = ?";
 
-    public static final String GET_SPECMEAL = "select [SpecPlanID],[SpecPlanName],[WeekNumber],[IsStatus] from SpecMeal Where SpecPlanID = ? ";
+    public static final String GET_DATA = "select * from Dish";
 
-
-
-    public ArrayList<SpecMealDTO> getAllSpecMeal() {
-        ArrayList<SpecMealDTO> specMealList = new ArrayList<>();
+    public ArrayList<DishDTO> getAllDish() {
+        ArrayList<DishDTO> dishList = new ArrayList<>();
 
         Connection cn = null;
         try {
@@ -44,13 +41,11 @@ public class SpecMealDAO {
                 if (rs != null) {
                     //b3: Doc cac dong trong rs va cat vao ArrayList
                     while (rs.next()) {
-                        int planSpecMealID = rs.getInt("SpecPlanID");
-                        String planSpecName = rs.getString("SpecPlanName");
-                        int weekNumber = rs.getInt("WeekNumber");
-                        int IsStatus = rs.getInt("IsStatus");
+                        int dishNum = rs.getInt("dishID");
+                        String dishName = rs.getString("dishName");
 
-                        SpecMealDTO specMeal = new SpecMealDTO(planSpecMealID, planSpecName, weekNumber, IsStatus);
-                        specMealList.add(specMeal);
+                        DishDTO dish = new DishDTO(dishNum, dishName);
+                        dishList.add(dish);
                     }
 
                 }
@@ -68,29 +63,25 @@ public class SpecMealDAO {
             }
         }
 
-        return specMealList;
+        return dishList;
 
     }
 
-    public SpecMealDTO getSpecMeal(int planSpecMealID) {
-        SpecMealDTO specMeal = null;
+    public DishDTO getDish(int dishID) {
+        DishDTO dish = null;
 
         int result = 0;
         Connection cn = null;
         try {
             cn = DBUtils.makeConnection();
             if (cn != null) {
-                String sql = GET_SPECMEAL;
+                String sql = GET_DISH;
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, planSpecMealID);
+                pst.setInt(1, dishID);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
-                    String planSpecName = rs.getString("SpecPlanName");
-                    int weekNumber = rs.getInt("WeekNumber");
-                    int IsStatus = rs.getInt("IsStatus");
-
-                    specMeal = new SpecMealDTO(planSpecMealID, planSpecName, weekNumber, IsStatus);
-
+                    String dishName = rs.getString("dishName");
+                    dish = new DishDTO(dishID, dishName);
                 }
             }
         } catch (Exception e) {
@@ -104,10 +95,7 @@ public class SpecMealDAO {
                 e.printStackTrace();
             }
         }
-        return specMeal;
+        return dish;
 
     }
-
-    
-
 }
