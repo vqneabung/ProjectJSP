@@ -4,17 +4,18 @@
     Author     : VQN
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
         <title>JSP Page</title>
+        <%@include file="/common/web/add_css_js.jsp"%>  
     </head>
     <body>
-        <h1> Insert ${requestScope.specMeal.specPlanName} </h1>
-        <form action="/ProjectJSP/InsertProductServlet" method="post">
+        <h1> Insert ${requestScope.specMeal.specMealName} </h1>
+        <form action="/ProjectJSP/InsertSpecMealServlet" method="post">
             <p>
                 <select name="insert_productID" >
                     <c:forEach items="${requestScope.productList}" var="product">
@@ -39,7 +40,7 @@
                 </select>
             </p>
 
-            <input hidden name="insert_specMeal" value="${requestScope.specMeal}">
+            <input hidden name="insert_specMealID" value="${requestScope.specMeal.specMealID}">
             <p><input type="submit" name="btn_insert" value="Insert"/></p>
         </form>
     </body>

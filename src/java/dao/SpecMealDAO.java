@@ -72,7 +72,7 @@ public class SpecMealDAO {
 
     }
 
-    public SpecMealDTO getSpecMeal(int planSpecMealID) {
+    public SpecMealDTO getSpecMeal(int specPlanMealID) {
         SpecMealDTO specMeal = null;
 
         int result = 0;
@@ -82,14 +82,14 @@ public class SpecMealDAO {
             if (cn != null) {
                 String sql = GET_SPECMEAL;
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, planSpecMealID);
+                pst.setInt(1, specPlanMealID);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     String planSpecName = rs.getString("SpecPlanName");
                     int weekNumber = rs.getInt("WeekNumber");
                     int IsStatus = rs.getInt("IsStatus");
 
-                    specMeal = new SpecMealDTO(planSpecMealID, planSpecName, weekNumber, IsStatus);
+                    specMeal = new SpecMealDTO(specPlanMealID, planSpecName, weekNumber, IsStatus);
 
                 }
             }

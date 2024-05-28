@@ -44,8 +44,8 @@ public class InsertProductServlet extends HttpServlet {
 
             /* TODO output your page here. You may use following sample code. */
             String productName = request.getParameter("insert_productName");
-            CategoryDTO category = c.getCategory(Integer.parseInt(request.getParameter("insert_categoryID")));
-            TypeDTO type = t.getType(Integer.parseInt(request.getParameter("insert_typeID")));
+            int categoryID = Integer.parseInt(request.getParameter("insert_categoryID"));
+            int typeID = Integer.parseInt(request.getParameter("insert_typeID"));
             int isVegetarian = Integer.parseInt(request.getParameter("insert_isVegetarian"));
             int isVegan = Integer.parseInt(request.getParameter("insert_isVegan"));
             int hasSpecialDietaryRequirements = Integer.parseInt(request.getParameter("insert_hasSpecialDietaryRequirements"));
@@ -57,23 +57,23 @@ public class InsertProductServlet extends HttpServlet {
 //          String[] image = Utils.stringToArray(request.getParameter("insert_image"));
             String[] image = {"test"};
 
-            out.println("<h1>" + productName);
-            out.println("<h1>" + category.getCategoryID());
-            out.println("<h1>" + type.getTypeID());
-            out.println("<h1>" + isVegetarian);
-            out.println("<h1>" + isVegan);
-            out.println("<h1>" + hasSpecialDietaryRequirements);
-            out.println("<h1>" + size.toString());
-            out.println("<h1>" + price);
-            out.println("<h1>" + stock);
-            out.println("<h1>" + unitSold);
-            out.println("<h1>" + describe);
-            out.println("<h1>" + image.toString());
+//            out.println("<h1>" + productName);
+//            out.println("<h1>" + category.getCategoryID());
+//            out.println("<h1>" + type.getTypeID());
+//            out.println("<h1>" + isVegetarian);
+//            out.println("<h1>" + isVegan);
+//            out.println("<h1>" + hasSpecialDietaryRequirements);
+//            out.println("<h1>" + size.toString());
+//            out.println("<h1>" + price);
+//            out.println("<h1>" + stock);
+//            out.println("<h1>" + unitSold);
+//            out.println("<h1>" + describe);
+//            out.println("<h1>" + image.toString());
             ProductDAO pd = new ProductDAO();
             ProductDTO product = pd.getProduct(productName);
             out.print(product);
             if (product == null) { //email khong trung
-                int rs = pd.insertProduct(productName, category.getCategoryID(), type.getTypeID(), isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, image);
+                int rs = pd.insertProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, image);
 
                 if (rs >= 1) {
                     out.print("<p>Da insert thanh cong </p>");

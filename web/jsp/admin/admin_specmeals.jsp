@@ -16,8 +16,8 @@
         <h1>Manage User</h1>
         <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
         <c:forEach items="${requestScope.specMealList}" var="specMeal">
-            <h1>${specMeal.specPlanName}</h1>
-            <p><a href="/ProjectJSP/InsertSpecMealServlet?specMealPlanID=${specMeal.specPlanID}">Insert</a></p>
+            <h1>${specMeal.specMealName}</h1>
+            <p><a href="/ProjectJSP/InsertSpecMealServlet?specMealID=${specMeal.specMealID}">Insert</a></p>
             <table border = "1">
                 <tr>
                     <th>Product Name</th>
@@ -28,15 +28,15 @@
                     <th>Update</th>
                 </tr>
                 <c:forEach var="specMealDetail" items="${requestScope.specMealDetailList}">
-                    <c:if test= "${specMealDetail.isStatus != 0 && specMealDetail.specMealPlan.specPlanID == specMeal.specPlanID}" >
+                    <c:if test= "${specMealDetail.isStatus != 0 && specMealDetail.specMeal.specMealID == specMeal.specMealID}" >
                         <tr>
                             <th>${specMealDetail.product.productName}</th>
                             <th>${specMealDetail.dish.dishName}</th>
                             <th>${specMealDetail.product.productDescribe}</th>
                             <th>${specMealDetail.isStatus != 0 ? "Active" : "Deactive"}</th>
 
-                            <th><a href="RemoveSpecMealServlet?planSpecDetailID=${specMealDetail.planSpecDetailID}">remove</a></th>
-                            <th><a href="UpdateSpecMealServlet?planSpecDetailID=${specMealDetail.planSpecDetailID}">update</a></th>
+                            <th><a href="RemoveSpecMealServlet?specMealDetailID=${specMealDetail.specMealDetailID}">remove</a></th>
+                            <th><a href="UpdateSpecMealServlet?specMealDetailID=${specMealDetail.specMealDetailID}">update</a></th>
                         </tr>
                     </c:if>
                     <c:if test="${requestScope.update_status} != null">

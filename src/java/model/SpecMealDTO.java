@@ -10,32 +10,32 @@ package model;
  */
 public class SpecMealDTO {
 
-    private int specPlanID;
-    private String specPlanName;
+    private int specMealID;
+    private String specMealName;
     private int weekNumber;
     private int isStatus;
 
-    public SpecMealDTO(int specPlanID, String specPlanName, int weekNumber, int isStatus) {
-        this.specPlanID = specPlanID;
-        this.specPlanName = specPlanName;
+    public SpecMealDTO(int specMealID, String specMealName, int weekNumber, int isStatus) {
+        this.specMealID = specMealID;
+        this.specMealName = specMealName;
         this.weekNumber = weekNumber;
         this.isStatus = isStatus;
     }
 
-    public int getSpecPlanID() {
-        return specPlanID;
+    public int getSpecMealID() {
+        return specMealID;
     }
 
-    public void setSpecPlanID(int specPlanID) {
-        this.specPlanID = specPlanID;
+    public void setSpecMealID(int specMealID) {
+        this.specMealID = specMealID;
     }
 
-    public String getSpecPlanName() {
-        return specPlanName;
+    public String getSpecMealName() {
+        return specMealName;
     }
 
-    public void setSpecPlanName(String specPlanName) {
-        this.specPlanName = specPlanName;
+    public void setSpecMealName(String specMealName) {
+        this.specMealName = specMealName;
     }
 
     public int getWeekNumber() {

@@ -76,6 +76,10 @@
         <servlet-name>RemoveSpecMealServlet</servlet-name>
         <servlet-class>controller.admin.management.specmeal.RemoveSpecMealServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateSpecMealServlet</servlet-name>
+        <servlet-class>controller.admin.management.specmeal.UpdateSpecMealServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -151,6 +155,10 @@
     <servlet-mapping>
         <servlet-name>RemoveSpecMealServlet</servlet-name>
         <url-pattern>/RemoveSpecMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSpecMealServlet</servlet-name>
+        <url-pattern>/UpdateSpecMealServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

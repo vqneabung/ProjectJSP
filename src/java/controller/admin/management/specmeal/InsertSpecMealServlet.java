@@ -39,21 +39,22 @@ public class InsertSpecMealServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             ProductDAO p = new ProductDAO();
             DishDAO dh = new DishDAO();
             SpecMealDetailDAO smd = new SpecMealDetailDAO();
             DayDAO d = new DayDAO();
+            SpecMealDAO sm = new SpecMealDAO();
 
-            DayDTO day = d.getDay(Integer.parseInt(request.getParameter("insert_dayNum")));
-            ProductDTO product = p.getProduct(request.getParameter("insert_productID"));
-            DishDTO dish = dh.getDish(Integer.parseInt(request.getParameter("insert_dishID").trim()));
-            Object specMealObject = request.getParameter("insert_specMeal");
-            SpecMealDTO specMeal = (SpecMealDTO) specMealObject;
+            int dayNum = Integer.parseInt(request.getParameter("insert_dayNum"));
+            int productID = Integer.parseInt(request.getParameter("insert_productID"));
+            int dishID = Integer.parseInt(request.getParameter("insert_dishID").trim());
+            int specMealID = Integer.parseInt(request.getParameter("insert_specMealID").trim());
 
             //email khong trung
-            int rs = smd.insertSpecMealDetail(day.getDayNum(), product.getProductID(), dish.getDishID(), specMeal.getSpecPlanID());
+            int rs = smd.insertSpecMealDetail(dayNum, productID, dishID, specMealID);
 
             if (rs >= 1) {
                 out.print("<p>Da insert thanh cong </p>");
@@ -77,6 +78,8 @@ public class InsertSpecMealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
 
         ProductDAO p = new ProductDAO();
         DishDAO dh = new DishDAO();
@@ -87,7 +90,7 @@ public class InsertSpecMealServlet extends HttpServlet {
 
         String btn_insert = request.getParameter("btn_insert");
         if (btn_insert == null) {
-            
+
             ArrayList<ProductDTO> product = p.getAllProducts();
             ArrayList<DishDTO> dish = dh.getAllDish();
             ArrayList<DayDTO> day = d.getAllDay();
@@ -97,11 +100,10 @@ public class InsertSpecMealServlet extends HttpServlet {
             request.setAttribute("dayList", day);
             request.setAttribute("specMeal", specMeal);
 
-//            out.print("<h1>" + product.toArray());
-//            out.print("<h1>" + dish.toArray());
-//            out.print("<h1>" + day.toArray());
+//            out.print("<h1>" + product.get(0).getProductName());
+//            out.print("<h1>" + dish.get(0).getDishName());
+//            out.print("<h1>" + day.get(0).getDayText());
 //            out.print("<h1>" + specMeal.toString());
-
             request.getRequestDispatcher("/jsp/admin/admin_specmeal_insert.jsp").forward(request, response);
         } else {
             processRequest(request, response);
