@@ -65,16 +65,20 @@
         <servlet-class>dao.UserMealDAO</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>InsertSpecMealProduct</servlet-name>
+        <servlet-name>InsertSpecMealServlet</servlet-name>
         <servlet-class>controller.admin.management.specmeal.InsertSpecMealServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManageSpecMealProduct</servlet-name>
+        <servlet-name>ManageSpecMealServlet</servlet-name>
         <servlet-class>controller.admin.management.specmeal.ManageSpecMealServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RemoveSpecMealServlet</servlet-name>
         <servlet-class>controller.admin.management.specmeal.RemoveSpecMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSpecMealServlet</servlet-name>
+        <servlet-class>controller.admin.management.specmeal.UpdateSpecMealServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
@@ -141,16 +145,20 @@
         <url-pattern>/UserMealDAO</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>InsertSpecMealProduct</servlet-name>
-        <url-pattern>/InsertSpecMealProduct</url-pattern>
+        <servlet-name>InsertSpecMealServlet</servlet-name>
+        <url-pattern>/InsertSpecMealServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ManageSpecMealProduct</servlet-name>
-        <url-pattern>/ManageSpecMealProduct</url-pattern>
+        <servlet-name>ManageSpecMealServlet</servlet-name>
+        <url-pattern>/ManageSpecMealServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RemoveSpecMealServlet</servlet-name>
         <url-pattern>/RemoveSpecMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSpecMealServlet</servlet-name>
+        <url-pattern>/UpdateSpecMealServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

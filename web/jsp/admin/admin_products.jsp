@@ -40,8 +40,8 @@
                     <tr>
                         <th>${product.productID}</th>
                         <th>${product.productName}</th>
-                        <th>${product.category.categoryID}</th>
-                        <th>${product.type.typeID}</th>
+                        <th>${product.category.categoryName}</th>
+                        <th>${product.type.typeName}</th>
                         <th>${product.isVegetarian}</th>
                         <th>${product.isVegan}</th>
                         <th>${product.hasSpecialDietaryRequirements}</th>

@@ -10,34 +10,44 @@ package model;
  */
 public class SpecMealDetailDTO {
 
-    private int planSpecDetailID;
-    private int productID;
+    private int specMealDetailID;
+    private DayDTO day;
+    private ProductDTO product;
     private DishDTO dish;
-    private SpecMealDTO specPlan;
+    private SpecMealDTO specMeal;
     private int isStatus;
 
-    public SpecMealDetailDTO(int planSpecDetailID, int productID, DishDTO dish, SpecMealDTO specPlan, int isStatus) {
-        this.planSpecDetailID = planSpecDetailID;
-        this.productID = productID;
+    public SpecMealDetailDTO(int specMealDetailID, DayDTO day, ProductDTO productID, DishDTO dish, SpecMealDTO specMeal, int isStatus) {
+        this.specMealDetailID = specMealDetailID;
+        this.day = day;
+        this.product = productID;
         this.dish = dish;
-        this.specPlan = specPlan;
+        this.specMeal = specMeal;
         this.isStatus = isStatus;
     }
 
-    public int getPlanSpecDetailID() {
-        return planSpecDetailID;
+    public int getSpecMealDetailID() {
+        return specMealDetailID;
     }
 
-    public void setPlanSpecDetailID(int planSpecDetailID) {
-        this.planSpecDetailID = planSpecDetailID;
+    public void setSpecMealDetailID(int specMealDetailID) {
+        this.specMealDetailID = specMealDetailID;
     }
 
-    public int getProductID() {
-        return productID;
+    public DayDTO getDay() {
+        return day;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setDay(DayDTO day) {
+        this.day = day;
+    }
+
+    public ProductDTO getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductDTO product) {
+        this.product = product;
     }
 
     public DishDTO getDish() {
@@ -48,12 +58,12 @@ public class SpecMealDetailDTO {
         this.dish = dish;
     }
 
-    public SpecMealDTO getSpecPlan() {
-        return specPlan;
+    public SpecMealDTO getSpecMeal() {
+        return specMeal;
     }
 
-    public void setSpecPlan(SpecMealDTO specPlan) {
-        this.specPlan = specPlan;
+    public void setSpecMeal(SpecMealDTO specMeal) {
+        this.specMeal = specMeal;
     }
 
     public int getIsStatus() {

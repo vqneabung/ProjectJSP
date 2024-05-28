@@ -74,8 +74,8 @@ public class UpdateProductServlet extends HttpServlet {
             } else {
                 url = MANAGE_PRODUCT;
                 String productName = request.getParameter("update_productName");
-                CategoryDTO category = c.getCategory(Integer.parseInt(request.getParameter("update_categoryID")));
-                TypeDTO type = t.getType(Integer.parseInt(request.getParameter("update_typeID")));
+                int categoryID = Integer.parseInt(request.getParameter("update_categoryID"));
+                int typeID = Integer.parseInt(request.getParameter("update_typeID"));
                 int isVegetarian = Integer.parseInt(request.getParameter("update_isVegetarian"));
                 int isVegan = Integer.parseInt(request.getParameter("update_isVegan"));
                 int hasSpecialDietaryRequirements = Integer.parseInt(request.getParameter("update_hasSpecialDietaryRequirements"));
@@ -102,7 +102,7 @@ public class UpdateProductServlet extends HttpServlet {
 //                    out.println(describe);
 //                    out.println(status);
 //                    out.println(image);
-                result = pd.updateProduct(productName, category.getCategoryID(), type.getTypeID(), isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, status, image, productID);
+                result = pd.updateProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, status, image, productID);
                 if (result > 0) {
                     request.setAttribute("update_status", "Update successfully!");
                     request.getRequestDispatcher(url).forward(request, response);

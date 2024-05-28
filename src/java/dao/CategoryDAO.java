@@ -84,13 +84,6 @@ public class CategoryDAO {
                     TypeDTO type = t.getType(rs.getInt("TypeID"));
                     category = new CategoryDTO(categoryID, categoryName, type);
 
-                    if (categoryName == null) {
-                        throw new Exception("categoryName bi loi");
-                    }
-                    if (type == null) {
-                        throw new Exception("type bi loi");
-                    }
-
                 }
             }
         } catch (Exception e) {
