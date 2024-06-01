@@ -40,11 +40,11 @@ public class ManageUserMealServlet extends HttpServlet {
             UserMealDAO um = new UserMealDAO();
             UserMealDetailDAO umd = new UserMealDetailDAO();
 
-            ArrayList<UserMealDTO> specMealList = um.getAllSpecMeal();
-            ArrayList<UserMealDetailDTO> specMealDetailList = umd.getAllSpecMealDetail();
+            ArrayList<UserMealDTO> userMealList = um.getAllUserMeal();
+            ArrayList<UserMealDetailDTO> userMealDetailList = umd.getAllUserMealDetail();
 
-            request.setAttribute("specMealList", specMealList);
-            request.setAttribute("specMealDetailList", specMealDetailList);
+            request.setAttribute("userMealList", userMealList);
+            request.setAttribute("userMealDetailList", userMealDetailList);
 
             request.getRequestDispatcher("jsp/admin/admin_specmeals.jsp").forward(request, response);
 

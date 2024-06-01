@@ -49,10 +49,6 @@
         <servlet-class>controller.admin.management.usermeal.InsertUserMealServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>UpdateUserMealServlet</servlet-name>
-        <servlet-class>controller.admin.management.usermeal.UpdateUserMealServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ManageUserMealServlet</servlet-name>
         <servlet-class>controller.admin.management.usermeal.ManageUserMealServlet</servlet-class>
     </servlet>
@@ -123,10 +119,6 @@
     <servlet-mapping>
         <servlet-name>InsertUserMealServlet</servlet-name>
         <url-pattern>/InsertUserMealServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateUserMealServlet</servlet-name>
-        <url-pattern>/UpdateUserMealServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ManageUserMealServlet</servlet-name>
