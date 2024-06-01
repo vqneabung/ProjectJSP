@@ -5,6 +5,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -16,11 +17,13 @@ import utils.DBUtils;
  * @author VQN
  */
 public class UserMealDAO {
-    
-    public static final String GET_DATA = "";
+
+    public static final String GET_DATA = "select [UserPlanID],[UserPlanName],[WeekNumber],[IsStatus] from UserMeal";
+
+    public static final String GET_USERMEAL = "select [UserPlanID],[UserPlanName],[WeekNumber],[IsStatus] from UserMeal Where UserPlanID = ? ";
 
     public ArrayList<UserMealDTO> getAllUserMeal() {
-        ArrayList<UserMealDTO> specMealList = new ArrayList<>();
+        ArrayList<UserMealDTO> userMealList = new ArrayList<>();
 
         Connection cn = null;
         try {
@@ -34,13 +37,13 @@ public class UserMealDAO {
                 if (rs != null) {
                     //b3: Doc cac dong trong rs va cat vao ArrayList
                     while (rs.next()) {
-                        int planSpecMealID = rs.getInt("SpecPlanID");
-                        String planSpecName = rs.getString("SpecPlanName");
+                        int userMealID = rs.getInt("UserPlanID");
+                        String userMealName = rs.getString("UserPlanName");
                         int weekNumber = rs.getInt("WeekNumber");
                         int IsStatus = rs.getInt("IsStatus");
 
-                        UserMealDTO userMeal = new UserMealDTO(planSpecMealID, planSpecName, weekNumber, IsStatus);
-                        specMealList.add(specMeal);
+                        UserMealDTO userMeal = new UserMealDTO(userMealID, userMealName, weekNumber, IsStatus);
+                        userMealList.add(userMeal);
                     }
 
                 }
@@ -57,6 +60,42 @@ public class UserMealDAO {
                 e.printStackTrace();
             }
         }
+        return userMealList;
+    }
+
+    public UserMealDTO getUserMeal(int userMealID) {
+        UserMealDTO userMeal = null;
+
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = GET_USERMEAL;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userMealID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
+                    String userMealName = rs.getString("UserPlanName");
+                    int weekNumber = rs.getInt("WeekNumber");
+                    int IsStatus = rs.getInt("IsStatus");
+
+                    userMeal = new UserMealDTO(userMealID, userMealName, weekNumber, IsStatus);
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return userMeal;
 
     }
 }

@@ -16,10 +16,8 @@
         <h1>Manage User Meal</h1>
         <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
         <p><a href="" ></a></p>
-        <c:forEach items="${requestScope.userMealList}" var="userMeal">
+            <c:forEach items="${requestScope.userMealList}" var="userMeal">
             <h1>${userMeal.userMealName}</h1>
-            <p><a href="/ProjectJSP/InsertSpecMealServlet?userMealID=${userMeal.userMealID}">Insert</a></p>
-            <p><a href="/ProjectJSP/RemoveSpecMealServlet?userMealID=${userMeal.userMealID}&removeType=2">Remove</a></p>
             <table border = "1">
                 <tr>
                     <th>Product Name</th>
@@ -27,8 +25,6 @@
                     <th>Day</th>
                     <th>Product Describe</th>
                     <th>Status</th>
-                    <th>Remove</th>
-                    <th>Update</th>
                 </tr>
                 <c:forEach var="userMealDetail" items="${requestScope.userMealDetailList}">
                     <c:if test= "${userMealDetail.isStatus != 0 && userMealDetail.userMeal.userMealID == userMeal.userMealID}" >
@@ -38,9 +34,6 @@
                             <th>${userMealDetail.day.dayText}</th>
                             <th>${userMealDetail.product.productDescribe}</th>
                             <th>${userMealDetail.isStatus != 0 ? "Active" : "Deactive"}</th>
-
-                            <th><a href="RemoveSpecMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}">remove</a></th>
-                            <th><a href="UpdateSpecMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}">update</a></th>
                         </tr>
                     </c:if>
                     <c:if test="${requestScope.update_status} != null">
