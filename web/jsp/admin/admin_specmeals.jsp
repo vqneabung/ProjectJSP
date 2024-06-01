@@ -13,7 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Manage User</h1>
+        <h1>Manage SpecMeal</h1>
         <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
         <c:forEach items="${requestScope.specMealList}" var="specMeal">
             <h1>${specMeal.specMealName}</h1>
@@ -22,6 +22,7 @@
                 <tr>
                     <th>Product Name</th>
                     <th>Dish</th>
+                    <th>Day</th>
                     <th>Product Describe</th>
                     <th>Status</th>
                     <th>Remove</th>
@@ -32,6 +33,7 @@
                         <tr>
                             <th>${specMealDetail.product.productName}</th>
                             <th>${specMealDetail.dish.dishName}</th>
+                            <th>${specMealDetail.day.dayText}</th>
                             <th>${specMealDetail.product.productDescribe}</th>
                             <th>${specMealDetail.isStatus != 0 ? "Active" : "Deactive"}</th>
 

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : admin_specmeal_update
-    Created on : May 28, 2024, 4:26:58 PM
+    Document   : admin_usermeal_update
+    Created on : May 28, 2024, 9:43:34 PM
     Author     : VQN
 --%>
 
@@ -38,8 +38,8 @@
                 </select>
             </p>
 
-            <input hidden name="update_specMealDetailID" value="${requestScope.specMealDetailID}">
-            <h1>${requestScope.specMealDetailID}</h1>
+            <input hidden name="update_userMealDetailID" value="${requestScope.userMealDetailID}">
+            <h1>${requestScope.userMealDetailID}</h1>
             <p><input type="submit" name="btn_update" value="Update"/></p>
         </form>
     </body>

@@ -54,12 +54,12 @@ public class UpdateSpecMealServlet extends HttpServlet {
             SpecMealDetailDAO smd = new SpecMealDetailDAO();
             DayDAO d = new DayDAO();
             SpecMealDAO sm = new SpecMealDAO();
-            int specMealDetailID = Integer.parseInt(request.getParameter("specMealDetailID"));
-            String button = request.getParameter("update_click");
+            String button = request.getParameter("btn_update");
             String url = null;
 
             if (button == null) {
                 url = UPDATE_SPECMEAL;
+                int specMealDetailID = Integer.parseInt(request.getParameter("specMealDetailID"));
                 SpecMealDetailDTO specMealDetail = smd.getSpecMealDetail(specMealDetailID);
 
                 ArrayList<ProductDTO> product = p.getAllProducts();
@@ -72,21 +72,17 @@ public class UpdateSpecMealServlet extends HttpServlet {
                 request.setAttribute("productID", specMealDetail.getProduct().getProductID());
                 request.setAttribute("dishID", specMealDetail.getDish().getDishID());
                 request.setAttribute("dayNum", specMealDetail.getDay().getDayNum());
-                request.setAttribute("specMealID", specMealDetail.getSpecMeal().getSpecMealID());
-                
-                out.print("<h1>Hello</h1>");
-                
-                
+                request.setAttribute("specMealDetailID", specMealDetailID);
+
                 request.getRequestDispatcher(url).forward(request, response);
             } else {
                 url = MANAGE_SPECMEAL;
                 int productID = Integer.parseInt(request.getParameter("update_productID"));
-                int dishID = Integer.parseInt(request.getParameter("update_dishID"));
-                int typeID = Integer.parseInt(request.getParameter("update_typeID"));
+                int dishID = Integer.parseInt(request.getParameter("update_dishID").trim());
                 int dayNum = Integer.parseInt(request.getParameter("update_dayNum"));
-                int specMealID = Integer.parseInt(request.getParameter("update_specMealID"));
+                int specMealDetailID = Integer.parseInt(request.getParameter("update_specMealDetailID"));
 
-                result = smd.updateSpecMealDetail(dayNum, productID, dishID, specMealID, specMealDetailID);
+                result = smd.updateSpecMealDetail(dayNum, productID, dishID, specMealDetailID);
                 if (result > 0) {
                     request.setAttribute("update_status", "Update successfully!");
                     request.getRequestDispatcher(url).forward(request, response);
