@@ -19,5 +19,6 @@
         <p><a href="/ProjectJSP/ManageProductServlet" >Manage Product</a></p>
         <p><a href="/ProjectJSP/InsertProductServlet" >Insert Product</a></p>
         <p><a href="/ProjectJSP/ManageSpecMealServlet" >Manage Spec Meal</a></p>
+        <p><a href="/ProjectJSP/LogoutServlet" >Log out</a></p>
     </body>
 </html>
