@@ -53,16 +53,8 @@
         <servlet-class>controller.admin.management.usermeal.UpdateUserMealServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>RemoveUserMealServlet</servlet-name>
-        <servlet-class>controller.admin.management.usermeal.RemoveUserMealServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ManageUserMealServlet</servlet-name>
         <servlet-class>controller.admin.management.usermeal.ManageUserMealServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UserMealDAO</servlet-name>
-        <servlet-class>dao.UserMealDAO</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>InsertSpecMealServlet</servlet-name>
@@ -133,16 +125,8 @@
         <url-pattern>/UpdateUserMealServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>RemoveUserMealServlet</servlet-name>
-        <url-pattern>/RemoveUserMealServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ManageUserMealServlet</servlet-name>
         <url-pattern>/ManageUserMealServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UserMealDAO</servlet-name>
-        <url-pattern>/UserMealDAO</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>InsertSpecMealServlet</servlet-name>
@@ -166,8 +150,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>jsp/home/login.jsp</welcome-file>
-        <welcome-file>jsp/home.jsp</welcome-file>
         <welcome-file>jsp/home/home.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

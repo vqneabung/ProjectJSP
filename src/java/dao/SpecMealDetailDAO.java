@@ -34,7 +34,7 @@ public class SpecMealDetailDAO {
             + "VALUES (?,?,?,?,1)";
 
     public static final String UPDATE_SPECMEALDETAIL = "Update SpecMealDetail\n"
-            + "set ProductID = ?, DishID = ?, DayNum = ?, IsStatus = ?\n"
+            + "set ProductID = ?, DishID = ?, DayNum = ?\n"
             + "Where SpecPlanDetailID = ?";
 
     public ArrayList<SpecMealDetailDTO> getAllSpecMealDetail() {
@@ -57,14 +57,14 @@ public class SpecMealDetailDAO {
                 if (rs != null) {
                     //b3: Doc cac dong trong rs va cat vao ArrayList
                     while (rs.next()) {
-                        int planSpecMealID = rs.getInt("SpecPlanDetailID");
+                        int SpecPlanDetailID = rs.getInt("SpecPlanDetailID");
                         ProductDTO product = p.getProduct(rs.getInt("ProductID"));
                         DishDTO dish = dh.getDish(rs.getInt("DishID"));
                         int isStatus = rs.getInt("IsStatus");
                         DayDTO day = d.getDay(rs.getInt("DayNum"));
                         SpecMealDTO specMealPlan = sm.getSpecMeal(rs.getInt("SpecPlanID"));
 
-                        SpecMealDetailDTO specMealDetail = new SpecMealDetailDTO(planSpecMealID, day, product, dish, specMealPlan, isStatus);
+                        SpecMealDetailDTO specMealDetail = new SpecMealDetailDTO(SpecPlanDetailID, day, product, dish, specMealPlan, isStatus);
                         specMealDetailList.add(specMealDetail);
                     }
 
@@ -269,14 +269,18 @@ public class SpecMealDetailDAO {
         return rs;
     }
 
-    public int updateSpecMealDetail(int dayID, int productID, int dishID, int specMealPlan, int specMealDetailID) {
+    public int updateSpecMealDetail(int dayID, int productID, int dishID, int specMealDetailID) {
         int rs = 0;
         Connection cn = null;
         try {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = UPDATE_SPECMEALDETAIL;
-                //UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?
+                /*
+                Update SpecMealDetail\n"
+            + "set ProductID = ?, DishID = ?, DayNum = ?, IsStatus = ?\n"
+            + "Where SpecPlanDetailID = ?
+                 */
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, productID);
                 pst.setInt(2, dishID);

@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -17,7 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class StartServlet extends HttpServlet {
 
-    private String HOME = "view/jsp/home/home.jsp";
+    private String HOME = "jsp/home/home.jsp";
+    private String LOGIN = "jsp/home/login.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,11 +36,16 @@ public class StartServlet extends HttpServlet {
         String url = HOME;
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
+            HttpSession session = request.getSession();
+            if (session.getAttribute("User") != null) {
+                request.getRequestDispatcher(HOME);
+            } else {
+                response.sendRedirect(LOGIN);
+            }
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

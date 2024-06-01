@@ -81,16 +81,24 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         String url = HOME;
+        HttpSession session = request.getSession();
         try {
             String email = request.getParameter("login_email");
             String password = request.getParameter("login_password");
             UserDAO ud = new UserDAO();
             UserDTO user = ud.getUser(email.trim());
+            String userSession = (String) session.getAttribute("User");
             if (user != null && password.equals(user.getPassword())) {
-                if (user.getRoleID() == 0) {
-                    response.sendRedirect(ADMIN_DASHBOARD);
-                } else {
+                if (userSession != null) {
                     response.sendRedirect(HOME);
+                } else {
+                    session.setAttribute("User", user);
+                    session.setAttribute("UserRoleID", user.getRoleID());
+                    if (user.getRoleID() == 0) {
+                        response.sendRedirect(ADMIN_DASHBOARD);
+                    } else {
+                        response.sendRedirect(HOME);
+                    }
                 }
             } else {
                 RequestDispatcher rd = request.getRequestDispatcher(LOGIN);

@@ -14,6 +14,17 @@
 
     </head>
     <body>
-        <p><a href="login.jsp">Login</a></p>
+
+        <%
+            if (session.getAttribute("UserRoleID") != null) {
+        %>
+        <p><a href="jsp/admin/admin_home.jsp">Admin</a></p>
+        <%
+        } else {
+        %>
+        <p><a href="StartServlet">Login</a></p>
+        <%
+            }
+        %>
     </body>
 </html>
