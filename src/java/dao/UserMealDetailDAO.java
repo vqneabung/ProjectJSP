@@ -23,11 +23,18 @@ import utils.DBUtils;
  */
 public class UserMealDetailDAO {
 
-    public static final String GET_DATA = "select  [UserPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [UserPlanID] from UserMealDetail";
+    public static final String GET_DATA = "select [UserPlanDetailID],[ProductID],[DishID],[UserPlanID],[DayNum],[IsStatus] from [dbo].[UserMealDetail]";
 
     public static final String GET_USERMEALDETAIL_BY_USERMEALID = "select  [UserPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [UserPlanID] from UserMealDetail WHERE UserPlanID = ?";
 
     public static final String GET_USERMEALDETAIL_BY_ID = "select  [UserPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [UserPlanID] from UserMealDetail WHERE UserPlanDetailID = ?";
+
+    public static final String REMOVE_USERMEALDETAIL = "update UserMealDetail set IsStatus=0 where UserPlanDetailID = ? ";
+
+    public static final String INSERT_USERMEALDETAIL = "Insert Into [UserMealDetail] ([ProductID],[DishID],[UserPlanID],[DayNum],[IsStatus])\n"
+            + "values (?, ?, ?, ?, 1)";
+
+    public static final String UPDATE_USERMEALDETAIL = "select [UserPlanDetailID],[ProductID],[DishID],[UserPlanID],[DayNum],[IsStatus from UserMeal Where UserPlanID = ? ";
 
     public ArrayList<UserMealDetailDTO> getAllUserMealDetail() {
 
@@ -168,6 +175,97 @@ public class UserMealDetailDAO {
         }
         return userMealDetail;
 
+    }
+
+    public int removeUserMealDetail(int UserMealID) {
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = REMOVE_USERMEALDETAIL;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, UserMealID);
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public int insertUserMealDetail(int productID, int dishID, int userMealID, int dayNum) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = INSERT_USERMEALDETAIL;
+                //INSERT INTO Product(ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, productID);
+                pst.setInt(2, dishID);
+                pst.setInt(3, userMealID);
+                pst.setInt(4, dayNum);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
+    }
+
+    public int updateUserMealDetail(int productID, int dishID, int userMealID, int dayNum) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = UPDATE_USERMEALDETAIL;
+                /*
+                Update SpecMealDetail\n"
+            + "set ProductID = ?, DishID = ?, DayNum = ?, IsStatus = ?\n"
+            + "Where SpecPlanDetailID = ?
+                 */
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, productID);
+                pst.setInt(2, dishID);
+                pst.setInt(3, userMealID);
+                pst.setInt(4, dayNum);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
     }
 
 }
