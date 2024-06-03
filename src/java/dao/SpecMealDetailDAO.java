@@ -28,7 +28,7 @@ public class SpecMealDetailDAO {
 
     private static final String GET_SPECMEALDETAIL_BY_ID = "select  [SpecPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [SpecPlanID] from SpecMealDetail WHERE SpecPlanDetailID = ?";
 
-    public static final String REMOVE_SPECMEALDETAIL = "delete from SpecMealDetail where SpecPlanDetailID = ?";
+    public static final String REMOVE_SPECMEALDETAIL = "update SpecMealDetail set IsStatus=0 where SpecPlanDetailID = ?";
 
     public static final String INSERT_SPECMEALDETAIL = "INSERT INTO SpecMealDetail([ProductID],[DishID],[DayNum],[SpecPlanID],[IsStatus])\n"
             + "VALUES (?,?,?,?,1)";
@@ -238,7 +238,7 @@ public class SpecMealDetailDAO {
 //        return specMeal;
 //        
 //    }
-    public int insertSpecMealDetail(int dayID, int productID, int dishID, int specMealPlan) {
+    public int insertSpecMealDetail(int dayID, int productID, int dishID, int specMealPlanID) {
         int rs = 0;
         Connection cn = null;
         try {
@@ -250,7 +250,7 @@ public class SpecMealDetailDAO {
                 pst.setInt(1, dayID);
                 pst.setInt(2, productID);
                 pst.setInt(3, dishID);
-                pst.setInt(4, specMealPlan);
+                pst.setInt(4, specMealPlanID);
 
                 rs = pst.executeUpdate();
             }

@@ -50,7 +50,7 @@
     </servlet>
     <servlet>
         <servlet-name>ManageUserMealServlet</servlet-name>
-        <servlet-class>controller.admin.management.usermeal.ManageUserMealServlet</servlet-class>
+        <servlet-class>controller.web.usermeal.ManageUserMealServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>InsertSpecMealServlet</servlet-name>
@@ -71,6 +71,42 @@
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>controller.web.logout.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>controller.web.profile.ProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <servlet-class>controller.web.profile.EditProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MealShopServlet</servlet-name>
+        <servlet-class>controller.web.mealshop.MealShopServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SingleMealShopServlet</servlet-name>
+        <servlet-class>controller.web.mealshop.SingleMealShopServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserMealServlet</servlet-name>
+        <servlet-class>controller.web.usermeal.UpdateUserMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveUserMealServlet</servlet-name>
+        <servlet-class>controller.web.usermeal.RemoveUserMealServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertUserMealDetailServlet</servlet-name>
+        <servlet-class>controller.web.usermeal.InsertUserMealDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveUserMealDetailServlet</servlet-name>
+        <servlet-class>controller.web.usermeal.RemoveUserMealDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertUserMealServlet</servlet-name>
+        <servlet-class>controller.web.usermeal.InsertUserMealServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
@@ -117,10 +153,6 @@
         <url-pattern>/UpdateProductServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>InsertUserMealServlet</servlet-name>
-        <url-pattern>/InsertUserMealServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ManageUserMealServlet</servlet-name>
         <url-pattern>/ManageUserMealServlet</url-pattern>
     </servlet-mapping>
@@ -143,6 +175,42 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/ProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <url-pattern>/EditProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MealShopServlet</servlet-name>
+        <url-pattern>/MealShopServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SingleMealShopServlet</servlet-name>
+        <url-pattern>/SingleMealShopServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserMealServlet</servlet-name>
+        <url-pattern>/UpdateUserMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveUserMealServlet</servlet-name>
+        <url-pattern>/RemoveUserMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertUserMealDetailServlet</servlet-name>
+        <url-pattern>/InsertUserMealDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveUserMealDetailServlet</servlet-name>
+        <url-pattern>/RemoveUserMealDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertUserMealServlet</servlet-name>
+        <url-pattern>/InsertUserMealServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

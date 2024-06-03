@@ -16,9 +16,13 @@
     <body>
 
         <%
-            if (session.getAttribute("UserRoleID") != null) {
+            if (session.getAttribute("UserRoleID") == "0") {
         %>
         <p><a href="jsp/admin/admin_home.jsp">Admin</a></p>
+        <%
+        } else if (session.getAttribute("UserRoleID") == "1") {
+        %>
+        <p><a href="jsp/admin/home.jsp">Home</a></p>
         <%
         } else {
         %>
