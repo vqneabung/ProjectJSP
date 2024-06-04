@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import model.UserDTO;
 import model.UserMealDTO;
 import utils.DBUtils;
 
@@ -20,17 +21,22 @@ public class UserMealDAO {
 
     public static final String GET_DATA = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal";
 
-    public static final String GET_USERMEAL = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanID = ? ";
+    public static final String GET_DATA_BY_USERID = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal where UserID = ?";
 
-    public static final String REMOVE_USERMEAL = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanID = ? ";
+    public static final String GET_DATA_BY_ID = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanID = ? ";
 
-    public static final String INSERT_USERMEAL = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanID = ? ";
+    public static final String REMOVE_USERMEAL = "UPDATE [dbo].[UserMeal]\n"
+            + "   SET [IsStatus] = 0\n"
+            + " WHERE UserPlanID = ?";
+
+    public static final String INSERT_USERMEAL = "INSERT INTO UserMeal ([UserPlanName],[UserID], [IsStatus])\n"
+            + "VALUES (?, ? ,1)";
 
     public static final String UPDATE_USERMEAL = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanID = ? ";
 
     public ArrayList<UserMealDTO> getAllUserMeal() {
         ArrayList<UserMealDTO> userMealList = new ArrayList<>();
-
+        UserDAO u = new UserDAO();
         Connection cn = null;
         try {
             cn = DBUtils.makeConnection();
@@ -45,10 +51,10 @@ public class UserMealDAO {
                     while (rs.next()) {
                         int userMealID = rs.getInt("UserPlanID");
                         String userMealName = rs.getString("UserPlanName");
-                        int userID = rs.getInt("UserID");
+                        UserDTO user = u.getUser(rs.getInt("UserID"));
                         int IsStatus = rs.getInt("IsStatus");
 
-                        UserMealDTO userMeal = new UserMealDTO(userMealID, userMealName, userID, IsStatus);
+                        UserMealDTO userMeal = new UserMealDTO(userMealID, userMealName, user, IsStatus);
                         userMealList.add(userMeal);
                     }
 
@@ -69,24 +75,66 @@ public class UserMealDAO {
         return userMealList;
     }
 
-    public UserMealDTO getUserMeal(int userMealID) {
-        UserMealDTO userMeal = null;
+    public ArrayList<UserMealDTO> getAllUserMealByUserID(int userID) {
+        ArrayList<UserMealDTO> userMealList = new ArrayList<>();
+        UserDAO u = new UserDAO();
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+                //select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal where UserID = ?
+                String sql = GET_DATA_BY_USERID;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    //b3: Doc cac dong trong rs va cat vao ArrayList
+                    while (rs.next()) {
+                        int userMealID = rs.getInt("UserPlanID");
+                        String userMealName = rs.getString("UserPlanName");
+                        UserDTO user = u.getUser(userID);
+                        int isStatus = rs.getInt("IsStatus");
 
+                        UserMealDTO userMeal = new UserMealDTO(userMealID, userMealName, user, isStatus);
+                        userMealList.add(userMeal);
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return userMealList;
+    }
+
+    public UserMealDTO getUserMealByUserID(int userMealID) {
+        UserMealDTO userMeal = null;
+        UserDAO u = new UserDAO();
         int result = 0;
         Connection cn = null;
         try {
             cn = DBUtils.makeConnection();
             if (cn != null) {
-                String sql = GET_USERMEAL;
+                String sql = GET_DATA_BY_ID;
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userMealID);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     String userMealName = rs.getString("UserPlanName");
-                    int userID = rs.getInt("UserID");
-                    int IsStatus = rs.getInt("IsStatus");
+                    UserDTO user = u.getUser(rs.getInt("UserID"));
+                    int isStatus = rs.getInt("IsStatus");
 
-                    userMeal = new UserMealDTO(userMealID, userMealName, userID, IsStatus);
+                    userMeal = new UserMealDTO(userMealID, userMealName, user, isStatus);
 
                 }
             }
@@ -105,7 +153,43 @@ public class UserMealDAO {
 
     }
 
-    public int removeUserMeal(int UserMealID) {
+    public UserMealDTO getUserMealByUserMealID(int userMealID) {
+        UserMealDTO userMeal = null;
+        UserDAO u = new UserDAO();
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = GET_DATA_BY_ID;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userMealID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
+                    String userMealName = rs.getString("UserPlanName");
+                    UserDTO user = u.getUser(rs.getInt("UserID"));
+                    int isStatus = rs.getInt("IsStatus");
+
+                    userMeal = new UserMealDTO(userMealID, userMealName, user, isStatus);
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return userMeal;
+
+    }
+
+    public int removeUserMeal(int userMealID) {
         int result = 0;
         Connection cn = null;
         try {
@@ -113,7 +197,7 @@ public class UserMealDAO {
             if (cn != null) {
                 String sql = REMOVE_USERMEAL;
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, UserMealID);
+                pst.setInt(1, userMealID);
                 result = pst.executeUpdate();
             }
         } catch (Exception e) {
@@ -130,7 +214,7 @@ public class UserMealDAO {
         return result;
     }
 
-    public int insertUserMeal(int userMealID, String userMealName, int userID, int isStatus) {
+    public int insertUserMeal(String userMealName, int userID) {
         int rs = 0;
         Connection cn = null;
         try {
@@ -139,10 +223,8 @@ public class UserMealDAO {
                 String sql = INSERT_USERMEAL;
                 //INSERT INTO Product(ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, userMealID);
-                pst.setString(2, userMealName);
-                pst.setInt(3, userID);
-                pst.setInt(4, isStatus);
+                pst.setString(1, userMealName);
+                pst.setInt(2, userID);
 
                 rs = pst.executeUpdate();
             }

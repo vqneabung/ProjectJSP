@@ -13,10 +13,16 @@ import dao.UserMealDAO;
 import dao.UserMealDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.DayDTO;
+import model.DishDTO;
+import model.ProductDTO;
+import model.SpecMealDTO;
+import model.UserMealDTO;
 
 /**
  *
@@ -74,7 +80,36 @@ public class InsertUserMealDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+
+        ProductDAO p = new ProductDAO();
+        DishDAO dh = new DishDAO();
+        UserMealDetailDAO umd = new UserMealDetailDAO();
+        UserMealDAO um = new UserMealDAO();
+        DayDAO d = new DayDAO();
+        PrintWriter out = response.getWriter();
+
+        String btn_insert = request.getParameter("btn_insert");
+        if (btn_insert == null) {
+
+            ArrayList<ProductDTO> product = p.getAllProducts();
+            ArrayList<DishDTO> dish = dh.getAllDish();
+            ArrayList<DayDTO> day = d.getAllDay();
+            UserMealDTO userMeal = um.getUserMealByUserID(Integer.parseInt(request.getParameter("userMealID").trim()));
+            request.setAttribute("productList", product);
+            request.setAttribute("dishList", dish);
+            request.setAttribute("dayList", day);
+            request.setAttribute("userMeal", userMeal);
+
+//            out.print("<h1>" + product.get(0).getProductName());
+//            out.print("<h1>" + dish.get(0).getDishName());
+//            out.print("<h1>" + day.get(0).getDayText());
+//            out.print("<h1>" + specMeal.toString());
+            request.getRequestDispatcher("/jsp/home/usermealdetail_insert.jsp").forward(request, response);
+        } else {
+            processRequest(request, response);
+        }
     }
 
     /**

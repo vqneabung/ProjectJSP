@@ -61,9 +61,9 @@ public class UserMealDetailDAO {
                         DishDTO dish = dh.getDish(rs.getInt("DishID"));
                         int isStatus = rs.getInt("IsStatus");
                         DayDTO day = d.getDay(rs.getInt("DayNum"));
-                        UserMealDTO specMealPlan = um.getUserMeal(rs.getInt("UserPlanID"));
+                        UserMealDTO userMeal = um.getUserMealByUserMealID(rs.getInt("UserPlanID"));
 
-                        UserMealDetailDTO specMealDetail = new UserMealDetailDTO(UserPlanDetailID, day, product, dish, specMealPlan, isStatus);
+                        UserMealDetailDTO specMealDetail = new UserMealDetailDTO(UserPlanDetailID, day, product, dish, userMeal, isStatus);
                         userMealDetailList.add(specMealDetail);
                     }
 
@@ -155,7 +155,7 @@ public class UserMealDetailDAO {
                     ProductDTO product = p.getProduct(rs.getInt("ProductID"));
                     DayDTO day = d.getDay(rs.getInt("DayNum"));
                     DishDTO dish = dh.getDish(rs.getInt("DishID"));
-                    UserMealDTO userMeal = sm.getUserMeal(rs.getInt("UserPlanID"));
+                    UserMealDTO userMeal = sm.getUserMealByUserMealID(rs.getInt("UserPlanID"));
                     int isStatus = rs.getInt("IsStatus");
 
                     userMealDetail = new UserMealDetailDTO(userMealDetailID, day, product, dish, userMeal, isStatus);
@@ -209,7 +209,7 @@ public class UserMealDetailDAO {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = INSERT_USERMEALDETAIL;
-                //INSERT INTO Product(ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage
+                //Insert Into [UserMealDetail] ([ProductID],[DishID],[UserPlanID],[DayNum],[IsStatus])
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, productID);
                 pst.setInt(2, dishID);

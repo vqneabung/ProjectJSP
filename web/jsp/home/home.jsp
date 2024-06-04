@@ -18,17 +18,24 @@
         <%
             if (session.getAttribute("UserRoleID") == "0") {
         %>
-        <p><a href="jsp/admin/admin_home.jsp">Admin</a></p>
+        <p><a href="/jsp/admin/admin_home.jsp">Admin</a></p>
         <%
         } else if (session.getAttribute("UserRoleID") == "1") {
         %>
-        <p><a href="jsp/admin/home.jsp">Home</a></p>
+        <p><a href="/ProjectJSP/jsp/home/home.jsp">Home</a></p>
         <%
         } else {
         %>
-        <p><a href="StartServlet">Login</a></p>
+        <p><a href="/ProjectJSP/StartServlet">Login</a></p>
+        <p><a href="/ProjectJSP/LogoutServlet">Logout</a></p>
         <%
             }
         %>
+        <%
+            out.println(session.getAttribute("User"));
+            out.println(session.getMaxInactiveInterval());
+
+        %>
+        <p><a href="/ProjectJSP/ManageUserMealServlet">Manage User Meal</a></p>
     </body>
 </html>

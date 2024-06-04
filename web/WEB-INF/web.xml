@@ -108,6 +108,10 @@
         <servlet-name>InsertUserMealServlet</servlet-name>
         <servlet-class>controller.web.usermeal.InsertUserMealServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateUserMealDetailServlet</servlet-name>
+        <servlet-class>controller.web.usermeal.UpdateUserMealDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -211,6 +215,10 @@
     <servlet-mapping>
         <servlet-name>InsertUserMealServlet</servlet-name>
         <url-pattern>/InsertUserMealServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserMealDetailServlet</servlet-name>
+        <url-pattern>/UpdateUserMealDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

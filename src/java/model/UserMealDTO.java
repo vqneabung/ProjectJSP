@@ -12,13 +12,13 @@ public class UserMealDTO {
 
     private int userMealID;
     private String userMealName;
-    private int weekNumber;
+    private UserDTO userID;
     private int isStatus;
 
-    public UserMealDTO(int userMealID, String userMealName, int weekNumber, int isStatus) {
+    public UserMealDTO(int userMealID, String userMealName, UserDTO userID, int isStatus) {
         this.userMealID = userMealID;
         this.userMealName = userMealName;
-        this.weekNumber = weekNumber;
+        this.userID = userID;
         this.isStatus = isStatus;
     }
 
@@ -38,12 +38,12 @@ public class UserMealDTO {
         this.userMealName = userMealName;
     }
 
-    public int getWeekNumber() {
-        return weekNumber;
+    public UserDTO getUserID() {
+        return userID;
     }
 
-    public void setWeekNumber(int weekNumber) {
-        this.weekNumber = weekNumber;
+    public void setUserID(UserDTO userID) {
+        this.userID = userID;
     }
 
     public int getIsStatus() {
