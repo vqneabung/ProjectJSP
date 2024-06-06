@@ -24,6 +24,8 @@ public class ProductDAO {
 
     public static final String GET_PRODUCT_BY_NAME = "SELECT * FROM Product WHERE ProductName = ?";
 
+    public static final String GET_PRODUCT_BY_SEARCH = "SELECT * FROM Product WHERE ProductName LIKE ?";
+
     public static final String GET_PRODUCT_BY_ID = "SELECT * FROM Product WHERE ProductID = ?";
 
     public static final String INSERT_PRODUCT = "INSERT INTO Product(ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage)\n"
@@ -89,6 +91,55 @@ public class ProductDAO {
     }
 
     //Get product by name
+    public ArrayList<ProductDTO> getProductBySearch(String searchProductName) {
+        ArrayList<ProductDTO> productList = new ArrayList<>();
+        TypeDAO t = new TypeDAO();
+        CategoryDAO c = new CategoryDAO();
+
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = GET_PRODUCT_BY_SEARCH;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, "%" + searchProductName + "%");
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    int productID = rs.getInt("ProductID");
+                    String productName = rs.getString("ProductName");
+                    CategoryDTO category = c.getCategory(rs.getInt("CategoryID"));
+                    TypeDTO type = t.getType(rs.getInt("TypeID"));
+                    int isVegetarian = rs.getInt("IsVegetarian");
+                    int isVegan = rs.getInt("IsVegan");
+                    int hasSpecialDietaryRequirements = rs.getInt("HasSpecialDietaryRequirements");
+                    String[] productSize = utils.Utils.stringToArray(rs.getString("ProductSize"));
+                    int productPrice = rs.getInt("ProductPrice");
+                    int productStock = rs.getInt("ProductStock");
+                    int productUnitSold = rs.getInt("ProductUnitSold");
+                    String productDescribe = rs.getString("ProductDescribe");
+                    int isStatus = rs.getInt("IsStatus");
+                    String[] productImage = utils.Utils.stringToArray(rs.getString("ProductImage"));
+
+                    ProductDTO product = new ProductDTO(productID, productName, category, type, isVegetarian, isVegan, hasSpecialDietaryRequirements, productSize, productPrice, productStock, productUnitSold, productDescribe, isStatus, productImage);
+                    productList.add(product);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return productList;
+
+    }
+
     public ProductDTO getProduct(String productName) {
         ProductDTO product = null;
         TypeDAO t = new TypeDAO();

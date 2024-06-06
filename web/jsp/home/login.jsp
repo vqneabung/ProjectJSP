@@ -14,6 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="../../common/web/footer.jsp" %>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">

@@ -2,31 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.web.usermeal;
+package controller.web.mealshop;
 
-import dao.SpecMealDAO;
-import dao.SpecMealDetailDAO;
-import dao.UserMealDAO;
-import dao.UserMealDetailDAO;
+import model.ProductDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.SpecMealDTO;
-import model.SpecMealDetailDTO;
-import model.UserDTO;
-import model.UserMealDTO;
-import model.UserMealDetailDTO;
 
 /**
  *
  * @author VQN
  */
-public class ManageUserMealServlet extends HttpServlet {
+public class EditCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,38 +34,35 @@ public class ManageUserMealServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            UserMealDAO um = new UserMealDAO();
-            UserMealDetailDAO umd = new UserMealDetailDAO();
+            String productID = request.getParameter("edit_productID");
+            String quantity = request.getParameter("edit_quantity");
+            String func = request.getParameter("btn_action");
 
             HttpSession session = request.getSession();
-            UserDTO user = (UserDTO) session.getAttribute("User");
+            HashMap<ProductDTO, Integer> cart = (HashMap<ProductDTO, Integer>) session.getAttribute("cart");
 
-            if (user != null) {
-
-                ArrayList<UserMealDTO> userMealList = um.getAllUserMealByUserID(user.getUserID());
-                ArrayList<UserMealDetailDTO> userMealDetailList = umd.getAllUserMealDetail();
-
-                out.println(user.getUserID());
-                out.println(userMealList);
-                out.println(userMealDetailList);
-
-                
-
-                request.setAttribute("userMealList", userMealList);
-                request.setAttribute("userMealDetailList", userMealDetailList);
-
-                if (userMealList != null || userMealDetailList != null) {
-                    request.getRequestDispatcher("jsp/home/usermeals.jsp").forward(request, response);
-                } else {
-                    response.sendRedirect("jsp/home/home.jsp");
+            if (cart != null) {
+                ProductDTO find = null;
+                for (ProductDTO tmp : cart.keySet()) {
+                    if (tmp.getProductID() == Integer.parseInt(productID.trim())) {
+                        find = tmp;
+                        break;
+                    }
                 }
-            } else {
-                response.sendRedirect("jsp/home/home.jsp");
+                if (find != null) {
+                    if (func.equalsIgnoreCase("remove")) {
+                        cart.remove(find);
+                    } else {
+                        cart.put(find, Integer.parseInt(quantity.trim()));
+                    }
+                }
             }
+            session.setAttribute("cart", cart);
+            request.getRequestDispatcher("jsp/home/cart.jsp").forward(request, response);
         }
     }
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

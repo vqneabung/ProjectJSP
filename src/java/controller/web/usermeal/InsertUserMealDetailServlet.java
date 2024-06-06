@@ -22,6 +22,7 @@ import model.DayDTO;
 import model.DishDTO;
 import model.ProductDTO;
 import model.SpecMealDTO;
+import model.SpecMealDetailDTO;
 import model.UserMealDTO;
 
 /**
@@ -97,6 +98,16 @@ public class InsertUserMealDetailServlet extends HttpServlet {
             ArrayList<DishDTO> dish = dh.getAllDish();
             ArrayList<DayDTO> day = d.getAllDay();
             UserMealDTO userMeal = um.getUserMealByUserID(Integer.parseInt(request.getParameter("userMealID").trim()));
+
+            SpecMealDAO sm = new SpecMealDAO();
+            SpecMealDetailDAO smd = new SpecMealDetailDAO();
+
+            ArrayList<SpecMealDTO> specMealList = sm.getAllSpecMeal();
+            ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetail();
+
+            request.setAttribute("specMealList", specMealList);
+            request.setAttribute("specMealDetailList", specMealDetailList);
+
             request.setAttribute("productList", product);
             request.setAttribute("dishList", dish);
             request.setAttribute("dayList", day);

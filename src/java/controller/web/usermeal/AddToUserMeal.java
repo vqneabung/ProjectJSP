@@ -15,18 +15,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.SpecMealDTO;
 import model.SpecMealDetailDTO;
-import model.UserDTO;
 import model.UserMealDTO;
-import model.UserMealDetailDTO;
 
 /**
  *
  * @author VQN
  */
-public class ManageUserMealServlet extends HttpServlet {
+public class AddToUserMeal extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,34 +39,37 @@ public class ManageUserMealServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            int specMealID = Integer.parseInt(request.getParameter("specMealID"));
+            int userID = Integer.parseInt(request.getParameter("userID"));
+            int resultFromAddUserMealDetail = 0;
+            int totalResultFromAddUserMealDetail = 0;
+
             UserMealDAO um = new UserMealDAO();
             UserMealDetailDAO umd = new UserMealDetailDAO();
 
-            HttpSession session = request.getSession();
-            UserDTO user = (UserDTO) session.getAttribute("User");
+            SpecMealDetailDAO smd = new SpecMealDetailDAO();
+            SpecMealDAO sm = new SpecMealDAO();
 
-            if (user != null) {
+            SpecMealDTO specMeal = sm.getSpecMeal(specMealID);
+            ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetailBySpecMealID(specMeal);
 
-                ArrayList<UserMealDTO> userMealList = um.getAllUserMealByUserID(user.getUserID());
-                ArrayList<UserMealDetailDTO> userMealDetailList = umd.getAllUserMealDetail();
+            int resultFromAddUserMeal = um.insertUserMealFromSpecMeal(specMeal, userID);
+            int userMealID = um.getNewestUserMealByUserID(userID).getUserMealID();
 
-                out.println(user.getUserID());
-                out.println(userMealList);
-                out.println(userMealDetailList);
+            System.out.println(userMealID);
 
-                
-
-                request.setAttribute("userMealList", userMealList);
-                request.setAttribute("userMealDetailList", userMealDetailList);
-
-                if (userMealList != null || userMealDetailList != null) {
-                    request.getRequestDispatcher("jsp/home/usermeals.jsp").forward(request, response);
-                } else {
-                    response.sendRedirect("jsp/home/home.jsp");
-                }
-            } else {
-                response.sendRedirect("jsp/home/home.jsp");
+            for (SpecMealDetailDTO specMealDetail : specMealDetailList) {
+                resultFromAddUserMealDetail = umd.insertUserMealDetailFromSpecMealDetail(specMealDetail, userMealID);
+                totalResultFromAddUserMealDetail += resultFromAddUserMealDetail;
             }
+            if (totalResultFromAddUserMealDetail >= 1) {
+                out.print("<p>Da insert thanh cong </p>");
+                out.print("<p><a href='jsp/home/home.jsp'>back</a></p>");
+            } else {
+                out.print("<p>something wrong</p>");
+                out.print("<p><a href='jsp/home/home.jsp'>back</a></p>");
+            }
+
         }
     }
 

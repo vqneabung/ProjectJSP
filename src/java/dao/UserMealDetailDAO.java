@@ -13,6 +13,7 @@ import model.DayDTO;
 import model.DishDTO;
 import model.ProductDTO;
 import model.SpecMealDTO;
+import model.SpecMealDetailDTO;
 import model.UserMealDTO;
 import model.UserMealDetailDTO;
 import utils.DBUtils;
@@ -34,7 +35,7 @@ public class UserMealDetailDAO {
     public static final String INSERT_USERMEALDETAIL = "Insert Into [UserMealDetail] ([ProductID],[DishID],[UserPlanID],[DayNum],[IsStatus])\n"
             + "values (?, ?, ?, ?, 1)";
 
-    public static final String UPDATE_USERMEALDETAIL = "select [UserPlanDetailID],[ProductID],[DishID],[UserPlanID],[DayNum],[IsStatus from UserMeal Where UserPlanID = ? ";
+    public static final String UPDATE_USERMEALDETAIL = "UPDATE [dbo].[UserMealDetail] SET [ProductID] = ? ,[DishID] = ?,[DayNum] = ? WHERE UserPlanDetailID = ?";
 
     public ArrayList<UserMealDetailDTO> getAllUserMealDetail() {
 
@@ -233,7 +234,7 @@ public class UserMealDetailDAO {
         return rs;
     }
 
-    public int updateUserMealDetail(int productID, int dishID, int userMealID, int dayNum) {
+    public int updateUserMealDetail(int productID, int dishID, int userMealDetailID, int dayNum) {
         int rs = 0;
         Connection cn = null;
         try {
@@ -241,15 +242,50 @@ public class UserMealDetailDAO {
             if (cn != null) {
                 String sql = UPDATE_USERMEALDETAIL;
                 /*
-                Update SpecMealDetail\n"
-            + "set ProductID = ?, DishID = ?, DayNum = ?, IsStatus = ?\n"
-            + "Where SpecPlanDetailID = ?
+             UPDATE [dbo].[UserMealDetail] SET [ProductID] = ? ,[DishID] = ?,[DayNum] = ? WHERE UserPlanID = ?
                  */
+
+                System.out.println(productID);
+                System.out.println(dishID);
+                System.out.println(dayNum);
+                System.out.println(userMealDetailID);
+
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, productID);
                 pst.setInt(2, dishID);
+                pst.setInt(3, dayNum);
+                pst.setInt(4, userMealDetailID);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
+    }
+
+    public int insertUserMealDetailFromSpecMealDetail(SpecMealDetailDTO specMealDetail, int userMealID) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = INSERT_USERMEALDETAIL;
+                //Insert Into [UserMealDetail] ([ProductID],[DishID],[UserPlanID],[DayNum],[IsStatus])
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, specMealDetail.getProduct().getProductID());
+                pst.setInt(2, specMealDetail.getDish().getDishID());
                 pst.setInt(3, userMealID);
-                pst.setInt(4, dayNum);
+                pst.setInt(4, specMealDetail.getDay().getDayNum());
 
                 rs = pst.executeUpdate();
             }

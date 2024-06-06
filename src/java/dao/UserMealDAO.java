@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import model.SpecMealDTO;
 import model.UserDTO;
 import model.UserMealDTO;
 import utils.DBUtils;
@@ -33,6 +34,8 @@ public class UserMealDAO {
             + "VALUES (?, ? ,1)";
 
     public static final String UPDATE_USERMEAL = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanID = ? ";
+
+    public static final String GET_NEWEST_DATA = "select TOP 1 [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal where UserID = ? ORDER BY UserPlanID DESC";
 
     public ArrayList<UserMealDTO> getAllUserMeal() {
         ArrayList<UserMealDTO> userMealList = new ArrayList<>();
@@ -276,5 +279,75 @@ public class UserMealDAO {
         }
 
         return rs;
+    }
+
+    public int insertUserMealFromSpecMeal(SpecMealDTO specMeal, int userID) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = INSERT_USERMEAL;
+                //INSERT INTO Product(ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, specMeal.getSpecMealName());
+                pst.setInt(2, userID);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
+    }
+
+    public UserMealDTO getNewestUserMealByUserID(int userID) {
+        UserMealDTO userMeal = null;
+        UserDAO u = new UserDAO();
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+                //select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal where UserID = ?
+                String sql = GET_NEWEST_DATA;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, userID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    //select TOP 1 [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal where UserID = ? ORDER BY UserPlanID DESC
+                    while (rs.next()) {
+                        int userMealID = rs.getInt("UserPlanID");
+                        String userMealName = rs.getString("UserPlanName");
+                        UserDTO user = u.getUser("UserID");
+                        int isStatus = rs.getInt("IsStatus");
+
+                        userMeal = new UserMealDTO(userMealID, userMealName, user, isStatus);
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return userMeal;
     }
 }

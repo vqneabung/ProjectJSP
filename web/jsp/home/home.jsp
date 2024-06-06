@@ -14,7 +14,7 @@
 
     </head>
     <body>
-
+        <%@include file="../../common/web/footer.jsp" %>
         <%
             if (session.getAttribute("UserRoleID") == "0") {
         %>
