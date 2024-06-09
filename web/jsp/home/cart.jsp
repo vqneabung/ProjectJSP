@@ -15,7 +15,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-
+        <%@include file="../../common/web/footer.jsp" %>  
         <%
             HashMap<ProductDTO, Integer> cart = (HashMap) session.getAttribute("cart");
             if (cart != null) {
@@ -56,6 +56,7 @@
         </table>
         <p>Total:<%= total%> VND</p>
         <p>Order date: <%= (new Date()).toString()%></p>
+        <p><a href="/ProjectJSP/OrderServlet">Hoan thanh</a></p>
         <p><a href="/ProjectJSP/MealShopServlet">Quay lai</a></p>
         <%
             } else {

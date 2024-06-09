@@ -34,8 +34,8 @@
         <%
             out.println(session.getAttribute("User"));
             out.println(session.getMaxInactiveInterval());
-
         %>
+        <h1>${sessionScope.User.roleID == 0}</h1>
         <p><a href="/ProjectJSP/ManageUserMealServlet">Manage User Meal</a></p>
     </body>
 </html>

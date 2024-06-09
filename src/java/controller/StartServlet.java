@@ -33,14 +33,15 @@ public class StartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = HOME;
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
             if (session.getAttribute("User") != null) {
-                request.getRequestDispatcher(HOME);
+                System.out.println("It here");
+                request.getRequestDispatcher(HOME).forward(request, response);
             } else {
-                response.sendRedirect(LOGIN);
+                System.out.println("It there");
+                request.getRequestDispatcher(LOGIN).forward(request, response);
             }
         }
     }
