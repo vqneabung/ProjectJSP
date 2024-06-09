@@ -7,14 +7,19 @@ package controller.web.usermeal;
 import dao.DayDAO;
 import dao.DishDAO;
 import dao.ProductDAO;
+import dao.SpecMealDAO;
+import dao.SpecMealDetailDAO;
 import dao.UserMealDAO;
 import dao.UserMealDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.SpecMealDTO;
+import model.SpecMealDetailDTO;
 
 /**
  *
@@ -71,7 +76,23 @@ public class InsertUserMealServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         String btn_insert = request.getParameter("btn_insert");
 
+        ProductDAO p = new ProductDAO();
+        DishDAO dh = new DishDAO();
+        UserMealDetailDAO umd = new UserMealDetailDAO();
+        UserMealDAO um = new UserMealDAO();
+        DayDAO d = new DayDAO();
+        PrintWriter out = response.getWriter();
+
         if (btn_insert == null) {
+
+            SpecMealDAO sm = new SpecMealDAO();
+            SpecMealDetailDAO smd = new SpecMealDetailDAO();
+
+            ArrayList<SpecMealDTO> specMealList = sm.getAllSpecMeal();
+            ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetail();
+
+            request.setAttribute("specMealList", specMealList);
+            request.setAttribute("specMealDetailList", specMealDetailList);
 
             int userID = Integer.parseInt(request.getParameter("userID"));
             request.setAttribute("userID", userID);

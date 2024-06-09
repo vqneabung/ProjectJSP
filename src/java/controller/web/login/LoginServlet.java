@@ -85,11 +85,11 @@ public class LoginServlet extends HttpServlet {
         try {
             String email = request.getParameter("login_email");
             String password = request.getParameter("login_password");
+            System.out.println(email + " & " + password);
             UserDAO ud = new UserDAO();
             UserDTO user = ud.getUser(email.trim());
             String userSession = (String) session.getAttribute("User");
             if (user != null && password.equals(user.getPassword())) {
-                
                 if (userSession != null) {
                     response.sendRedirect(HOME);
                 } else {

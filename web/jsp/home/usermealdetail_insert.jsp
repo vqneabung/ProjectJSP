@@ -47,7 +47,7 @@
         <c:forEach items="${requestScope.specMealList}" var="specMeal">
             <a href="AddToUserMeal?specMealID=${specMeal.specMealID}&userID=${requestScope.userMeal.userID.userID}">Add this plan to your plan</a>
             <h1>${specMeal.specMealName}</h1>
-            <table border = "1">
+            <table class="table table-hover">
                 <tr>
                     <th>Product Name</th>
                     <th>Dish</th>

@@ -14,7 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file="../../common/web/footer.jsp" %>
+        <%@include file="../../common/web/footer.jsp" %>    
         <h1>Manage User Meal</h1>
         <p><a href="/ProjectJSP/InsertUserMealServlet?userID=${sessionScope.User.userID}&insert">Insert User Meal</a></p>
         <p><a href="jsp/home/home.jsp"><--Back to homepage</a></p> 
@@ -22,7 +22,7 @@
             <c:if test="${userMeal.isStatus == 1}">
                 <h1>${userMeal.userMealName}  <a href="/ProjectJSP/RemoveUserMealServlet?userMealID=${userMeal.userMealID}">Remove</a></h1>
                 <p><a href="/ProjectJSP/InsertUserMealDetailServlet?userMealID=${userMeal.userMealID}">Insert User Meal Detail</a></p>
-                <table class="table table-success table-striped">
+                <table class="table table-hover">
                     <tr>
                         <th>Product Name</th>
                         <th>Dish</th>
@@ -52,5 +52,6 @@
                 </table>
             </c:if>
         </c:forEach>
+
     </body>
 </html>
