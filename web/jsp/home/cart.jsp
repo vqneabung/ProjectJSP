@@ -45,7 +45,7 @@
                     <td><%= p.getProductPrice()%></td>
                     <td><input type="number" value="<%= quantity%>" min="1" max="10" name="edit_quantity"/></td>
                     <td>
-                        <input type="submit" value="remove" name="btn_action"/>
+                        <input type="submit" value="remove" onclick="return window.confirm('Do you want to remove? ')" name="btn_action"/>
                         <input type="submit" value="update" name="btn_action"/>
                     </td>
                 </tr>
@@ -60,7 +60,16 @@
         <p><a href="/ProjectJSP/MealShopServlet">Quay lai</a></p>
         <%
             } else {
-                out.print("Khong co gi trong gio hang");
+                String thank = request.getParameter("thank");
+                if (thank == null || thank.isEmpty()) {
+                    %>
+                    <p style="font-weight: bold ">"Hổng" có gì trong giỏ hết</p>
+                    <p>Lướt shop, lựa món ngay đi!</p>
+        <%
+                } else {
+                    out.print(thank);
+                }
+
             }
         %>
     </body>

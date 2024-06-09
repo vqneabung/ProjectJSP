@@ -11,11 +11,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <%@include file="/common/web/add_css_js.jsp"%>  
+          
         <title>JSP Page</title>
     </head>
-    <%@include file="../../common/web/footer.jsp" %>
     <body>
+        <%@include file="../../common/web/footer.jsp" %>
         <form action="MealShopServlet">
             <input type="text" name="find" value="${requestScope.find}"/>
             <input type="submit" value="Find"/>
@@ -27,7 +27,7 @@
                     ID: ${product.productID}</br>
                     Name: ${product.getProductName()}</br>
                     Price: ${product.productPrice}</br>
-                    <a href="AddToCartServlet?productID=${product.productID}">Buy</a>
+                    <a href="AddToCartServlet?productID=${product.productID} ">Buy</a>
                 </p>
             </div>
         </c:forEach>

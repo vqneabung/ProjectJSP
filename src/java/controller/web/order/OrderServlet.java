@@ -34,6 +34,7 @@ public class OrderServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HttpSession session = request.getSession();
@@ -48,7 +49,7 @@ public class OrderServlet extends HttpServlet {
                 int result = d.saveOrder(userID, cart);
                 // xoa gio hang
                 session.removeAttribute("cart");
-                request.getRequestDispatcher("/jsp/home/cart.jsp").forward(request, response);
+                request.getRequestDispatcher("/jsp/home/cart.jsp?thank=Cảm ơn quý khách").forward(request, response);
 
             }
         }

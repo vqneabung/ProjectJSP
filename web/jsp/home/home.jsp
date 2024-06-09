@@ -26,8 +26,7 @@
         <%
         } else {
         %>
-        <p><a href="/ProjectJSP/StartServlet">Login</a></p>
-        <p><a href="/ProjectJSP/LogoutServlet">Logout</a></p>
+
         <%
             }
         %>

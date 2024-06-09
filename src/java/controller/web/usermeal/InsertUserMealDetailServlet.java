@@ -61,10 +61,10 @@ public class InsertUserMealDetailServlet extends HttpServlet {
 
             if (rs >= 1) {
                 out.print("<p>Da insert thanh cong </p>");
-                out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                out.print("<p><a href='jsp/home/home.jsp'>back</a></p>");
             } else {
                 out.print("<p>something wrong</p>");
-                out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                out.print("<p><a href='jsp/home/home.jsp'>back</a></p>");
             }
         }
     }
