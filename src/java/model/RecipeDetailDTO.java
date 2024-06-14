@@ -10,12 +10,24 @@ package model;
  */
 public class RecipeDetailDTO {
 
+    private int recipeDetailID;
     private ProductDTO food;
     private ProductDTO ingredient;
+    private int status;
 
-    public RecipeDetailDTO(ProductDTO food, ProductDTO ingredient) {
+    public RecipeDetailDTO(int recipeDetailID, ProductDTO food, ProductDTO ingredient, int status) {
+        this.recipeDetailID = recipeDetailID;
         this.food = food;
         this.ingredient = ingredient;
+        this.status = status;
+    }
+
+    public int getRecipeDetailID() {
+        return recipeDetailID;
+    }
+
+    public void setRecipeDetailID(int recipeDetailID) {
+        this.recipeDetailID = recipeDetailID;
     }
 
     public ProductDTO getFood() {
@@ -32,6 +44,14 @@ public class RecipeDetailDTO {
 
     public void setIngredient(ProductDTO ingredient) {
         this.ingredient = ingredient;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
 }

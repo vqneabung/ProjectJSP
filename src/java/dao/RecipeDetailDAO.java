@@ -7,6 +7,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import model.ProductDTO;
 import model.RecipeDetailDTO;
@@ -18,11 +19,59 @@ import utils.DBUtils;
  */
 public class RecipeDetailDAO {
 
-    public static final String GET_RECIPE_BY_FOODID = "select FoodID, IngredientID from RecipeDetail where FoodID = ?";
+    public static final String GET_DATA = "select RecipeDetailID, FoodID, IngredientID, IsStatus from RecipeDetail";
 
-    public static final String INSERT_RECIPE = "insert into RecipeDetail(FoodID, IngredientID) values (?, ?)";
+    public static final String GET_RECIPE_BY_FOODID = "select RecipeDetailID, FoodID, IngredientID, IsStatus from RecipeDetail where FoodID = ?";
 
-    public ArrayList<RecipeDetailDTO> getRecipeDetail(int foodID) {
+    public static final String INSERT_RECIPE = "insert into RecipeDetail(FoodID, IngredientID, IsStatus) values (?, ?, 1)";
+
+    public ArrayList<RecipeDetailDTO> getRecipeDetail() {
+
+        ArrayList<RecipeDetailDTO> recipeDetailList = new ArrayList<>();
+        ProductDAO p = new ProductDAO();
+        DayDAO d = new DayDAO();
+        DishDAO dh = new DishDAO();
+        UserMealDAO um = new UserMealDAO();
+
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+                String sql = GET_DATA;
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs != null) {
+                    //b3: Doc cac dong trong rs va cat vao ArrayList
+                    while (rs.next()) {
+                        int recipeDetailID = rs.getInt("RecipeDetailID");
+                        ProductDTO food = p.getProduct(rs.getInt("FoodID"));
+                        ProductDTO ingredient = p.getProduct(rs.getInt("IngredientID"));
+                        int status = rs.getInt("IsStatus");
+                        RecipeDetailDTO recipeDetail = new RecipeDetailDTO(recipeDetailID, food, ingredient, status);
+                        recipeDetailList.add(recipeDetail);
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("recipeDetailList: " + recipeDetailList);
+        return recipeDetailList;
+
+    }
+
+    public ArrayList<RecipeDetailDTO> getRecipeDetailByFoodID(int foodID) {
 
         ArrayList<RecipeDetailDTO> recipeDetailList = new ArrayList<>();
         ProductDAO p = new ProductDAO();
@@ -38,13 +87,16 @@ public class RecipeDetailDAO {
                 String sql = GET_RECIPE_BY_FOODID;
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, foodID);
+                System.out.println("a foodID: " + foodID);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     //b3: Doc cac dong trong rs va cat vao ArrayList
                     while (rs.next()) {
-                        ProductDTO food = p.getProduct(foodID);
+                        int recipeDetailID = rs.getInt("RecipeDetailID");
+                        ProductDTO food = p.getProduct(rs.getInt("FoodID"));
                         ProductDTO ingredient = p.getProduct(rs.getInt("IngredientID"));
-                        RecipeDetailDTO recipeDetail = new RecipeDetailDTO(food, ingredient);
+                        int status = rs.getInt("IsStatus");
+                        RecipeDetailDTO recipeDetail = new RecipeDetailDTO(recipeDetailID, food, ingredient, status);
                         recipeDetailList.add(recipeDetail);
                     }
 
@@ -67,7 +119,7 @@ public class RecipeDetailDAO {
 
     }
 
-    public int insertUserMeal(int foodID, int ingredientID) {
+    public int insertRecipeDetail(int foodID, int ingredientID) {
         int rs = 0;
         Connection cn = null;
         try {

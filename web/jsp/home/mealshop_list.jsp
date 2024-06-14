@@ -11,11 +11,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <%@include file="/common/web/add_css_js.jsp"%>  
         <title>JSP Page</title>
     </head>
-    <%@include file="../../common/web/footer.jsp" %>
     <body>
+        <%@include file="../../common/web/footer.jsp" %>  
         <form action="MealShopServlet">
             <input type="text" name="find" value="${requestScope.find}"/>
             <input type="submit" value="Find"/>
