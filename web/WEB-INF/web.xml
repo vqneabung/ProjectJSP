@@ -132,6 +132,18 @@
         <servlet-name>OrderServlet</servlet-name>
         <servlet-class>controller.web.order.OrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageRecipeDetailServlet</servlet-name>
+        <servlet-class>controller.admin.management.recipe.ManageRecipeDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemoveRecipeDetailServlet</servlet-name>
+        <servlet-class>controller.admin.management.recipe.RemoveRecipeDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertRecipeDetailServlet</servlet-name>
+        <servlet-class>controller.admin.management.recipe.InsertRecipeDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -259,6 +271,18 @@
     <servlet-mapping>
         <servlet-name>OrderServlet</servlet-name>
         <url-pattern>/OrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageRecipeDetailServlet</servlet-name>
+        <url-pattern>/ManageRecipeDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveRecipeDetailServlet</servlet-name>
+        <url-pattern>/RemoveRecipeDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertRecipeDetailServlet</servlet-name>
+        <url-pattern>/InsertRecipeDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

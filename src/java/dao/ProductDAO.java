@@ -22,6 +22,10 @@ public class ProductDAO {
 
     public static final String GET_DATA = "select ProductID, ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage from Product";
 
+    public static final String GET_DATA_BY_FOOD = "select ProductID, ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage from Product where TypeID = 1";
+
+    public static final String GET_DATA_BY_INGREDIENT = "select ProductID, ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage from Product where TypeID = 2";
+
     public static final String GET_PRODUCT_BY_NAME = "SELECT * FROM Product WHERE ProductName = ?";
 
     public static final String GET_PRODUCT_BY_SEARCH = "SELECT * FROM Product WHERE ProductName LIKE ?";
@@ -47,6 +51,116 @@ public class ProductDAO {
                 //B2: Viet query va exec query
 
                 String sql = GET_DATA;
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs != null) {
+                    //b3: Doc cac dong trong rs va cat vao ArrayList
+                    while (rs.next()) {
+                        int productID = rs.getInt("ProductID");
+                        String productName = rs.getString("ProductName");
+                        CategoryDTO category = c.getCategory(rs.getInt("CategoryID"));
+                        TypeDTO type = t.getType(rs.getInt("TypeID"));
+                        int isVegetarian = rs.getInt("IsVegetarian");
+                        int isVegan = rs.getInt("IsVegan");
+                        int hasSpecialDietaryRequirements = rs.getInt("HasSpecialDietaryRequirements");
+                        String[] productSize = utils.Utils.stringToArray(rs.getString("ProductSize"));
+                        int productPrice = rs.getInt("ProductPrice");
+                        int productStock = rs.getInt("ProductStock");
+                        int productUnitSold = rs.getInt("ProductUnitSold");
+                        String productDescribe = rs.getString("ProductDescribe");
+                        int isStatus = rs.getInt("IsStatus");
+                        String[] productImage = utils.Utils.stringToArray(rs.getString("ProductImage"));
+
+                        ProductDTO product = new ProductDTO(productID, productName, category, type, isVegetarian, isVegan, hasSpecialDietaryRequirements, productSize, productPrice, productStock, productUnitSold, productDescribe, isStatus, productImage);
+                        productList.add(product);
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return productList;
+
+    }
+
+    public ArrayList<ProductDTO> getAllProductsByFood() {
+        ArrayList<ProductDTO> productList = new ArrayList<>();
+
+        TypeDAO t = new TypeDAO();
+        CategoryDAO c = new CategoryDAO();
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+
+                String sql = GET_DATA_BY_FOOD;
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs != null) {
+                    //b3: Doc cac dong trong rs va cat vao ArrayList
+                    while (rs.next()) {
+                        int productID = rs.getInt("ProductID");
+                        String productName = rs.getString("ProductName");
+                        CategoryDTO category = c.getCategory(rs.getInt("CategoryID"));
+                        TypeDTO type = t.getType(rs.getInt("TypeID"));
+                        int isVegetarian = rs.getInt("IsVegetarian");
+                        int isVegan = rs.getInt("IsVegan");
+                        int hasSpecialDietaryRequirements = rs.getInt("HasSpecialDietaryRequirements");
+                        String[] productSize = utils.Utils.stringToArray(rs.getString("ProductSize"));
+                        int productPrice = rs.getInt("ProductPrice");
+                        int productStock = rs.getInt("ProductStock");
+                        int productUnitSold = rs.getInt("ProductUnitSold");
+                        String productDescribe = rs.getString("ProductDescribe");
+                        int isStatus = rs.getInt("IsStatus");
+                        String[] productImage = utils.Utils.stringToArray(rs.getString("ProductImage"));
+
+                        ProductDTO product = new ProductDTO(productID, productName, category, type, isVegetarian, isVegan, hasSpecialDietaryRequirements, productSize, productPrice, productStock, productUnitSold, productDescribe, isStatus, productImage);
+                        productList.add(product);
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return productList;
+
+    }
+
+    public ArrayList<ProductDTO> getAllProductsByIngredient() {
+        ArrayList<ProductDTO> productList = new ArrayList<>();
+
+        TypeDAO t = new TypeDAO();
+        CategoryDAO c = new CategoryDAO();
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+
+                String sql = GET_DATA_BY_INGREDIENT;
                 Statement st = cn.createStatement();
                 ResultSet rs = st.executeQuery(sql);
                 if (rs != null) {
