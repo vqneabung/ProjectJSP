@@ -19,11 +19,13 @@ import utils.DBUtils;
  */
 public class RecipeDetailDAO {
 
-    public static final String GET_DATA = "select RecipeDetailID, FoodID, IngredientID, IsStatus from RecipeDetail";
+    public static final String GET_DATA = "select RecipeDetailID, FoodID, IngredientID, IsStatus from RecipeDetail Where IsStatus = 1 ";
 
-    public static final String GET_RECIPE_BY_FOODID = "select RecipeDetailID, FoodID, IngredientID, IsStatus from RecipeDetail where FoodID = ?";
+    public static final String GET_RECIPE_BY_FOODID = "select RecipeDetailID, FoodID, IngredientID, IsStatus from RecipeDetail where FoodID = ? and IsStatus = 1";
 
     public static final String INSERT_RECIPE = "insert into RecipeDetail(FoodID, IngredientID, IsStatus) values (?, ?, 1)";
+
+    public static final String REMOVE_RECIPE = "UPDATE [dbo].[RecipeDetail] SET [IsStatus] = 0 WHERE RecipeDetailID = ?";
 
     public ArrayList<RecipeDetailDTO> getRecipeDetail() {
 
@@ -130,6 +132,34 @@ public class RecipeDetailDAO {
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, foodID);
                 pst.setInt(2, ingredientID);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
+    }
+
+    public int removeRecipeDetail(int recipeDetailID) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = REMOVE_RECIPE;
+                //INSERT INTO Product(ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, recipeDetailID);
 
                 rs = pst.executeUpdate();
             }

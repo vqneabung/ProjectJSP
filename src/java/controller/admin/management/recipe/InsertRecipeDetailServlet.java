@@ -44,6 +44,7 @@ public class InsertRecipeDetailServlet extends HttpServlet {
 
             int foodID = Integer.parseInt(request.getParameter("insert_foodID"));
             int ingredientID = Integer.parseInt(request.getParameter("insert_ingredientID"));
+            System.out.println("aaaaa" + ingredientID);
 
             System.out.println(ingredientID);
 
@@ -52,18 +53,18 @@ public class InsertRecipeDetailServlet extends HttpServlet {
             System.out.println(recipeDetailList);
             ArrayList<ProductDTO> ingredientList = p.getAllProductsByIngredient();
 
-            request.setAttribute("ingredientList", ingredientList);
-            request.setAttribute("food", food);
-            request.setAttribute("recipeDetailList", recipeDetailList);
-
             int rs = rd.insertRecipeDetail(foodID, ingredientID);
 
             if (rs >= 1) {
                 request.setAttribute("msg", "Da insert thanh cong");
-                request.getRequestDispatcher("/jsp/admin/admin_recipe.jsp").forward(request, response);
+                request.setAttribute("ingredientList", ingredientList);
+                request.setAttribute("food", food);
+                request.setAttribute("recipeDetailList", recipeDetailList);
+
+                request.getRequestDispatcher("/jsp/admin/admin_recipe_insert.jsp").forward(request, response);
             } else {
                 request.setAttribute("msg", "Insert that bai");
-                request.getRequestDispatcher("/jsp/admin/admin_recipe.jsp").forward(request, response);
+                request.getRequestDispatcher("/jsp/admin/admin_recipe_insert.jsp").forward(request, response);
             }
 
         }
@@ -102,6 +103,7 @@ public class InsertRecipeDetailServlet extends HttpServlet {
 
         } else {
             System.out.println(btn_insert);
+            btn_insert = null;
             processRequest(request, response);
         }
     }

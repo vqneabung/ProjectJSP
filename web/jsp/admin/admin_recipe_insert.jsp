@@ -39,9 +39,9 @@
                 <th>Remove</th>
             </tr>
             <c:forEach var="recipeDetail" items="${requestScope.recipeDetailList}">
-                <c:if test= "${recipeDetail.status != 0 && recipeDetail.food.productName == food.productName}" >
+                <c:if test= "${recipeDetail.food.productName == food.productName}" >
                     <tr>
-                        <th>${recipeDetail.food.productName}</th>
+                        <th>${recipeDetail.ingredient.productName}</th>
                         <th><a href="RemoveRecipeDetailServlet?recipeDetailID=${recipeDetail.recipeDetailID}">remove</a></th>
                     </tr>
                 </c:if>

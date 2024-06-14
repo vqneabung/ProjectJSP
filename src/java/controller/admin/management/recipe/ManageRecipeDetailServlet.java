@@ -44,7 +44,7 @@ public class ManageRecipeDetailServlet extends HttpServlet {
             ArrayList<ProductDTO> foodList = p.getAllProductsByFood();
             ArrayList<RecipeDetailDTO> recipeDetailList = rd.getRecipeDetail();
 
-            System.out.println(foodList);
+            System.out.println("foodlist" + foodList);
             System.out.println(recipeDetailList);
 
             request.setAttribute("foodList", foodList);
