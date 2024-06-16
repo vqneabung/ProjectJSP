@@ -144,6 +144,14 @@
         <servlet-name>InsertRecipeDetailServlet</servlet-name>
         <servlet-class>controller.admin.management.recipe.InsertRecipeDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <servlet-class>controller.UploadFileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Test</servlet-name>
+        <servlet-class>Test</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -283,6 +291,14 @@
     <servlet-mapping>
         <servlet-name>InsertRecipeDetailServlet</servlet-name>
         <url-pattern>/InsertRecipeDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <url-pattern>/UploadFileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Test</servlet-name>
+        <url-pattern>/Test</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

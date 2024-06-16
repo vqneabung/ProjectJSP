@@ -27,12 +27,16 @@ public class Utils {
     }
 
     public static String[] stringToArray(String str) {
-        
+
         String[] arr = {"null"};
         if (str != null) {
             arr = str.split(",");
+            if (arr[arr.length - 1].isEmpty()) {
+                arr[arr.length - 1] = null;
+            }
         }
         return arr;
 
     }
+
 }

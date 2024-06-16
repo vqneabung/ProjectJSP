@@ -19,7 +19,7 @@
     <body>
         <h1>Insert Product</h1>
         <h1>Insert</h1>
-        <form action="/ProjectJSP/InsertProductServlet" method="post">
+        <form action="/ProjectJSP/InsertProductServlet" enctype="multipart/form-data" method="post" >
             <p><input type="text" name="insert_productName" placeholder="Enter Produce Name" required=""/>*</p>
             <p>
                 <select name="insert_categoryID" >
@@ -58,7 +58,17 @@
             <p><input type="number" name="insert_stock" placeholder="Enter Stock" required=""/>*</p>
             <p><input type="number" name="insert_unitSold" placeholder="Enter Unit Sold" required=""/>*</p>
             <textarea id="text_describe" rol="5" col="5" name="insert_describe" placeholder="Write Describe"></textarea>
+            <div >
+                File <input type="file" name="insert_image" value=""multiple/>
+                <input type="button" value="Remove Image" name="remove_image" onclick="removeFile()"/>
+            </div>
             <p><input type="submit" name="btn_insert" value="Insert"/></p>
+            <script type="text/javascript">
+                function removeFile() {
+                    var preview = document.querySelector("input[type='file']");
+                    preview.value = "";
+                }
+            </script>
         </form>
     </body>
 </html>

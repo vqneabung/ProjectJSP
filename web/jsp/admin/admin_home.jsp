@@ -22,5 +22,6 @@
         <p><a href="/ProjectJSP/jsp/home/home.jsp" >Home</a></p>
         <p><a href="/ProjectJSP/ManageRecipeDetailServlet" >Manage Recipe</a></p>
         <p><a href="/ProjectJSP/LogoutServlet" >Log out</a></p>
+        <img src="/ProjectJSP/assets/home/image/PXL_20240314_020041008.jpg" width="100" height="100" alt="alt"/>
     </body>
 </html>

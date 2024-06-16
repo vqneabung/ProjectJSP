@@ -16,7 +16,7 @@
     <body>
         <h1>Update Product</h1>
         <h1>Update</h1>
-        <form action="/ProjectJSP/UpdateProductServlet">
+        <form action="/ProjectJSP/UpdateProductServlet" enctype="multipart/form-data">
             <p><input type="text" name="update_productName" placeholder="Enter Produce Name" value="${requestScope.productName}" required=""/>*</p>
             <p>
                 <select name="update_categoryID" >
@@ -61,6 +61,17 @@
             </p>
             <textarea id="text_describe" rol="30" col="30" name="update_describe" placeholder="Write Describe">${requestScope.describe}</textarea>
             <input hidden name="productID" value="${requestScope.productID}"/>
+            <div >
+                File <input type="file" name="update_image" value="" multiple/>
+                <input type="button" value="Remove Image" name="remove_image" onclick="removeFile()"/>
+            </div>
+            <p><input type="submit" name="btn_insert" value="Insert"/></p>
+            <script type="text/javascript">
+                function removeFile() {
+                    var preview = document.querySelector("input[type='file']");
+                    preview.value = "";
+                }
+            </script>
             <p><input type="submit" name="update_click" value="Insert"/></p>
         </form>
     </body>

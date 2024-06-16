@@ -14,7 +14,7 @@
     <body>
         <h1>Hello Admin</h1>
         <h1>Insert</h1>
-        <form action="/ProjectJSP/InsertUserServlet" method="post">
+        <form action="/ProjectJSP/InsertUserServlet" enctype="multipart/form-data" method="post">
             <p><input type="text" name="insert_fullname" placeholder="Enter Fullname" required=""/>*</p>
             <p><input type="text" name="insert_username" placeholder="Enter Username" required=""/>*</p>
             <p><input type="email" name="insert_email" placeholder="Enter Email" required=""/>*</p>  
@@ -27,7 +27,36 @@
                     <option value="1">User</option>
                 </select>
             </p>
+            <div >
+                File <input type="file" name="insert_avatar" value="" onchange='previewFile()' />
+                <img src="/ProjectJSP/assets/home/image/1200px-Picture_icon_BLACK.svg.png" height="200" alt="avatar" id="image" >
+                <input type="button" value="Remove Image" name="remove_image" onclick="removeFile()"/>
+            </div>
             <p><input type="submit" value="Insert"/></p>
         </form>
+        <script type="text/javascript">
+            function previewFile() {
+                var preview = document.querySelector('img');
+                var file = document.querySelector('input[type=file]').files[0];
+                var reader = new FileReader();
+
+                reader.onloadend = function () {
+                    preview.src = reader.result;
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = "image/1200px-Picture_icon_BLACK.svg.png";
+                }
+            }
+
+            function removeFile() {
+                var preview = document.querySelector('img');
+                var input = document.querySelector("input[type='file']");
+                preview.src = "image/1200px-Picture_icon_BLACK.svg.png";
+                input.value = "";
+            }
+        </script>
     </body>
 </html>
