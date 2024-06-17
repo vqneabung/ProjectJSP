@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
+    <%@include file="../../common/web/header.jsp" %>
     <h1>Manage Recipe</h1>
     <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
     <c:forEach items="${requestScope.foodList}" var="food">

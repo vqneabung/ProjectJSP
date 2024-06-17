@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file="../../common/web/footer.jsp" %>    
+        <%@include file="../../common/web/header.jsp" %>        
         <section style="background-color: #eee;">
             <div class="container py-5">
                 <div class="row">

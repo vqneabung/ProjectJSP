@@ -14,7 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file="../../common/web/footer.jsp" %>    
+        <%@include file="../../common/web/header.jsp" %>    
         <h1>Manage User Meal</h1>
         <p><a href="/ProjectJSP/InsertUserMealServlet?userID=${sessionScope.User.userID}&insert">Insert User Meal</a></p>
         <p><a href="jsp/home/home.jsp"><--Back to homepage</a></p> 

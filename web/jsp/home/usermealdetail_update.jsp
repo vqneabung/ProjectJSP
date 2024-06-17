@@ -12,8 +12,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <%@include file="../../common/web/footer.jsp" %>
     <body>
+        <%@include file="../../common/web/header.jsp" %>  
         <h1> Update ${requestScope.userMeal.userMealName} </h1>
         <form action="/ProjectJSP/UpdateUserMealDetailServlet" method="post">
             <p>

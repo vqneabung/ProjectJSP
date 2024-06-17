@@ -14,6 +14,7 @@
         <%@include file="/common/web/add_css_js.jsp"%>  
     </head>
     <body>
+        <%@include file="../../common/web/header.jsp" %>
         <h1> Insert ${requestScope.specMeal.specMealName} </h1>
         <form action="/ProjectJSP/InsertSpecMealServlet" method="post">
             <p>

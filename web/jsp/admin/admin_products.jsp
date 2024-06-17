@@ -13,10 +13,11 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="../../common/web/header.jsp" %>
         <h1>Manage User</h1>
         <h1>Activate</h1>
         <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
-        <table border = "1">
+        <table class="table table-hover">
             <tr>
                 <th>Product ID</th>
                 <th>Product Name</th>

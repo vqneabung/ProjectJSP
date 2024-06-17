@@ -13,6 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="../../common/web/header.jsp" %>
         <h1>Manage User</h1>
         <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
         <table border = "1">

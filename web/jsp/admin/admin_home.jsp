@@ -13,6 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="../../common/web/header.jsp" %>
         <h1>Hello Admin</h1>
         <p><a href="/ProjectJSP/ManageUserServlet" >Manage User</a></p>
         <p><a href="admin_user_insert.jsp" >Insert User</a></p>

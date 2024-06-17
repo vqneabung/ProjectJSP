@@ -12,23 +12,24 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="../../common/web/header.jsp" %>
         <h1>Hello Admin</h1>
         <h1>Insert</h1>
         <form action="/ProjectJSP/InsertUserServlet" enctype="multipart/form-data" method="post">
-            <p><input type="text" name="insert_fullname" placeholder="Enter Fullname" required=""/>*</p>
-            <p><input type="text" name="insert_username" placeholder="Enter Username" required=""/>*</p>
-            <p><input type="email" name="insert_email" placeholder="Enter Email" required=""/>*</p>  
-            <p><input type="text" name="insert_phone" placeholder="Enter Phone" required=""/>*</p>
-            <p><input type="password" name="insert_password" placeholder="Enter password" required=""/>*</p>
-            <p><input type="text" name="insert_address" placeholder="Enter Address" required=""/>*</p>
-            <p>
+            <p>Điền tên đầy đủ<input type="text" name="insert_fullname" placeholder="Enter Fullname" required=""/>*</p>
+            <p>Điền username<input type="text" name="insert_username" placeholder="Enter Username" required=""/>*</p>
+            <p>Điền email<input type="email" name="insert_email" placeholder="Enter Email" required=""/>*</p>  
+            <p>Điền số điện thoại<input type="tel" name="insert_phone" placeholder="Enter Phone" required=""/>*</p>
+            <p>Điền mật khẩu<input type="password" name="insert_password" placeholder="Enter password" required=""/>*</p>
+            <p>Điền địa chỉ<input type="text" name="insert_address" placeholder="Enter Address" required=""/>*</p>
+            <p> Điền vai trò
                 <select name="insert_role">
                     <option value="0">Admin</option>
                     <option value="1">User</option>
                 </select>
             </p>
             <div >
-                File <input type="file" name="insert_avatar" value="" onchange='previewFile()' />
+                File <input type="file" name="insert_avatar" value="" onchange='previewFile()' /><br>
                 <img src="/ProjectJSP/assets/home/image/1200px-Picture_icon_BLACK.svg.png" height="200" alt="avatar" id="image" >
                 <input type="button" value="Remove Image" name="remove_image" onclick="removeFile()"/>
             </div>

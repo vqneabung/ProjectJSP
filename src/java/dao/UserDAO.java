@@ -29,7 +29,7 @@ public class UserDAO {
     public static final String INSERT_USER = "INSERT INTO Users (UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar)\n"
             + "VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)";
 
-    public static final String UPDATE_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?, UserStatus = ?, , UserAvatar = ? WHERE UserID = ?";
+    public static final String UPDATE_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?, UserStatus = ?, UserAvatar = ? WHERE UserID = ?";
 
     public ArrayList<UserDTO> getAllAcounts() {
         ArrayList<UserDTO> userList = new ArrayList<>();
@@ -238,9 +238,8 @@ public class UserDAO {
                 pst.setString(6, password);
                 pst.setString(7, address);
                 pst.setInt(8, status);
-                pst.setInt(9, userID);
-                pst.setString(10, avatar);
-
+                pst.setString(9, avatar);
+                pst.setInt(10, userID);
 
                 rs = pst.executeUpdate();
             }

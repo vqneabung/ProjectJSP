@@ -16,6 +16,7 @@
         <%@include file="/common/web/add_css_js.jsp"%>  
     </head>
     <body>
+        <%@include file="../../common/web/header.jsp" %>
         <h1>Insert Recipe</h1>
         <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
         <h1>${food.productName}</h1>
@@ -23,7 +24,7 @@
             <h2>${requestScope.msg}</h2>
         </c:if>
         <form action="/ProjectJSP/InsertRecipeDetailServlet" method="get">
-            <div>
+            <div> Điền nguyên liệu
                 <select name="insert_ingredientID" id="insert_ingredientID">
                     <c:forEach items="${requestScope.ingredientList}" var="ingredient">
                         <option id="${ingredient.productID}" value="${ingredient.productID}">${ingredient.productID}.${ingredient.productName}</option>

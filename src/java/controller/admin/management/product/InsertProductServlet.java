@@ -98,7 +98,6 @@ public class InsertProductServlet extends HttpServlet {
                 CategoryDAO c = new CategoryDAO();
                 TypeDAO t = new TypeDAO();
 
-                /* TODO output your page here. You may use following sample code. */
                 String productName = new String(((String) params.get("insert_productName")).getBytes("iso-8859-1"), "utf-8");
                 int categoryID = Integer.parseInt((String) params.get("insert_categoryID"));
                 int typeID = Integer.parseInt((String) params.get("insert_typeID"));

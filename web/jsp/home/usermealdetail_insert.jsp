@@ -15,6 +15,7 @@
     </head>
     <%@include file="../../common/web/footer.jsp" %>
     <body>
+        <%@include file="../../common/web/header.jsp" %>  
         <h1> Insert ${requestScope.userMeal.userMealName} </h1>
         <form action="/ProjectJSP/InsertUserMealDetailServlet" method="post">
             <p>
