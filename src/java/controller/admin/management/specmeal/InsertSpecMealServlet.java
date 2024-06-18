@@ -94,7 +94,7 @@ public class InsertSpecMealServlet extends HttpServlet {
             ArrayList<ProductDTO> product = p.getAllProducts();
             ArrayList<DishDTO> dish = dh.getAllDish();
             ArrayList<DayDTO> day = d.getAllDay();
-            SpecMealDTO specMeal = sm.getSpecMeal(Integer.parseInt(request.getParameter("specMealPlanID").trim()));
+            SpecMealDTO specMeal = sm.getSpecMeal(Integer.parseInt(request.getParameter("specMealID").trim()));
             request.setAttribute("productList", product);
             request.setAttribute("dishList", dish);
             request.setAttribute("dayList", day);

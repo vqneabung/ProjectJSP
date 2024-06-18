@@ -152,6 +152,14 @@
         <servlet-name>Test</servlet-name>
         <servlet-class>Test</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageOrderServlet</servlet-name>
+        <servlet-class>controller.admin.management.order.ManageOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateOrderServlet</servlet-name>
+        <servlet-class>controller.admin.management.order.UpdateOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -299,6 +307,14 @@
     <servlet-mapping>
         <servlet-name>Test</servlet-name>
         <url-pattern>/Test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageOrderServlet</servlet-name>
+        <url-pattern>/ManageOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateOrderServlet</servlet-name>
+        <url-pattern>/UpdateOrderServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -162,6 +162,7 @@ public class UpdateUserServlet extends HttpServlet {
 
                 if (result > 0) {
                     request.setAttribute("update_status", "Update successfully!");
+                    Thread.sleep(2000);
                     request.getRequestDispatcher(url).forward(request, response);
                 } else {
                     out.print("<h1>Something wrong</h1>");

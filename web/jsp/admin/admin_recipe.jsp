@@ -13,25 +13,28 @@
         <title>JSP Page</title>
     </head>
     <%@include file="../../common/web/header.jsp" %>
-    <h1>Manage Recipe</h1>
-    <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
-    <c:forEach items="${requestScope.foodList}" var="food">
-        <h1>${food.productName}</h1>
-        <p><a href="/ProjectJSP/InsertRecipeDetailServlet?foodID=${food.productID}">Insert</a></p>
-        <table border = "1">
-            <tr>
-                <th>Ingredient</th>
-                <th>Remove</th>
-            </tr>
-            <c:forEach var="recipeDetail" items="${requestScope.recipeDetailList}">
-                <c:if test= "${recipeDetail.status != 0 && recipeDetail.food.productName == food.productName}" >
-                    <tr>
-                        <th>${recipeDetail.ingredient.productName}</th>
-                        <th><a href="RemoveRecipeDetailServlet?recipeDetailID=${recipeDetail.recipeDetailID}">remove</a></th>
-                    </tr>
-                </c:if>
-            </c:forEach>   
-        </table>
-    </c:forEach> 
+    <%@include file="../../common/admin/sidebar.jsp" %>
+    <div class="main">
+        <h1>Manage Recipe</h1>
+        <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
+        <c:forEach items="${requestScope.foodList}" var="food">
+            <h1>${food.productName}</h1>
+            <p><a href="/ProjectJSP/InsertRecipeDetailServlet?foodID=${food.productID}">Insert</a></p>
+            <table border = "1">
+                <tr>
+                    <th>Ingredient</th>
+                    <th>Remove</th>
+                </tr>
+                <c:forEach var="recipeDetail" items="${requestScope.recipeDetailList}">
+                    <c:if test= "${recipeDetail.status != 0 && recipeDetail.food.productName == food.productName}" >
+                        <tr>
+                            <th>${recipeDetail.ingredient.productName}</th>
+                            <th><a href="RemoveRecipeDetailServlet?recipeDetailID=${recipeDetail.recipeDetailID}">remove</a></th>
+                        </tr>
+                    </c:if>
+                </c:forEach>   
+            </table>
+        </c:forEach> 
+    </div>
 </body>
 </html>

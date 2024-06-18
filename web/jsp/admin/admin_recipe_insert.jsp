@@ -17,37 +17,40 @@
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
-        <h1>Insert Recipe</h1>
-        <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
-        <h1>${food.productName}</h1>
-        <c:if test="${requestScope.msg != null}">
-            <h2>${requestScope.msg}</h2>
-        </c:if>
-        <form action="/ProjectJSP/InsertRecipeDetailServlet" method="get">
-            <div> Điền nguyên liệu
-                <select name="insert_ingredientID" id="insert_ingredientID">
-                    <c:forEach items="${requestScope.ingredientList}" var="ingredient">
-                        <option id="${ingredient.productID}" value="${ingredient.productID}">${ingredient.productID}.${ingredient.productName}</option>
-                    </c:forEach> 
-                </select>
-            </div>
-            <input hidden name="insert_foodID" value="${food.productID}">
-            <p><input type="submit" name="btn_insert" value="Insert"/></p>
-        </form>
-        <table class="table table-hover">
-            <tr>
-                <th>Ingredient</th>
-                <th>Remove</th>
-            </tr>
-            <c:forEach var="recipeDetail" items="${requestScope.recipeDetailList}">
-                <c:if test= "${recipeDetail.food.productName == food.productName}" >
-                    <tr>
-                        <th>${recipeDetail.ingredient.productName}</th>
-                        <th><a href="RemoveRecipeDetailServlet?recipeDetailID=${recipeDetail.recipeDetailID}">remove</a></th>
-                    </tr>
-                </c:if>
-            </c:forEach>   
-        </table>
+        <%@include file="../../common/admin/sidebar.jsp" %>
+        <div>
+            <h1>Insert Recipe</h1>
+            <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
+            <h1>${food.productName}</h1>
+            <c:if test="${requestScope.msg != null}">
+                <h2>${requestScope.msg}</h2>
+            </c:if>
+            <form action="/ProjectJSP/InsertRecipeDetailServlet" method="get">
+                <div> Điền nguyên liệu
+                    <select name="insert_ingredientID" id="insert_ingredientID">
+                        <c:forEach items="${requestScope.ingredientList}" var="ingredient">
+                            <option id="${ingredient.productID}" value="${ingredient.productID}">${ingredient.productID}.${ingredient.productName}</option>
+                        </c:forEach> 
+                    </select>
+                </div>
+                <input hidden name="insert_foodID" value="${food.productID}">
+                <p><input type="submit" name="btn_insert" value="Insert"/></p>
+            </form>
+            <table class="table table-hover">
+                <tr>
+                    <th>Ingredient</th>
+                    <th>Remove</th>
+                </tr>
+                <c:forEach var="recipeDetail" items="${requestScope.recipeDetailList}">
+                    <c:if test= "${recipeDetail.food.productName == food.productName}" >
+                        <tr>
+                            <th>${recipeDetail.ingredient.productName}</th>
+                            <th><a href="RemoveRecipeDetailServlet?recipeDetailID=${recipeDetail.recipeDetailID}">remove</a></th>
+                        </tr>
+                    </c:if>
+                </c:forEach>   
+            </table>
+        </div>
     </body>
 </html>
 

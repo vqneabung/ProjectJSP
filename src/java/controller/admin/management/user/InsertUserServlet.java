@@ -48,7 +48,7 @@ public class InsertUserServlet extends HttpServlet {
             String fileName = null;
             System.out.println(isMultPart);
             if (!isMultPart) {
-
+                
             } else {
                 FileItemFactory factory = new DiskFileItemFactory();
                 ServletFileUpload upload = new ServletFileUpload(factory);
@@ -83,7 +83,7 @@ public class InsertUserServlet extends HttpServlet {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
+                        
                     }
                 }//end while
                 String fullName = (String) params.get("insert_fullname");
@@ -96,7 +96,7 @@ public class InsertUserServlet extends HttpServlet {
                 int roleID = Integer.parseInt(stringRoleID);
                 String avatar = "/ProjectJSP/assets/home/image/" + fileName;
                 System.out.println("avatar   " + avatar);
-
+                
                 UserDAO ud = new UserDAO();
                 UserDTO user = ud.getUser(email);
                 if (user == null) { //email khong trung
@@ -128,7 +128,7 @@ public class InsertUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("jsp/admin/admin_user_insert.jsp").forward(request, response);
     }
 
     /**

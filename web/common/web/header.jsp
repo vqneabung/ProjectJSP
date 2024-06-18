@@ -4,19 +4,18 @@
     Author     : VQN
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <%@include file="/common/web/add_css_js.jsp"%>  
     </head>
     <body>
         <c:choose>
             <c:when test="${sessionScope.User == null}">
-                <header class="p-3 bg-dark text-white">
+                <header class="p-3 bg-dark text-white sticky-top">
                     <div class="container">
                         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -43,7 +42,7 @@
                 </header>
             </c:when>
             <c:otherwise>
-                <header class="p-3 bg-dark text-white">
+                <header class="p-3 bg-dark text-white sticky-top">
                     <div class="container">
                         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
