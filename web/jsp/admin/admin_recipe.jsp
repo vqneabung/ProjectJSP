@@ -20,7 +20,7 @@
         <c:forEach items="${requestScope.foodList}" var="food">
             <h1>${food.productName}</h1>
             <p><a href="/ProjectJSP/InsertRecipeDetailServlet?foodID=${food.productID}">Insert</a></p>
-            <table border = "1">
+            <table class="table table-hover">
                 <tr>
                     <th>Ingredient</th>
                     <th>Remove</th>

@@ -18,7 +18,7 @@
     <body>
         <%@include file="../../common/web/header.jsp" %>
         <%@include file="../../common/admin/sidebar.jsp" %>
-        <div>
+        <div class="main">
             <h1>Insert Recipe</h1>
             <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
             <h1>${food.productName}</h1>

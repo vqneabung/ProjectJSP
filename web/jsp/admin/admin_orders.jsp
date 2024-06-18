@@ -39,8 +39,8 @@
                         </td> <!-- Example status representation -->
                         <td id="action_id_${order.orderID}">
                             <c:if test="${order.orderStatus != 2 && order.orderStatus != 3}">
-                                <button class="btn btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
-                                <button class="btn btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
+                                <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
+                                <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
                             </c:if>
                         </td>
                     </tr>
