@@ -13,13 +13,13 @@ public class OrderDetailDTO {
     private int orderDetailID;
     private ProductDTO product;
     private int quantity;
-    private OrderDTO order;
+    private int orderID;
 
-    public OrderDetailDTO(int orderDetailID, ProductDTO product, int quantity, OrderDTO order) {
+    public OrderDetailDTO(int orderDetailID, ProductDTO product, int quantity, int orderID) {
         this.orderDetailID = orderDetailID;
         this.product = product;
         this.quantity = quantity;
-        this.order = order;
+        this.orderID = orderID;
     }
 
     public int getOrderDetailID() {
@@ -46,12 +46,12 @@ public class OrderDetailDTO {
         this.quantity = quantity;
     }
 
-    public OrderDTO getOrder() {
-        return order;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public void setOrder(OrderDTO order) {
-        this.order = order;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
 }

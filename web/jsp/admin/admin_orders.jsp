@@ -42,6 +42,7 @@
                                 <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
                                 <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
                             </c:if>
+                            <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
                         </td>
                     </tr>
                 </c:forEach>

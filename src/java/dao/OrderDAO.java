@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.OrderDTO;
+import model.OrderDetailDTO;
 import model.PaymentDTO;
 import model.ProductDTO;
 import model.UserDTO;
@@ -63,6 +64,47 @@ public class OrderDAO {
         }
 
         return orderList;
+    }
+
+    public ArrayList<OrderDetailDTO> getOrderDetailByID(int orderID) {
+        ArrayList<OrderDetailDTO> orderDetailList = new ArrayList<>();
+        Connection cn = null;
+        try {
+            PaymentDAO p = new PaymentDAO();
+            ProductDAO pd = new ProductDAO();
+            OrderDAO od = new OrderDAO();
+            //b1tao ket noi
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //b2:viet query va exec query
+                String sql = "SELECT [OrderItemID],[ProductID],[Quantity],[OrderID] FROM [dbo].[OrderDetails] WHERE OrderID = ?";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, orderID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int orderDetailID = rs.getInt("OrderItemID");
+                        ProductDTO product = pd.getProduct(rs.getInt("ProductID"));
+                        int quantity = rs.getInt("Quantity");
+
+                        OrderDetailDTO orderDetail = new OrderDetailDTO(orderDetailID, product, quantity, orderID);
+                        orderDetailList.add(orderDetail);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return orderDetailList;
     }
 
     public int updateOrderStatus(int orderID, int status) {

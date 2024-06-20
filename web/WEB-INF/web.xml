@@ -160,6 +160,14 @@
         <servlet-name>UpdateOrderServlet</servlet-name>
         <servlet-class>controller.admin.management.order.UpdateOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageOrderDetailServlet</servlet-name>
+        <servlet-class>controller.admin.management.order.ManageOrderDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaticAdminServlet</servlet-name>
+        <servlet-class>controller.admin.management.statistic.StaticAdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -315,6 +323,14 @@
     <servlet-mapping>
         <servlet-name>UpdateOrderServlet</servlet-name>
         <url-pattern>/UpdateOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageOrderDetailServlet</servlet-name>
+        <url-pattern>/ManageOrderDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaticAdminServlet</servlet-name>
+        <url-pattern>/StaticAdminServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

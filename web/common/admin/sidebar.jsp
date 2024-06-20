@@ -39,12 +39,14 @@
         }
     }
 </style>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="sidenav">
-    <p><a href="/ProjectJSP/ManageUserServlet" >Manage User</a></p>
-    <p><a href="/ProjectJSP/ManageProductServlet" >Manage Product</a></p>
-    <p><a href="/ProjectJSP/ManageSpecMealServlet" >Manage Spec Meal</a></p>
-    <p><a href="/ProjectJSP/ManageRecipeDetailServlet" >Manage Recipe</a></p>
-    <p><a href="/ProjectJSP/ManageOrderServlet" >Manage Order</a></p>
+    <p><a href="/ProjectJSP/StaticAdminServlet">Thống kê</a></p>
+    <p><a href="/ProjectJSP/ManageUserServlet" >Quản lí người dùng</a></p>
+    <p><a href="/ProjectJSP/ManageProductServlet" >Quản lí sản phẩm</a></p>
+    <p><a href="/ProjectJSP/ManageSpecMealServlet" >Quản lí của chuyên gia</a></p>
+    <p><a href="/ProjectJSP/ManageRecipeDetailServlet" >Quản lí thực đơn</a></p>
+    <p><a href="/ProjectJSP/ManageOrderServlet" >Quản lí giao hàng</a></p>
     <p><a href="/ProjectJSP/jsp/home/home.jsp" >Home</a></p>
     <p><a href="/ProjectJSP/LogoutServlet" >Log out</a></p>
 </div>
