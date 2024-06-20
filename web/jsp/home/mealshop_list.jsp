@@ -14,7 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file="../../common/web/footer.jsp" %>  
+        <%@include file="../../common/web/header.jsp" %>
         <form action="MealShopServlet">
             <input type="text" name="find" value="${requestScope.find}"/>
             <input type="submit" value="Find"/>

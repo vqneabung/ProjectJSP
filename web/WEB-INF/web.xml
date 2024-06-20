@@ -144,6 +144,30 @@
         <servlet-name>InsertRecipeDetailServlet</servlet-name>
         <servlet-class>controller.admin.management.recipe.InsertRecipeDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <servlet-class>controller.UploadFileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Test</servlet-name>
+        <servlet-class>Test</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageOrderServlet</servlet-name>
+        <servlet-class>controller.admin.management.order.ManageOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateOrderServlet</servlet-name>
+        <servlet-class>controller.admin.management.order.UpdateOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageOrderDetailServlet</servlet-name>
+        <servlet-class>controller.admin.management.order.ManageOrderDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaticAdminServlet</servlet-name>
+        <servlet-class>controller.admin.management.statistic.StaticAdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -283,6 +307,30 @@
     <servlet-mapping>
         <servlet-name>InsertRecipeDetailServlet</servlet-name>
         <url-pattern>/InsertRecipeDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <url-pattern>/UploadFileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Test</servlet-name>
+        <url-pattern>/Test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageOrderServlet</servlet-name>
+        <url-pattern>/ManageOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateOrderServlet</servlet-name>
+        <url-pattern>/UpdateOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageOrderDetailServlet</servlet-name>
+        <url-pattern>/ManageOrderDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaticAdminServlet</servlet-name>
+        <url-pattern>/StaticAdminServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

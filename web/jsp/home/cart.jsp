@@ -15,7 +15,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file="../../common/web/footer.jsp" %>  
+        <%@include file="../../common/web/header.jsp" %>
         <%
             HashMap<ProductDTO, Integer> cart = (HashMap) session.getAttribute("cart");
             if (cart != null) {

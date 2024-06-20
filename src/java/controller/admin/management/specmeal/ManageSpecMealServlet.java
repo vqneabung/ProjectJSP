@@ -4,6 +4,7 @@
  */
 package controller.admin.management.specmeal;
 
+import dao.DayDAO;
 import dao.SpecMealDAO;
 import dao.SpecMealDetailDAO;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.DayDTO;
 import model.SpecMealDTO;
 import model.SpecMealDetailDTO;
 
@@ -38,12 +40,15 @@ public class ManageSpecMealServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             SpecMealDAO sm = new SpecMealDAO();
             SpecMealDetailDAO smd = new SpecMealDetailDAO();
+            DayDAO d = new DayDAO();
 
             ArrayList<SpecMealDTO> specMealList = sm.getAllSpecMeal();
             ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetail();
+            ArrayList<DayDTO> dayList = d.getAllDay();
 
             request.setAttribute("specMealList", specMealList);
             request.setAttribute("specMealDetailList", specMealDetailList);
+            request.setAttribute("dayList", dayList);
 
             request.getRequestDispatcher("jsp/admin/admin_specmeals.jsp").forward(request, response);
 

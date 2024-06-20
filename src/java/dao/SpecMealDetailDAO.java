@@ -245,11 +245,11 @@ public class SpecMealDetailDAO {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = INSERT_SPECMEALDETAIL;
-                //INSERT INTO Product(ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage
+                //INSERT INTO SpecMealDetail([ProductID],[DishID],[DayNum],[SpecPlanID],[IsStatus])
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, dayID);
-                pst.setInt(2, productID);
-                pst.setInt(3, dishID);
+                pst.setInt(1, productID);
+                pst.setInt(2, dishID);
+                pst.setInt(3, dayID);
                 pst.setInt(4, specMealPlanID);
 
                 rs = pst.executeUpdate();

@@ -13,14 +13,12 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello Admin</h1>
-        <p><a href="/ProjectJSP/ManageUserServlet" >Manage User</a></p>
-        <p><a href="admin_user_insert.jsp" >Insert User</a></p>
-        <p><a href="/ProjectJSP/ManageProductServlet" >Manage Product</a></p>
-        <p><a href="/ProjectJSP/InsertProductServlet" >Insert Product</a></p>
-        <p><a href="/ProjectJSP/ManageSpecMealServlet" >Manage Spec Meal</a></p>
-        <p><a href="/ProjectJSP/jsp/home/home.jsp" >Home</a></p>
-        <p><a href="/ProjectJSP/ManageRecipeDetailServlet" >Manage Recipe</a></p>
-        <p><a href="/ProjectJSP/LogoutServlet" >Log out</a></p>
+        <%@include file="../../common/web/header.jsp" %>
+        <%@include file="../../common/admin/sidebar.jsp" %>
+
+        <div class="main">
+            <h1>Hello Admin</h1>
+        </div>
+
     </body>
 </html>

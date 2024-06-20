@@ -32,15 +32,15 @@ public class RemoveSpecMealServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String specMealDetailID = request.getParameter("specMealDetailID");
+            int specMealDetailID = Integer.parseInt(request.getParameter("specMealDetailID"));
             SpecMealDetailDAO smd = new SpecMealDetailDAO();
-            int result = smd.removeSpecMealDetail(Integer.parseInt(specMealDetailID.trim()));
+            int result = smd.removeSpecMealDetail(specMealDetailID);
             if (result > 0) {
-                response.sendRedirect("ManageSpecMealServlet");
-            } else {
-                out.print("No delete");
-                out.print("<p><a href='index.html'>back</a></p>");
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{ \"success\": true }");
             }
+
         }
     }
 

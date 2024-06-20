@@ -8,9 +8,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.OrderDTO;
+import model.OrderDetailDTO;
 import model.PaymentDTO;
 import model.ProductDTO;
 import model.UserDTO;
@@ -22,7 +24,7 @@ import utils.DBUtils;
  */
 public class OrderDAO {
 
-    public ArrayList<OrderDTO> getAllOrders(int status) {
+    public ArrayList<OrderDTO> getAllOrders() {
         ArrayList<OrderDTO> orderList = new ArrayList<>();
         Connection cn = null;
         try {
@@ -32,20 +34,17 @@ public class OrderDAO {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 //b2:viet query va exec query
-                String sql = "select OrderID,OrderDate,Status,Total,AccID\n"
-                        + "from dbo.Orders\n"
-                        + "where Status=?\n"
-                        + "Order by OrderDate desc";
-                PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, status);
-                ResultSet rs = pst.executeQuery();
+                String sql = "SELECT [OrderID],[UserID],[TotalPrice],[PaymentID],[OrderDate],[OrderStatus] FROM [WEEKLYMEAL].[dbo].[Orders] Order by OrderDate desc";
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
                 if (rs != null) {
                     while (rs.next()) {
                         int orderID = rs.getInt("OrderID");
-                        UserDTO user = u.getUser(rs.getInt("AccID"));
-                        int totalPrice = rs.getInt("Total");
+                        UserDTO user = u.getUser(rs.getInt("UserID"));
+                        int totalPrice = rs.getInt("TotalPrice");
                         PaymentDTO payment = p.getPayment(rs.getInt("PaymentID"));
                         Date date = rs.getDate("OrderDate");
+                        int status = rs.getInt("OrderStatus");
 
                         OrderDTO order = new OrderDTO(orderID, user, totalPrice, payment, date, status);
                         orderList.add(order);
@@ -67,6 +66,47 @@ public class OrderDAO {
         return orderList;
     }
 
+    public ArrayList<OrderDetailDTO> getOrderDetailByID(int orderID) {
+        ArrayList<OrderDetailDTO> orderDetailList = new ArrayList<>();
+        Connection cn = null;
+        try {
+            PaymentDAO p = new PaymentDAO();
+            ProductDAO pd = new ProductDAO();
+            OrderDAO od = new OrderDAO();
+            //b1tao ket noi
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //b2:viet query va exec query
+                String sql = "SELECT [OrderItemID],[ProductID],[Quantity],[OrderID] FROM [dbo].[OrderDetails] WHERE OrderID = ?";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, orderID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int orderDetailID = rs.getInt("OrderItemID");
+                        ProductDTO product = pd.getProduct(rs.getInt("ProductID"));
+                        int quantity = rs.getInt("Quantity");
+
+                        OrderDetailDTO orderDetail = new OrderDetailDTO(orderDetailID, product, quantity, orderID);
+                        orderDetailList.add(orderDetail);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return orderDetailList;
+    }
+
     public int updateOrderStatus(int orderID, int status) {
         int rs = 0;
         Connection cn = null;
@@ -77,8 +117,8 @@ public class OrderDAO {
                 //b2:viet query va exec query
                 String sql = "update Orders set OrderStatus = ? where OrderID=?";
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, orderID);
-                pst.setInt(2, status);
+                pst.setInt(1, status);
+                pst.setInt(2, orderID);
                 rs = pst.executeUpdate();
             }
         } catch (Exception e) {

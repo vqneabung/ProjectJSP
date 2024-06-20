@@ -7,22 +7,34 @@ package controller.admin.management.product;
 import dao.CategoryDAO;
 import dao.ProductDAO;
 import dao.TypeDAO;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CategoryDTO;
 import model.ProductDTO;
 import model.TypeDTO;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import utils.Utils;
 
 /**
  *
  * @author VQN
  */
+@MultipartConfig
 public class InsertProductServlet extends HttpServlet {
 
     /**
@@ -39,53 +51,85 @@ public class InsertProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
         try (PrintWriter out = response.getWriter()) {
+            boolean isMultPart = ServletFileUpload.isMultipartContent(request);
+            String fileName = null;
+            String multiFileName = "";
+            System.out.println(isMultPart);
+            if (!isMultPart) {
 
-            CategoryDAO c = new CategoryDAO();
-            TypeDAO t = new TypeDAO();
-
-            /* TODO output your page here. You may use following sample code. */
-            String productName = request.getParameter("insert_productName");
-            int categoryID = Integer.parseInt(request.getParameter("insert_categoryID"));
-            int typeID = Integer.parseInt(request.getParameter("insert_typeID"));
-            int isVegetarian = Integer.parseInt(request.getParameter("insert_isVegetarian"));
-            int isVegan = Integer.parseInt(request.getParameter("insert_isVegan"));
-            int hasSpecialDietaryRequirements = Integer.parseInt(request.getParameter("insert_hasSpecialDietaryRequirements"));
-            String[] size = Utils.stringToArray(request.getParameter("insert_size"));
-            int price = Integer.parseInt(request.getParameter("insert_price"));
-            int stock = Integer.parseInt(request.getParameter("insert_stock"));
-            int unitSold = Integer.parseInt(request.getParameter("insert_unitSold"));
-            String describe = request.getParameter("insert_describe");
-//          String[] image = Utils.stringToArray(request.getParameter("insert_image"));
-            String[] image = {"test"};
-
-//            out.println("<h1>" + productName);
-//            out.println("<h1>" + category.getCategoryID());
-//            out.println("<h1>" + type.getTypeID());
-//            out.println("<h1>" + isVegetarian);
-//            out.println("<h1>" + isVegan);
-//            out.println("<h1>" + hasSpecialDietaryRequirements);
-//            out.println("<h1>" + size.toString());
-//            out.println("<h1>" + price);
-//            out.println("<h1>" + stock);
-//            out.println("<h1>" + unitSold);
-//            out.println("<h1>" + describe);
-//            out.println("<h1>" + image.toString());
-            ProductDAO pd = new ProductDAO();
-            ProductDTO product = pd.getProduct(productName);
-            out.print(product);
-            if (product == null) { //email khong trung
-                int rs = pd.insertProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, image);
-
-                if (rs >= 1) {
-                    out.print("<p>Da insert thanh cong </p>");
-                    out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
-                } else {
-                    out.print("<p>something wrong</p>");
-                    out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
-                }
             } else {
-                out.print("Khong thanh cong");
-                out.print("<a href='jsp/admin/admin_home.jsp'>back</a>");
+                FileItemFactory factory = new DiskFileItemFactory();
+                ServletFileUpload upload = new ServletFileUpload(factory);
+                List items = null;
+                try {
+                    items = upload.parseRequest(request);
+                    System.out.println("Item " + items);
+                } catch (FileUploadException e) {
+                    e.printStackTrace();
+                }
+                Iterator iter = items.iterator();
+                Hashtable params = new Hashtable();
+                while (iter.hasNext()) {
+                    FileItem item = (FileItem) iter.next();
+                    if (item.isFormField()) {
+                        params.put(item.getFieldName(), item.getString());
+                    } else {
+                        try {
+                            String itemName = item.getName();
+                            fileName = itemName.substring(itemName.lastIndexOf("\\") + 1);
+                            System.out.println("path" + fileName);
+                            //-------------------------------------
+                            String path = getServletContext().getRealPath("/");
+                            int lastIndexOfString = path.lastIndexOf("build");
+                            String RealPath = path.substring(0, lastIndexOfString) + "web\\assets\\home\\image\\" + fileName;
+                            InputStream input = getServletContext().getResourceAsStream("/");
+                            System.out.println(input);
+                            //-------------------------------------
+                            System.out.println("Rpath" + RealPath);
+                            File saveFile = new File(RealPath);
+                            item.write(saveFile);
+                            multiFileName += "/ProjectJSP/assets/home/image/" + fileName + ",";
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }//end while
+                CategoryDAO c = new CategoryDAO();
+                TypeDAO t = new TypeDAO();
+
+                String productName = new String(((String) params.get("insert_productName")).getBytes("iso-8859-1"), "utf-8");
+                int categoryID = Integer.parseInt((String) params.get("insert_categoryID"));
+                int typeID = Integer.parseInt((String) params.get("insert_typeID"));
+                int isVegetarian = Integer.parseInt((String) params.get("insert_isVegetarian"));
+                int isVegan = Integer.parseInt((String) params.get("insert_isVegan"));
+                int hasSpecialDietaryRequirements = Integer.parseInt((String) params.get("insert_hasSpecialDietaryRequirements"));
+                String[] size = Utils.stringToArray((String) params.get("insert_size"));
+                int price = Integer.parseInt((String) params.get("insert_price"));
+                int stock = Integer.parseInt((String) params.get("insert_stock"));
+                int unitSold = Integer.parseInt((String) params.get("insert_unitSold"));
+                String describe = new String(((String) params.get("insert_describe")).getBytes("iso-8859-1"), "utf-8");
+
+//          String[] image = Utils.stringToArray(request.getParameter("insert_image"));
+                String[] image = utils.Utils.stringToArray(multiFileName);
+
+                ProductDAO pd = new ProductDAO();
+                ProductDTO product = pd.getProduct(productName);
+                out.print(product);
+                if (product == null) { //email khong trung
+                    int rs = pd.insertProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, image);
+
+                    if (rs >= 1) {
+                        out.print("<p>Da insert thanh cong </p>");
+                        out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                    } else {
+                        out.print("<p>something wrong</p>");
+                        out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                    }
+                } else {
+                    out.print("Khong thanh cong");
+                    out.print("<a href='jsp/admin/admin_home.jsp'>back</a>");
+                }
             }
         }
     }
