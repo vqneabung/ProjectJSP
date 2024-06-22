@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private static String HOME = "jsp/home/home.jsp";
-    private static String ADMIN_DASHBOARD = "jsp/admin/admin_home.jsp";
+    private static String ADMIN_DASHBOARD = "/ProjectJSP/StaticAdminServlet";
     private static String LOGIN = "jsp/home/login.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -82,6 +82,12 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String url = HOME;
         HttpSession session = request.getSession();
+        String btn_login = (String) request.getAttribute("login");
+        if (btn_login != null) {
+            if (session.getAttribute("User") != null) {
+                response.sendRedirect(HOME);
+            }
+        }
         try {
             String email = request.getParameter("login_email");
             String password = request.getParameter("login_password");

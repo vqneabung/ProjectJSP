@@ -4,6 +4,7 @@
  */
 package controller.web.mealshop;
 
+import com.google.gson.Gson;
 import dao.ProductDAO;
 import model.ProductDTO;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class AddToCartServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String productID = request.getParameter("productID");
+            int num = Integer.parseInt(request.getParameter("quantity"));
             ProductDAO p = new ProductDAO();
             ProductDTO productName = p.getProduct(Integer.parseInt(productID));
 
@@ -55,16 +57,24 @@ public class AddToCartServlet extends HttpServlet {
                 }
                 if (findProduct != null) {
                     int quantity = cart.get(findProduct);
-                    quantity++;
+                    quantity = quantity + num;
                     cart.put(findProduct, quantity);
                 } else {
                     cart.put(productName, 1);
                 }
             }
-
             session.setAttribute("cart", cart);
-            request.getRequestDispatcher("MealShopServlet").forward(request, response);
-
+            String btn_cart = request.getParameter("btn_cart");
+            if (btn_cart == null) {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                int cartCount = cart.size();
+                Gson gson = new Gson();
+                String cartJSon = gson.toJson(cartCount);
+                response.getWriter().write(cartJSon);
+            } else {
+                request.getRequestDispatcher("MealShopServlet").forward(request, response);
+            }
         }
     }
 
