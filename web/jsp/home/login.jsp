@@ -32,6 +32,7 @@
                                 </div>
                                 <p><input type="submit"  class="btn btn-primary" value="Login"/></p>
                             </form>
+                            <p>${requestScope.msg}</p>
                         </div>
                     </div>
                     <div class="col-md-1"></div>
@@ -45,8 +46,9 @@
                                 <p>Số điện thoại<input type="text" class="form-control" name="register_phone" placeholder="Enter Phone" required=""/></p>
                                 <p>Địa chỉ<input type="text" class="form-control" name="register_address" placeholder="Enter Address" required=""/></p>
                                 <p>Mật khẩu<input type="password" class="form-control" name="register_password" placeholder="Enter password" required=""/></p>
-                                <p><input type="submit" value="Register"/></p>
+                                <p><input type="submit" class="btn btn-primary" value="Register"/></p>
                             </form>
+                            <p>${requestScope.msg}</p>
                         </div>
                     </div>
                 </div>

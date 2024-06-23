@@ -79,15 +79,11 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String url = HOME;
         HttpSession session = request.getSession();
-        String btn_login = (String) request.getAttribute("login");
-        if (btn_login != null) {
-            if (session.getAttribute("User") != null) {
-                response.sendRedirect(HOME);
-            }
-        }
         try {
             String email = request.getParameter("login_email");
             String password = request.getParameter("login_password");
@@ -102,12 +98,13 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("User", user);
                     session.setAttribute("UserRoleID", user.getRoleID());
                     if (user.getRoleID() == 0) {
-                        response.sendRedirect(ADMIN_DASHBOARD);
+                        request.getRequestDispatcher(ADMIN_DASHBOARD).forward(request, response);
                     } else {
-                        response.sendRedirect(HOME);
+                        request.getRequestDispatcher("  /MealShopServlet").forward(request, response);
                     }
                 }
             } else {
+                request.setAttribute("msg", "Bạn nhập sai tài khoản hoặc mật khẩu!");
                 RequestDispatcher rd = request.getRequestDispatcher(LOGIN);
                 rd.forward(request, response);
             }

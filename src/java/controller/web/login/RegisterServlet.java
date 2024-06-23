@@ -28,6 +28,8 @@ public class RegisterServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    public final static String LOGIN = "jsp/home/login.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -87,15 +89,15 @@ public class RegisterServlet extends HttpServlet {
             if (user == null) { //email khong trung
                 int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address, avatar);
                 if (rs >= 1) {
-                    out.print("<p>Ban da la thanh vien </p>");
-                    out.print("<p><a href='jsp/home/login.jsp'>login</a></p>");
+                    request.setAttribute("msg", "Bạn đã đăng kí thành công");
+                    request.getRequestDispatcher(LOGIN).forward(request, response);
                 } else {
-                    out.print("<p>something wrong</p>");
-                    out.print("<p><a href='jsp/home/login.jsp'>login</a></p>");
+                    request.setAttribute("msg", "Đăng kí không thành công");
+                    request.getRequestDispatcher(LOGIN).forward(request, response);
                 }
             } else {
-                out.print("email trung");
-                out.print("<a href='ProjectJSP/jsp/home/login.jsp'>back</a>");
+                request.setAttribute("msg", "Email trùng");
+                request.getRequestDispatcher(LOGIN).forward(request, response);
             }
 
         }

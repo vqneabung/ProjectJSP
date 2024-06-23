@@ -21,7 +21,9 @@
                         <div class="small mb-1">ProductID: ${requestScope.product.productID} </div>
                         <h1 class="display-5 fw-bolder">${requestScope.product.productName}</h1>
                         <div class="fs-5 mb-5">
-                            <span>${requestScope.product.productPrice} Đ</span>
+                            <p>+ Dành cho người ăn chay: ${requestScope.product.isVegetarian == 1 ? "Có" : "Không"}</p>
+                            <p>+ Dành cho người ăn chay trường: ${requestScope.product.isVegan  == 1 ? "Có" : "Không"}</p>
+                            <span>Giá: ${requestScope.product.productPrice} Đ</span>
                         </div>
                         <div class="d-flex">
                             <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem" />
@@ -70,8 +72,8 @@
                             quantity: quantity
                         },
                         success: function (data) {
-                                $("#cartCount").text(data);
-                            },
+                            $("#cartCount").text(data);
+                        },
                         error: function () {
                             alert('Error updating order status');
                         }

@@ -17,13 +17,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.UserDTO;
 
 /**
  *
  * @author VQN
  */
-public class AdminFilterServlet implements Filter {
+public class LoginFilterServlet implements Filter {
 
     private static final boolean debug = true;
 
@@ -32,13 +31,13 @@ public class AdminFilterServlet implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public AdminFilterServlet() {
+    public LoginFilterServlet() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("AdminFilterServlet:DoBeforeProcessing");
+            log("LoginFilterServlet:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -66,7 +65,7 @@ public class AdminFilterServlet implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("AdminFilterServlet:DoAfterProcessing");
+            log("LoginFilterServlet:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -102,24 +101,19 @@ public class AdminFilterServlet implements Filter {
             throws IOException, ServletException {
 
         if (debug) {
-            log("AdminFilterServlet:doFilter()");
+            log("LoginFilterServlet:doFilter()");
         }
 
         doBeforeProcessing(request, response);
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
+        if (session.getAttribute("User") == null) {
+            res.sendRedirect("/ProjectJSP/StartServlet?action=login");
+        }
 
         Throwable problem = null;
         try {
-            HttpServletRequest req = (HttpServletRequest) request;
-            HttpServletResponse res = (HttpServletResponse) response;
-            HttpSession session = req.getSession();
-            if (session.getAttribute("User") == null) {
-                res.sendRedirect("StartServlet?action=login");
-            } else {
-                UserDTO a = (UserDTO) session.getAttribute("User");
-                if (a.getRoleID() != 0) {
-                    res.sendRedirect("/ProjectJSP/ErrorServlet");
-                }
-            }
             chain.doFilter(request, response);
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
@@ -173,7 +167,7 @@ public class AdminFilterServlet implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {
-                log("AdminFilterServlet:Initializing filter");
+                log("LoginFilterServlet:Initializing filter");
             }
         }
     }
@@ -184,9 +178,9 @@ public class AdminFilterServlet implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("AdminFilterServlet()");
+            return ("LoginFilterServlet()");
         }
-        StringBuffer sb = new StringBuffer("AdminFilterServlet(");
+        StringBuffer sb = new StringBuffer("LoginFilterServlet(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

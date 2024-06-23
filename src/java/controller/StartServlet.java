@@ -32,7 +32,7 @@ public class StartServlet extends HttpServlet {
     private final String CART = "cart";
     private final String SHOP = "shopList";
     private final String MEALUSER = "mealUser";
-    private final String MEALUSER_SERVLET = "/MealUserServlet";
+    private final String MEALUSER_SERVLET = "/ManageUserMealServlet";
     private final String WELCOME = "/jsp/home/home.jsp";
     private final String LOGIN_SERVLET = "/jsp/home/login.jsp";
     private final String SEARCH_SERVLET = "SearchServlet";
