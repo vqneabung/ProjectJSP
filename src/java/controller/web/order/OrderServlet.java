@@ -39,7 +39,7 @@ public class OrderServlet extends HttpServlet {
             HttpSession session = request.getSession();
             UserDTO user = (UserDTO) session.getAttribute("User");
             if (user == null) {
-                request.getRequestDispatcher("/StartServlet").forward(request, response);
+                request.getRequestDispatcher("/StartServlet?action=login").forward(request, response);
             } else {
                 int userID = user.getUserID();
                 HashMap<ProductDTO, Integer> cart = (HashMap<ProductDTO, Integer>) session.getAttribute("cart");
