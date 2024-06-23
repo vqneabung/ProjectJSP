@@ -50,7 +50,7 @@ public class EditCartServlet extends HttpServlet {
                     }
                 }
                 if (find != null) {
-                    if (func.equalsIgnoreCase("remove")) {
+                    if (func.equalsIgnoreCase("Remove")) {
                         cart.remove(find);
                     } else {
                         cart.put(find, Integer.parseInt(quantity.trim()));

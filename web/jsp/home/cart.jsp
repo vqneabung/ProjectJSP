@@ -48,8 +48,8 @@
                                 <td><%= p.getProductPrice()%></td>
                                 <td><input type="number" value="<%= quantity%>" name="edit_quantity"/></td>
                                 <td>
-                                    <input class="btn btn-primary" type="submit" value="remove" name="btn_action"/>
-                                    <input class="btn btn-primary" type="submit" value="update" name="btn_action"/>
+                                    <input class="btn btn-primary" type="submit" value="Remove" name="btn_action"/>
+                                    <input class="btn btn-primary" type="submit" value="Update" name="btn_action"/>
 
                                 </td>
                             </tr>
