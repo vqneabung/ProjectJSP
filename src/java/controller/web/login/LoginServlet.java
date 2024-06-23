@@ -100,7 +100,7 @@ public class LoginServlet extends HttpServlet {
                     if (user.getRoleID() == 0) {
                         response.sendRedirect(ADMIN_DASHBOARD);
                     } else {
-                        response.sendRedirect(" MealShopServlet");
+                        response.sendRedirect("MealShopServlet");
                     }
                 }
             }else {
