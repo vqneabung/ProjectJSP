@@ -28,16 +28,16 @@
                     <div class="col-3">
                         <div class="card">
                             <div class="card-body">
-                                <form action="MealShopSearchServlet" >
+                                <div>
                                     <div>
-                                        <input type="text" name="find" value="${requestScope.find}"/>
-                                        <input type="submit" class="btn btn-primary" value="Find"/>
+                                        <input type="text" name="find" id="find" value="${requestScope.find}"/>
+                                        <input type="submit" class="btn btn-primary" value="Find" id="findProduct"/>
                                     </div>
                                     <div>
                                         <h4>+ Thể loại</h4>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" value="" id="allTypeCheck" name="typeCheck" checked>
-                                            <label class="form-check-label" for="foodCheck">
+                                            <label class="form-check-label" for="allTypeCheck">
                                                 Tất cả
                                             </label>
                                         </div>
@@ -58,28 +58,29 @@
                                         <h4>+ Dành cho</h4>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" value="" id="allCheck" name="peopleCheck" checked>
-                                            <label class="form-check-label" for="foodCheck">
+                                            <label class="form-check-label" for="allCheck">
                                                 Tất cả
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" value="1" id="vegetarianCheck" name="peopleCheck">
-                                            <label class="form-check-label" for="foodCheck">
+                                            <label class="form-check-label" for="vegetarianCheck">
                                                 Ăn chay
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" value="2" id="veganCheck" name="peopleCheck">
-                                            <label class="form-check-label" for="ingredientCheck">
+                                            <label class="form-check-label" for="veganCheck">
                                                 Ăn chay trường 
                                             </label>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-8">
-                        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 justify-content-center">
+                        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 justify-content-center" id="productList">
                             <c:forEach items="${requestScope.productList}" var="product">
                                 <div class="col mb-5">
                                     <div class="card h-100">
@@ -98,7 +99,7 @@
                                         </div>
                                         <!-- Product actions-->
                                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                            <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCard" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}">Chi tiết</a></div>
+                                            <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}">Chi tiết</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -112,12 +113,9 @@
     </body>
 
     <script>
-        $(document).ready(function () {
-            $('input[type=radio][name=typeCheck]').change(function () {
-                var productID = $(this).data('product-id');
-                addToCart(productID);
-            });
-
+        $(document).on('click', '.addToCard', function () {
+            var productID = $(this).data('product-id');
+            addToCart(productID);
 
             function addToCart(productID) {
                 $.ajax({
@@ -137,6 +135,53 @@
                     }
                 });
             }
+
         });
+
+        $(document).on('click', '#findProduct', function () {
+
+            var typeCheck = $("input[name='typeCheck']:checked").val();
+            var peopleCheck = $("input[name='peopleCheck']:checked").val();
+            var find = $("#find").val();
+            searchMealShop(typeCheck, peopleCheck, find);
+
+            function searchMealShop(typeCheck, peopleCheck, find) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/ProjectJSP/MealShopSearchServlet',
+                    data: {
+                        typeCheck: typeCheck,
+                        peopleCheck: peopleCheck,
+                        find: find
+                    },
+                    success: function (data) {
+                        var productList = data; // Danh sách sản phẩm từ server
+                        var html = '';
+                        $.each(productList, function (index, product) {
+                            // Tạo HTML cho mỗi sản phẩm
+                            html += '<div class="col mb-5">';
+                            html += '<div class="card h-100">';
+                            html += '<img class="card-img-top" src="' + product.productImage[0] + '" alt="..." width="100%" height="150px"/>';
+                            html += '<div class="card-body p-4">';
+                            html += '<div class="text-center">';
+                            html += '<h5 class="fw-bolder">' + product.productName + '</h5>';
+                            html += '<h5 class="fw-bolder">Loại: ' + product.type.typeName + '</h5>';
+                            html += 'Giá: ' + product.productPrice + 'Đ';
+                            html += '</div></div>';
+                            html += '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">';
+                            html += '<div class="text-center">';
+                            html += '<button class="btn btn-outline-dark mt-auto addToCard" data-product-id="' + product.productID + '">Mua</button>';
+                            html += '<a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '">Chi tiết</a>';
+                            html += '</div></div></div></div>';
+                        });
+                        $('#productList').html(html);
+                    },
+                    error: function () {
+                        alert('Error updating order status');
+                    }
+                });
+            }
+        });
+
     </script>
 </html>

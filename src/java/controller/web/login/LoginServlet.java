@@ -91,16 +91,16 @@ public class LoginServlet extends HttpServlet {
             UserDAO ud = new UserDAO();
             UserDTO user = ud.getUser(email.trim());
             String userSession = (String) session.getAttribute("User");
-            if (user != null && password.equals(user.getPassword())) {
+            if (user != null && password.equals(user.getPassword()) && user.getStatus() != 0) {
                 if (userSession != null) {
                     response.sendRedirect(HOME);
                 } else {
                     session.setAttribute("User", user);
                     session.setAttribute("UserRoleID", user.getRoleID());
                     if (user.getRoleID() == 0) {
-                        request.getRequestDispatcher(ADMIN_DASHBOARD).forward(request, response);
+                        response.sendRedirect(ADMIN_DASHBOARD);
                     } else {
-                        request.getRequestDispatcher("  /MealShopServlet").forward(request, response);
+                        response.sendRedirect("MealShopServlet");
                     }
                 }
             } else {

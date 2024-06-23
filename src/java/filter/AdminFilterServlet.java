@@ -115,8 +115,8 @@ public class AdminFilterServlet implements Filter {
             if (session.getAttribute("User") == null) {
                 res.sendRedirect("StartServlet?action=login");
             } else {
-                UserDTO a = (UserDTO) session.getAttribute("User");
-                if (a.getRoleID() != 0) {
+                UserDTO user = (UserDTO) session.getAttribute("User");
+                if (user.getRoleID() != 0) {
                     res.sendRedirect("/ProjectJSP/ErrorServlet");
                 }
             }

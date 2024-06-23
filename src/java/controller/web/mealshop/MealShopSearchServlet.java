@@ -4,6 +4,7 @@
  */
 package controller.web.mealshop;
 
+import com.google.gson.Gson;
 import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -56,11 +57,14 @@ public class MealShopSearchServlet extends HttpServlet {
             }
 
             ProductDAO pd = new ProductDAO();
-
             ArrayList<ProductDTO> productList = pd.getProductBySearchMultiData(typeCheck, veganCheck, vegetarianCheck, find);
 
-            request.setAttribute("productList", productList);
-            request.getRequestDispatcher("jsp/home/mealshop_list.jsp").forward(request, response);
+            Gson gson = new Gson();
+            String jsonProductList = gson.toJson(productList);
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(jsonProductList);
 
         }
     }
