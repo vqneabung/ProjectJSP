@@ -1,17 +1,4 @@
-<%-- 
-    Document   : footer
-    Created on : Jun 17, 2024, 9:55:40 AM
-    Author     : VQN
---%>
+<footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Copyright &copy; ProjectJSP 2024</p></div>
+</footer>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
-</html>

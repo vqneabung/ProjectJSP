@@ -9,14 +9,14 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
+    <head>  
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <%@include file="../../common/web/footer.jsp" %>
+
     <body>
         <%@include file="../../common/web/header.jsp" %>  
-        <h1> Insert ${requestScope.userMeal.userMealName} </h1>
+        <h1> Thêm kế hoạch vào ${requestScope.userMeal.userMealName} </h1>
         <form action="/ProjectJSP/InsertUserMealDetailServlet" method="post">
             <p>
                 <select name="insert_productID" >
@@ -71,5 +71,6 @@
                 </c:forEach>   
             </table>
         </c:forEach>
+        <%@include file="../../common/web/footer.jsp" %>
     </body>
 </html>

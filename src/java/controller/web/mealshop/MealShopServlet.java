@@ -35,16 +35,10 @@ public class MealShopServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String find = "";
-            find = request.getParameter("find");
-            if (find == null || find.isEmpty()) {
-                find = "";
-            }
 
             ProductDAO p = new ProductDAO();
 
-            ArrayList<ProductDTO> productList = p.getProductBySearch(find);
-            System.out.println(productList.get(1).getProductName());
+            ArrayList<ProductDTO> productList = p.getAllProducts();
 
             request.setAttribute("productList", productList);
 

@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private static String HOME = "jsp/home/home.jsp";
-    private static String ADMIN_DASHBOARD = "jsp/admin/admin_home.jsp";
+    private static String ADMIN_DASHBOARD = "/ProjectJSP/StaticAdminServlet";
     private static String LOGIN = "jsp/home/login.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -79,6 +79,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String url = HOME;
         HttpSession session = request.getSession();
@@ -96,12 +98,13 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("User", user);
                     session.setAttribute("UserRoleID", user.getRoleID());
                     if (user.getRoleID() == 0) {
-                        response.sendRedirect(ADMIN_DASHBOARD);
+                        request.getRequestDispatcher(ADMIN_DASHBOARD).forward(request, response);
                     } else {
-                        response.sendRedirect(HOME);
+                        request.getRequestDispatcher("  /MealShopServlet").forward(request, response);
                     }
                 }
             } else {
+                request.setAttribute("msg", "Bạn nhập sai tài khoản hoặc mật khẩu!");
                 RequestDispatcher rd = request.getRequestDispatcher(LOGIN);
                 rd.forward(request, response);
             }

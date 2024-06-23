@@ -1,5 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>AdminFilterServlet</filter-name>
+        <filter-class>filter.AdminFilterServlet</filter-class>
+    </filter>
+    <filter>
+        <filter-name>LoginFilterServlet</filter-name>
+        <filter-class>filter.LoginFilterServlet</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <url-pattern>/ProfileServlet</url-pattern>
+        <url-pattern>/EditProfileServlet</url-pattern>
+        <url-pattern>/AddToUserMeal</url-pattern>
+        <url-pattern>/InsertUserMealDetailServlet</url-pattern>
+        <url-pattern>/InsertUserMealServlet</url-pattern>
+        <url-pattern>/ManageUserMealServlet</url-pattern>
+        <url-pattern>/RemoveUserMealServlet</url-pattern>
+        <url-pattern>/RemoveUserMealDetailServlet</url-pattern>
+        <url-pattern>/UpdateUserMealServlet</url-pattern>
+        <url-pattern>/UpdateUserMealDetailServlet</url-pattern>
+    </filter-mapping>
+    <!-- ////////////////////////////////////////////////// -->
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>StaticAdminServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>ManageOrderDetailServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>UpdateOrderServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>ManageOrderServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>InsertRecipeDetailServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>RemoveRecipeDetailServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>ManageRecipeDetailServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>UpdateSpecMealServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>RemoveSpecMealServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>ManageSpecMealServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>InsertSpecMealServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>UpdateProductServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>RemoveProduceServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>InsertProductServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>ManageProductServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>UpdateUserServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>InsertUserServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>RemoveUserServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>ManageUserServlet</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>StartServlet</servlet-name>
         <servlet-class>controller.StartServlet</servlet-class>
@@ -340,4 +438,8 @@
     <welcome-file-list>
         <welcome-file>jsp/home/home.jsp</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error/404.jsp</location>
+    </error-page>
 </web-app>

@@ -16,52 +16,60 @@
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
-        <%
-            HashMap<ProductDTO, Integer> cart = (HashMap) session.getAttribute("cart");
-            if (cart != null) {
-        %> 
-        <h1>your cart</h1>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>IMAGE</th>
-                <th>PRICE</th>
-                <th>QUANTITY</th>
-                <th>ACTION</th>
-            </tr>
-            <%
-                int total = 0;
-                for (ProductDTO p : cart.keySet()) {
-                    int quantity = cart.get(p);
-                    total = total + quantity * p.getProductPrice();
-            %>
-            <form action="/ProjectJSP/EditCartServlet">
-                <input type="hidden" value="<%= p.getProductID()%>" name="edit_productID">
-                <tr>
-                    <td><%= p.getProductID()%></td>
-                    <td><%= p.getProductName()%></td>
-                    <td><img src="<%= p.getProductImage()%>" ></td>
-                    <td><%= p.getProductPrice()%></td>
-                    <td><input type="number" value="<%= quantity%>" min="1" max="10" name="edit_quantity"/></td>
-                    <td>
-                        <input type="submit" value="remove" name="btn_action"/>
-                        <input type="submit" value="update" name="btn_action"/>
-                    </td>
-                </tr>
-            </form>
-            <%
-                }
-            %>
-        </table>
-        <p>Total:<%= total%> VND</p>
-        <p>Order date: <%= (new Date()).toString()%></p>
-        <p><a href="/ProjectJSP/OrderServlet">Hoan thanh</a></p>
-        <p><a href="/ProjectJSP/MealShopServlet">Quay lai</a></p>
-        <%
-            } else {
-                out.print("Khong co gi trong gio hang");
-            }
-        %>
+        <div class="container">
+            <h1>Giỏ hàng</h1>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Hình ảnh</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Hành động</th>
+                        </tr>
+                        <%
+                            HashMap<ProductDTO, Integer> cart = (HashMap) session.getAttribute("cart");
+                            if (cart != null) {
+                        %> 
+                        <%
+                            int total = 0;
+                            for (ProductDTO p : cart.keySet()) {
+                                int quantity = cart.get(p);
+                                total = total + quantity * p.getProductPrice();
+                        %>
+                        <form action="/ProjectJSP/EditCartServlet">
+                            <input type="hidden" value="<%= p.getProductID()%>" name="edit_productID">
+                            <tr>
+                                <td><%= p.getProductID()%></td>
+                                <td><%= p.getProductName()%></td>
+                                <td><img style="width: 150px" src="<%= (p.getProductImage())[0]%>" ></td>
+                                <td><%= p.getProductPrice()%></td>
+                                <td><input type="number" value="<%= quantity%>" name="edit_quantity"/></td>
+                                <td>
+                                    <input class="btn btn-primary" type="submit" value="remove" name="btn_action"/>
+                                    <input class="btn btn-primary" type="submit" value="update" name="btn_action"/>
+
+                                </td>
+                            </tr>
+                        </form>
+                        <%
+                            }
+                        %>
+                    </table>
+                    <h5>Tổng: <%= total%> VND</h5>
+                    <h5>Ngày : <%= (new Date()).toString()%></h5>
+                    <p><a class="btn btn-primary" href="/ProjectJSP/OrderServlet">Xác nhận mua hàng</a></p>
+                    <%
+                        } else {
+                            out.print("Giỏ hàng này đang trống");
+                        }
+                    %>
+                </div>
+            </div>
+            <br>
+            <p><a class="btn btn-primary" href="/ProjectJSP/MealShopServlet">Quay lại</a></p>
+        </div>
     </body>
 </html>

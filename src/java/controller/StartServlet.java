@@ -4,13 +4,20 @@
  */
 package controller;
 
+import dao.CategoryDAO;
+import dao.ProductDAO;
+import dao.TypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.CategoryDTO;
+import model.ProductDTO;
+import model.TypeDTO;
 
 /**
  *
@@ -18,8 +25,19 @@ import javax.servlet.http.HttpSession;
  */
 public class StartServlet extends HttpServlet {
 
-    private String HOME = "jsp/home/home.jsp";
-    private String LOGIN = "jsp/home/login.jsp";
+    private final String HOME = "jsp/home/home.jsp";
+    private final String LOGIN = "login";
+    private final String SEARCH = "Search";
+    private final String LOGOUT = "logout";
+    private final String CART = "cart";
+    private final String SHOP = "shopList";
+    private final String MEALUSER = "mealUser";
+    private final String MEALUSER_SERVLET = "/ManageUserMealServlet";
+    private final String WELCOME = "/jsp/home/home.jsp";
+    private final String LOGIN_SERVLET = "/jsp/home/login.jsp";
+    private final String SEARCH_SERVLET = "SearchServlet";
+    private final String CART_SERVLET = "=/AddToCartServlet";
+    private final String SHOP_SERVLET = "/MealShopServlet";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,18 +50,56 @@ public class StartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        String url = WELCOME;
+        try {
+            String action = request.getParameter("action");
             HttpSession session = request.getSession();
-            if (session.getAttribute("User") != null) {
-                System.out.println("It here");
-                request.getRequestDispatcher(HOME).forward(request, response);
-            } else {
-                System.out.println("It there");
-                request.getRequestDispatcher(LOGIN).forward(request, response);
+            if (action == null) {
+                getDataForHome(request, response);
+            } else if (action.equals(LOGOUT)) {
+                url = WELCOME;
+                getDataForHome(request, response);
+                if (session.getAttribute("User") != null) {
+                    session.removeAttribute("User");
+                }
+            } else if (action.equals(LOGIN)) {
+                url = LOGIN_SERVLET;
+            } else if (action.equals(SEARCH)) {
+                url = SEARCH_SERVLET;
+            } else if (action.equals(CART)) {
+                url = CART_SERVLET;
+            } else if (action.equals(SHOP)) {
+                url = SHOP_SERVLET;
+            } else if (action.equals(MEALUSER)) {
+                url = MEALUSER_SERVLET;
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
+    }
+
+    protected void getDataForHome(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            ProductDAO pDao = new ProductDAO();
+            CategoryDAO cDao = new CategoryDAO();
+            TypeDAO tDao = new TypeDAO();
+            CategoryDAO caDao = new CategoryDAO();
+
+            List<ProductDTO> listProducts = pDao.getAllProducts();
+            List<CategoryDTO> listCategories = cDao.getAllCategory();
+            List<ProductDTO> listProductsNew = pDao.getAllProducts();
+
+            request.setAttribute("LIST_PRODUCTS", listProducts);
+            request.setAttribute("LIST_CATEGORIESS", listCategories);
+            request.setAttribute("LIST_PRODUCTS_NEW", listProductsNew);
+        } catch (Exception ex) {
+            log("DispatchServlet error:" + ex.getMessage());
+        }
+
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
