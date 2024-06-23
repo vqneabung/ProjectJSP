@@ -94,7 +94,7 @@ public class LoginServlet extends HttpServlet {
             if (user != null && password.equals(user.getPassword()) && user.getStatus() != 0) {
                 if (userSession != null) {
                     response.sendRedirect(HOME);
-                } else {
+                }else {
                     session.setAttribute("User", user);
                     session.setAttribute("UserRoleID", user.getRoleID());
                     if (user.getRoleID() == 0) {
@@ -103,7 +103,7 @@ public class LoginServlet extends HttpServlet {
                         response.sendRedirect("MealShopServlet");
                     }
                 }
-            } else {
+            }else {
                 request.setAttribute("msg", "Bạn nhập sai tài khoản hoặc mật khẩu!");
                 RequestDispatcher rd = request.getRequestDispatcher(LOGIN);
                 rd.forward(request, response);
@@ -113,7 +113,7 @@ public class LoginServlet extends HttpServlet {
         } finally {
             out.close();
         }
-    }
+        }
 
     /**
      * Returns a short description of the servlet.

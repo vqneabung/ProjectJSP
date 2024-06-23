@@ -48,7 +48,7 @@
                                 <p>Mật khẩu<input type="password" class="form-control" name="register_password" placeholder="Enter password" required=""/></p>
                                 <p><input type="submit" class="btn btn-primary" value="Register"/></p>
                             </form>
-                            <p>${requestScope.msg}</p>
+                            <p>${requestScope.mesg}</p>
                         </div>
                     </div>
                 </div>

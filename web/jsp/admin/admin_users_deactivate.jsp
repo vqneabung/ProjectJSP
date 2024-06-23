@@ -4,20 +4,23 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Deactivate Users</title>
     </head>
     <body>
         <%@ include file="../../common/web/header.jsp" %>
         <%@ include file="../../common/admin/sidebar.jsp" %>
         <div class="main card">
             <div class="card-body">
-                <h1>Manage User</h1>
+                <h1>Deactivate Users</h1>
                 <div>
                     <a class="btn btn-primary btn-lg active" href="${pageContext.request.contextPath}/jsp/admin/admin_home.jsp"><--Back to homepage</a>
                     <a class="btn btn-secondary btn-lg active" href="${pageContext.request.contextPath}/InsertUserServlet">Insert User</a> 
-                    <a class="btn btn-third btn-lg active" href="${pageContext.request.contextPath}/jsp/admin/admin_users_deactivate.jsp">Deactivate Users</a> 
+                    <a class="btn btn-third btn-lg active" href="${pageContext.request.contextPath}/jsp/admin/admin_users.jsp">Activate Users</a> 
                 </div>
                 <br>
+                <c:if test="${not empty error}">
+                    <p style="color: red;">${error}</p>
+                </c:if>
                 <table class="table table-hover text-center">
                     <tr>
                         <th>Avatar</th>
@@ -32,7 +35,7 @@
                         <th>Hành động</th>
                     </tr>
                     <c:forEach var="user" items="${sessionScope.users}">
-                        <c:if test="${user.status == 1}">
+                        <c:if test="${user.status == 0}">
                             <tr style="font-size: medium">
                                 <td><img src="${user.avatar}" alt="${user.userID}" width="100" height="100"/></td>
                                 <td>${user.userName}</td>

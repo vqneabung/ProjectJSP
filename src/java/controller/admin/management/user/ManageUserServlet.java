@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.UserDTO;
 
 /**
@@ -36,7 +37,8 @@ public class ManageUserServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             UserDAO ud = new UserDAO();
             ArrayList<UserDTO> users = ud.getAllAcounts();
-            request.setAttribute("users", users);
+            HttpSession session = request.getSession();            
+            session.setAttribute("users", users);
             request.getRequestDispatcher("jsp/admin/admin_users.jsp").forward(request, response);
         }
     }

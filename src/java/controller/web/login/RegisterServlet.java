@@ -78,7 +78,7 @@ public class RegisterServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             String fullName = request.getParameter("register_fullname");
-            String userName = request.getParameter("register_username");
+String userName = request.getParameter("register_username");
             String email = request.getParameter("register_email");
             String phone = request.getParameter("register_phone");
             String address = request.getParameter("register_address");
@@ -91,14 +91,14 @@ public class RegisterServlet extends HttpServlet {
             if (user == null) { //email khong trung
                 int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address, avatar);
                 if (rs >= 1) {
-                    request.setAttribute("msg", "Bạn đã đăng kí thành công");
+                    request.setAttribute("mesg", "Bạn đã đăng kí thành công");
                     request.getRequestDispatcher(LOGIN).forward(request, response);
                 } else {
-                    request.setAttribute("msg", "Đăng kí không thành công");
+                    request.setAttribute("mesg", "Đăng kí không thành công");
                     request.getRequestDispatcher(LOGIN).forward(request, response);
                 }
             } else {
-                request.setAttribute("msg", "Email trùng");
+                request.setAttribute("mesg", "Email trùng");
                 request.getRequestDispatcher(LOGIN).forward(request, response);
             }
 

@@ -34,6 +34,11 @@
                             <img src="${sessionScope.User.avatar}" alt="mdo" width="32" height="32" class="rounded-circle">
                         </a> 
                     </c:if>
+                    <c:if test="${sessionScope.User.roleID == 1}">
+                        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="${sessionScope.User.avatar}" alt="mdo" width="32" height="32" class="rounded-circle">
+                        </a> 
+                    </c:if>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                         <c:if test="${sessionScope.User.roleID == 0}">
                             <li>
