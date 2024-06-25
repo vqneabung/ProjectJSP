@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.DayDTO;
 import model.SpecMealDTO;
 import model.SpecMealDetailDTO;
 
@@ -90,9 +91,11 @@ public class InsertUserMealServlet extends HttpServlet {
 
             ArrayList<SpecMealDTO> specMealList = sm.getAllSpecMeal();
             ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetail();
+            ArrayList<DayDTO> dayList = d.getAllDay();
 
             request.setAttribute("specMealList", specMealList);
             request.setAttribute("specMealDetailList", specMealDetailList);
+            request.setAttribute("dayList", dayList);
 
             int userID = Integer.parseInt(request.getParameter("userID"));
             request.setAttribute("userID", userID);

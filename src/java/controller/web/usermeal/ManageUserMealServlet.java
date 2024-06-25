@@ -4,6 +4,7 @@
  */
 package controller.web.usermeal;
 
+import dao.DayDAO;
 import dao.SpecMealDAO;
 import dao.SpecMealDetailDAO;
 import dao.UserMealDAO;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.DayDTO;
 import model.SpecMealDTO;
 import model.SpecMealDetailDTO;
 import model.UserDTO;
@@ -44,6 +46,7 @@ public class ManageUserMealServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             UserMealDAO um = new UserMealDAO();
             UserMealDetailDAO umd = new UserMealDetailDAO();
+            DayDAO d = new DayDAO();
 
             HttpSession session = request.getSession();
             UserDTO user = (UserDTO) session.getAttribute("User");
@@ -52,15 +55,15 @@ public class ManageUserMealServlet extends HttpServlet {
 
                 ArrayList<UserMealDTO> userMealList = um.getAllUserMealByUserID(user.getUserID());
                 ArrayList<UserMealDetailDTO> userMealDetailList = umd.getAllUserMealDetail();
+                ArrayList<DayDTO> dayList = d.getAllDay();
 
                 out.println(user.getUserID());
                 out.println(userMealList);
                 out.println(userMealDetailList);
 
-                
-
                 request.setAttribute("userMealList", userMealList);
                 request.setAttribute("userMealDetailList", userMealDetailList);
+                request.setAttribute("dayList", dayList);
 
                 if (userMealList != null || userMealDetailList != null) {
                     request.getRequestDispatcher("jsp/home/usermeals.jsp").forward(request, response);

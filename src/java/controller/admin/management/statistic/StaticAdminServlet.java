@@ -41,15 +41,15 @@ public class StaticAdminServlet extends HttpServlet {
             OrderDAO od = new OrderDAO();
             ArrayList<OrderDTO> orders = od.getAllOrders(); // Assuming you have a method to get all orders
             request.setAttribute("orders", orders);
-            
+
             ProductDAO pd = new ProductDAO();
             ArrayList<ProductDTO> products = pd.getAllProducts();
             request.setAttribute("products", products);
-            
+
             UserDAO ud = new UserDAO();
             ArrayList<UserDTO> users = ud.getAllAcounts();
             request.setAttribute("users", users);
-            
+
             request.getRequestDispatcher("jsp/admin/admin_statistic.jsp").forward(request, response);
         }
     }

@@ -12,43 +12,72 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="../../common/web/header.jsp" %>
+        <div class="main">
+            <div class="container" style="margin-top: 1rem">
+                <h1> Thêm kế hoạch của bạn </h1>
+                <div class="card">
+                    <div class="card-body"
+                         <form action="/ProjectJSP/InsertUserMealServlet" method="post">
+                            <div>
+                                <label>Điền tên kế hoạch</label>
+                                    <input type="text" class="form-control" name="insert_userMealName" value =""/>   
+                                    <input style="margin-top: 1rem" type="submit" name="btn_insert" class="btn btn-primary" value="Thêm"/>
+                            </div>
+                            <input hidden name="insert_userMealID" value="${sessionScope.User.userID}">
+                        </form>
+                    </div>
+                </div>
+                <c:forEach items="${requestScope.specMealList}" var="specMeal">
+                    <div style="margin: 1rem 0 ">
+                        <h1>${specMeal.specMealName}</h1>
+                        <a class="btn btn-primary" href="AddToUserMeal?specMealID=${specMeal.specMealID}&userID=${sessionScope.User.userID}">+ Thêm kế này thành của bạn</a>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <c:forEach items="${requestScope.dayList}" var="day">
+                                <h3>- ${day.dayText}</h3>
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>Product Name</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" ><strong>+ Buổi sáng</strong></td>
+                                    </tr>
+                                    <c:forEach var="specMealDetail" items="${requestScope.specMealDetailList}">
+                                        <c:if test= "${(specMealDetail.isStatus != 0 && specMealDetail.specMeal.specMealID == specMeal.specMealID) && (day.dayNum == specMealDetail.day.dayNum  && specMealDetail.dish.dishID == 1)}" >
+                                            <tr id="speclMealDetail_${specMealDetail.specMealDetailID}" style="font-size: medium" >
+                                                <th class="text-center">${specMealDetail.product.productName}</th>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>   
+                                    <tr>
+                                        <td colspan="5" ><strong>+ Buổi chiều</strong></td>
+                                    </tr>
+                                    <c:forEach var="specMealDetail" items="${requestScope.specMealDetailList}">
+                                        <c:if test= "${(specMealDetail.isStatus != 0 && specMealDetail.specMeal.specMealID == specMeal.specMealID) && (day.dayNum == specMealDetail.day.dayNum  && specMealDetail.dish.dishID == 2)}" >
+                                            <tr id="speclMealDetail_${specMealDetail.specMealDetailID}" style="font-size: medium" >
+                                                <th class="text-center">${specMealDetail.product.productName}</th>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>   
+                                    <tr>
+                                        <td colspan="5" ><strong>+ Buổi tối</strong></td>
+                                    </tr>
+                                    <c:forEach var="specMealDetail" items="${requestScope.specMealDetailList}">
+                                        <c:if test= "${(specMealDetail.isStatus != 0 && specMealDetail.specMeal.specMealID == specMeal.specMealID) && (day.dayNum == specMealDetail.day.dayNum  && specMealDetail.dish.dishID == 3)}" >
+                                            <tr id="speclMealDetail_${specMealDetail.specMealDetailID}" style="font-size: medium" >
+                                                <th class="text-center">${specMealDetail.product.productName}</th>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>   
+                                </table>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
         <%@include file="../../common/web/footer.jsp" %>
-        <h1> Add a plan </h1>
-        <form action="/ProjectJSP/InsertUserMealServlet" method="post">
-            <p> 
-                <label>Dien ten ke hoach</label>
-                <input type="text" name="insert_userMealName" value =""/>            
-            </p>
-
-            <input hidden name="insert_userMealID" value="${sessionScope.User.userID}">
-            <h1>${sessionScope.User.userID}</h1>
-            <p><input type="submit" name="btn_insert" value="Insert"/></p>
-        </form>
-        <c:forEach items="${requestScope.specMealList}" var="specMeal">
-            <a href="AddToUserMeal?specMealID=${specMeal.specMealID}&userID=${sessionScope.User.userID}">Add this plan to your plan</a>
-            <h1>${specMeal.specMealName}</h1>
-            <table class="table table-hover">
-                <tr>
-                    <th>Product Name</th>
-                    <th>Dish</th>
-                    <th>Day</th>
-                    <th>Product Describe</th>
-                    <th>Status</th>
-                    <th>Add to your plan's </th>
-                </tr>
-                <c:forEach var="specMealDetail" items="${requestScope.specMealDetailList}">
-                    <c:if test= "${specMealDetail.isStatus != 0 && specMealDetail.specMeal.specMealID == specMeal.specMealID}" >
-                        <tr>
-                            <th>${specMealDetail.product.productName}</th>
-                            <th>${specMealDetail.dish.dishName}</th>
-                            <th>${specMealDetail.day.dayText}</th>
-                            <th>${specMealDetail.product.productDescribe}</th>
-                            <th>${specMealDetail.isStatus != 0 ? "Active" : "Deactive"}</th>
-                            <th><a href="AddToUserMeal?specMealDetailID=${specMealDetail.specMealDetailID}&userMealID=${requestScope.userMeal.userMealID}">Add</a></th>
-                        </tr>
-                    </c:if>
-                </c:forEach>   
-            </table>
-        </c:forEach>
     </body>
 </html>

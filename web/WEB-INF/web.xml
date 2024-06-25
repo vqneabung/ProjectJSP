@@ -266,6 +266,10 @@
         <servlet-name>StaticAdminServlet</servlet-name>
         <servlet-class>controller.admin.management.statistic.StaticAdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>controller.web.home.HomeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -429,6 +433,10 @@
     <servlet-mapping>
         <servlet-name>StaticAdminServlet</servlet-name>
         <url-pattern>/StaticAdminServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/HomeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

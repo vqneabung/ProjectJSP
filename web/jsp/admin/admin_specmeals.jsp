@@ -26,7 +26,6 @@
                         <c:forEach items="${requestScope.dayList}" var="day">
                             <h3>- ${day.dayText}</h3>
                             <div>
-
                                 <table class="table table-hover">
                                     <tr>
                                         <th>Tên sản phấm</th>

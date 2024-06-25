@@ -11,16 +11,16 @@
 <header class="p-3 bg-dark text-white sticky-top">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="StartServlet" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img class="bi me-2" width="40" height="32" role="img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/FPT_logo_2010.svg/langfr-1920px-FPT_logo_2010.svg.png">
             </a>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/ProjectJSP/StartServlet?action=home" class="nav-link px-2 text-secondary">Home</a></li>
+                <li><a href="/ProjectJSP/StartServlet" class="nav-link px-2 text-secondary">Home</a></li>
                 <li><a href="/ProjectJSP/StartServlet?action=shopList" class="nav-link px-2 text-white">Shop</a></li>
                     <c:if test="${sessionScope.User != null}">
                     <li><a href="/ProjectJSP/StartServlet?action=mealUser" class="nav-link px-2 text-white">Kế hoạch của bạn</a></li>
                     </c:if>
-                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                <li><a href="/ProjectJSP/StartServlet?action=about" class="nav-link px-2 text-white">About</a></li>
             </ul>
             <c:if test="${sessionScope.User == null}">
                 <div class="text-end">
@@ -42,7 +42,7 @@
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                         <c:if test="${sessionScope.User.roleID == 0}">
                             <li>
-                                <a class="dropdown-item" href="/ProjectJSP/jsp/admin/admin_home.jsp">Admin</a>
+                                <a class="dropdown-item" href="/ProjectJSP/StaticAdminServlet">Admin</a>
                             </li>
                         </c:if>
                         <li><a class="dropdown-item" href="#">Settings</a></li>

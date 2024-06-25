@@ -10,7 +10,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%--Them css--%>
-        <%@include file="/common/web/add_css_js.jsp"%>  
         <title>JSP Page</title>
     </head>
     <body>
