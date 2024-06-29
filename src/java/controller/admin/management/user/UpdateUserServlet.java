@@ -165,7 +165,7 @@ public class UpdateUserServlet extends HttpServlet {
                     Thread.sleep(2000);
                     request.getRequestDispatcher(url).forward(request, response);
                 } else {
-                    out.print("<h1>Something wrong</h1>");
+                    request.getRequestDispatcher(url).forward(request, response);
                 }
             }
         } catch (Exception e) {

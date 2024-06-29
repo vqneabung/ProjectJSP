@@ -13,9 +13,8 @@
             <div class="card-body">
                 <h1>Deactivate Users</h1>
                 <div>
-                    <a class="btn btn-primary btn-lg active" href="${pageContext.request.contextPath}/jsp/admin/admin_home.jsp"><--Back to homepage</a>
                     <a class="btn btn-secondary btn-lg active" href="${pageContext.request.contextPath}/InsertUserServlet">Insert User</a> 
-                    <a class="btn btn-third btn-lg active" href="${pageContext.request.contextPath}/jsp/admin/admin_users.jsp">Activate Users</a> 
+                    <a class="btn btn-third btn-lg active" href="${pageContext.request.contextPath}/ManageUserServlet?action=activateUser">Activate Users</a> 
                 </div>
                 <br>
                 <c:if test="${not empty error}">

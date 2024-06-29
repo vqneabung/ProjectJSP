@@ -5,9 +5,11 @@
 package controller.web.order;
 
 import dao.OrderDAO;
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +48,27 @@ public class OrderServlet extends HttpServlet {
                 OrderDAO d = new OrderDAO();
 
                 int result = d.saveOrder(userID, cart);
+
+                //
+                for (Map.Entry<ProductDTO, Integer> eachCart : cart.entrySet()) {
+                    int productID = eachCart.getKey().getProductID();
+                    int quantity = eachCart.getValue();
+
+                    ProductDAO pd = new ProductDAO();
+                    ProductDTO product = pd.getProduct(productID);
+
+                    int newProductStock = product.getProductStock() - quantity;
+                    int newProductUnitSold = product.getProductUnitSold() + quantity;
+
+                    int rs = pd.updateProductQuantity(newProductStock, newProductUnitSold, productID);
+                    if (rs >= 1) {
+                        System.out.println("Da cap nhat san pham");
+                    } else {
+                        System.out.println("Loi cap nhat");
+                    }
+
+                }
+
                 // xoa gio hang
                 session.removeAttribute("cart");
                 request.getRequestDispatcher("/jsp/home/cart.jsp").forward(request, response);

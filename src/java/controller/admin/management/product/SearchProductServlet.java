@@ -4,9 +4,8 @@
  */
 package controller.admin.management.product;
 
-import dao.CategoryDAO;
+import com.google.gson.Gson;
 import dao.ProductDAO;
-import dao.TypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,15 +13,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.CategoryDTO;
 import model.ProductDTO;
-import model.TypeDTO;
+import utils.Utils;
 
 /**
  *
  * @author VQN
  */
-public class ManageProductServlet extends HttpServlet {
+public class SearchProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,15 +36,27 @@ public class ManageProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ProductDAO pd = new ProductDAO();
-            ArrayList<ProductDTO> products = pd.getAllProducts();
-            CategoryDAO c = new CategoryDAO();
-            ArrayList<CategoryDTO> categoryList = c.getAllCategory();
-            System.out.println(products);
-            request.setAttribute("products", products);
-            request.setAttribute("categoryList", categoryList);
+            String productName = request.getParameter("productName");
+            String categoryID = request.getParameter("categoryID");
+            String typeID = request.getParameter("typeID");
+            String isVegetarian = request.getParameter("isVegetarian");
+            String isVegan = request.getParameter("isVegan");
+            String size = request.getParameter("size");
+            String price = request.getParameter("price");
+            String stock = request.getParameter("stock");
+            String unitSold = request.getParameter("unitSold");
+            String order_product = request.getParameter("order_product");
+            String order_type = request.getParameter("order_type");
 
-            request.getRequestDispatcher("jsp/admin/admin_products.jsp").forward(request, response);
+            ProductDAO p = new ProductDAO();
+            ArrayList<ProductDTO> productList = p.getProductBySearchAllData(productName, categoryID, typeID, isVegetarian, isVegan, size, price, stock, unitSold, order_product, order_type);
+            Gson gson = new Gson();
+
+            String productJSon = gson.toJson(productList);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(productJSon);
+
         }
     }
 

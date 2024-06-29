@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin.management.product;
+package controller;
 
-import dao.CategoryDAO;
-import dao.ProductDAO;
-import dao.TypeDAO;
+import dao.DayDAO;
+import dao.SpecMealDAO;
+import dao.SpecMealDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,15 +14,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.CategoryDTO;
-import model.ProductDTO;
-import model.TypeDTO;
+import model.DayDTO;
+import model.SpecMealDTO;
+import model.SpecMealDetailDTO;
 
 /**
  *
  * @author VQN
  */
-public class ManageProductServlet extends HttpServlet {
+public class SpecMealForUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,15 +38,19 @@ public class ManageProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ProductDAO pd = new ProductDAO();
-            ArrayList<ProductDTO> products = pd.getAllProducts();
-            CategoryDAO c = new CategoryDAO();
-            ArrayList<CategoryDTO> categoryList = c.getAllCategory();
-            System.out.println(products);
-            request.setAttribute("products", products);
-            request.setAttribute("categoryList", categoryList);
+            SpecMealDAO sm = new SpecMealDAO();
+            SpecMealDetailDAO smd = new SpecMealDetailDAO();
+            DayDAO d = new DayDAO();
 
-            request.getRequestDispatcher("jsp/admin/admin_products.jsp").forward(request, response);
+            ArrayList<SpecMealDTO> specMealList = sm.getAllSpecMeal();
+            ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetail();
+            ArrayList<DayDTO> dayList = d.getAllDay();
+
+            request.setAttribute("specMealList", specMealList);
+            request.setAttribute("specMealDetailList", specMealDetailList);
+            request.setAttribute("dayList", dayList);
+
+            request.getRequestDispatcher("jsp/home/specmeal.jsp").forward(request, response);
         }
     }
 

@@ -2,27 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin.management.product;
+package controller.admin.management.user;
 
-import dao.CategoryDAO;
-import dao.ProductDAO;
-import dao.TypeDAO;
+import com.google.gson.Gson;
+import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.CategoryDTO;
-import model.ProductDTO;
-import model.TypeDTO;
+import model.UserDTO;
 
 /**
  *
  * @author VQN
  */
-public class ManageProductServlet extends HttpServlet {
+public class SearchUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,15 +36,15 @@ public class ManageProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ProductDAO pd = new ProductDAO();
-            ArrayList<ProductDTO> products = pd.getAllProducts();
-            CategoryDAO c = new CategoryDAO();
-            ArrayList<CategoryDTO> categoryList = c.getAllCategory();
-            System.out.println(products);
-            request.setAttribute("products", products);
-            request.setAttribute("categoryList", categoryList);
-
-            request.getRequestDispatcher("jsp/admin/admin_products.jsp").forward(request, response);
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet SearchUserServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet SearchUserServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -76,7 +74,21 @@ public class ManageProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String userName = request.getParameter("userName");
+        String fullName = request.getParameter("fullName");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String roleID = request.getParameter("roleID");
+        String address = request.getParameter("address");
+        String dateCreate = request.getParameter("dateCreate");
+        UserDAO u = new UserDAO();
+        ArrayList<UserDTO> userList = u.getAllAcountsBySearch(userName, fullName, email, phone, roleID, address, dateCreate);
+        
+        Gson gson = new Gson();
+        String userJSon = gson.toJson(userList);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(userJSon);
     }
 
     /**

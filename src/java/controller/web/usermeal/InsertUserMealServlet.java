@@ -52,11 +52,9 @@ public class InsertUserMealServlet extends HttpServlet {
             int rs = um.insertUserMeal(userMealName, userID);
 
             if (rs >= 1) {
-                out.print("<p>Da insert thanh cong </p>");
-                out.print("<p><a href='jsp/home/home.jsp'>back</a></p>");
+                request.getRequestDispatcher("/ProjectJSP/ManageUserMealServlet").forward(request, response);
             } else {
-                out.print("<p>something wrong</p>");
-                out.print("<p><a href='jsp/home/home.jsp'>back</a></p>");
+                request.getRequestDispatcher("/ProjectJSP/ManageUserMealServlet").forward(request, response);
             }
         }
     }

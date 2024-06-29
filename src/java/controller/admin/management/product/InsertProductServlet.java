@@ -120,15 +120,12 @@ public class InsertProductServlet extends HttpServlet {
                     int rs = pd.insertProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, image);
 
                     if (rs >= 1) {
-                        out.print("<p>Da insert thanh cong </p>");
-                        out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                        request.getRequestDispatcher("/ProjectJSP/ManageProductServlet").forward(request, response);
                     } else {
-                        out.print("<p>something wrong</p>");
-                        out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                        request.getRequestDispatcher("/ProjectJSP/ManageProductServlet").forward(request, response);
                     }
                 } else {
-                    out.print("Khong thanh cong");
-                    out.print("<a href='jsp/admin/admin_home.jsp'>back</a>");
+                    request.getRequestDispatcher("/ProjectJSP/ManageProductServlet").forward(request, response);
                 }
             }
         }

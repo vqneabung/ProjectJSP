@@ -36,7 +36,7 @@ public class ManageOrderServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             OrderDAO od = new OrderDAO();
             ArrayList<OrderDTO> orders = od.getAllOrders(); // Assuming you have a method to get all orders
-            request.setAttribute("orders", orders);
+            request.setAttribute("orders",  orders);
             request.getRequestDispatcher("jsp/admin/admin_orders.jsp").forward(request, response);
         }
     }

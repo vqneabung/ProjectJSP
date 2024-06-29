@@ -41,8 +41,7 @@ public class RemoveUserMealServlet extends HttpServlet {
             if (result > 0) {
                 response.sendRedirect("ManageUserMealServlet");
             } else {
-                out.print("No delete");
-                out.print("<p><a href='index.html'>back</a></p>");
+                response.sendRedirect("ManageUserMealServlet");
             }
         }
     }

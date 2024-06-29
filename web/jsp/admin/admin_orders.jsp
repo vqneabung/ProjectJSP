@@ -26,6 +26,7 @@
                     <th>Order Date</th>
                     <th>Status</th>
                     <th>Actions</th>
+                    <th>Detail</th>
                 </tr>
                 <c:forEach var="order" items="${requestScope.orders}">
                     <tr>
@@ -33,7 +34,7 @@
                         <td>${order.user.userName}</td> <!-- Assuming UserDTO has a username field -->
                         <td>${order.totalPrice}</td>
                         <td>${order.payment.paymentName}</td> <!-- Assuming PaymentDTO has a paymentMethod field -->
-                        <td><fmt:formatDate value="${order.orderDate}" pattern="dd/MM/yyyy"/></td> <!-- You need to include fmt taglib for this -->
+                        <td><fmt:formatDate value="${order.orderDate}" type = "both"/></td> <!-- You need to include fmt taglib for this -->
                         <td id="status_id_${order.orderID}">
                             ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
                         </td> <!-- Example status representation -->
@@ -42,6 +43,8 @@
                                 <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
                                 <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
                             </c:if>
+                        </td>
+                        <td>                           
                             <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
                         </td>
                     </tr>
@@ -79,11 +82,11 @@
                                     // Đây là phần bạn có thể thay đổi giao diện người dùng mà không cần tải lại trang
                                     if (newStatus === 2) {
                                         // Cập nhật status cell
-                                        $('#action_id_' + orderID).hide();
+                                        $('#action_id_' + orderID).find('button').hide();
                                         $('#status_id_' + orderID).text("Confirmed");
                                     } else if (newStatus === 3) {
                                         // Cập nhật status cell
-                                        $('#action_id_' + orderID).hide();
+                                        $('#action_id_' + orderID).find('button').hide();
                                         $('#status_id_' + orderID).text("Cancelled");
                                     }
                                 } else {

@@ -26,12 +26,13 @@
                             <span>Giá: ${requestScope.product.productPrice} Đ</span>
                         </div>
                         <div class="d-flex">
-                            <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem" />
+                            <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem">
                             <button class="btn btn-outline-dark flex-shrink-0 addToCart" type="button" id="addToCart" data-product-id="${requestScope.product.productID}">
                                 <i class="bi-cart-fill me-1"></i>
                                 Add to cart
                             </button>
                         </div>
+                        <h5 style="margin-top: 1rem">Còn lại: ${requestScope.product.productStock} </h5>
                     </div>
                 </div>
             </div>
@@ -60,6 +61,14 @@
                     var productID = $(this).data('product-id');
                     var quantity = $('#inputQuantity').val();
                     addToCart(productID, quantity);
+                });
+
+                $('#inputQuantity').on('change', function () {
+                    var quantity = $('#inputQuantity').val();
+                    if (quantity > ${requestScope.product.productStock}) {
+                        quantity = ${requestScope.product.productStock};
+                    }
+                    $('#inputQuantity').val(quantity);
                 });
 
 

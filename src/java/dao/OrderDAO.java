@@ -34,7 +34,7 @@ public class OrderDAO {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 //b2:viet query va exec query
-                String sql = "SELECT [OrderID],[UserID],[TotalPrice],[PaymentID],[OrderDate],[OrderStatus] FROM [WEEKLYMEAL].[dbo].[Orders] Order by OrderDate desc";
+                String sql = "SELECT [OrderID],[UserID],[TotalPrice],[PaymentID],[OrderDate],[OrderStatus] FROM [WEEKLYMEAL].[dbo].[Orders] Order by OrderID desc";
                 Statement st = cn.createStatement();
                 ResultSet rs = st.executeQuery(sql);
                 if (rs != null) {

@@ -98,6 +98,10 @@
         <filter-name>AdminFilterServlet</filter-name>
         <servlet-name>ManageUserServlet</servlet-name>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminFilterServlet</filter-name>
+        <servlet-name>ManageUserActivityServlet</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>StartServlet</servlet-name>
         <servlet-class>controller.StartServlet</servlet-class>
@@ -270,6 +274,22 @@
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>controller.web.home.HomeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SpecMealForUserServlet</servlet-name>
+        <servlet-class>controller.SpecMealForUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchUserServlet</servlet-name>
+        <servlet-class>controller.admin.management.user.SearchUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageUserActivityServlet</servlet-name>
+        <servlet-class>controller.admin.management.user.ManageUserActivityServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchProductServlet</servlet-name>
+        <servlet-class>controller.admin.management.product.SearchProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -438,13 +458,29 @@
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/HomeServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SpecMealForUserServlet</servlet-name>
+        <url-pattern>/SpecMealForUserServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchUserServlet</servlet-name>
+        <url-pattern>/SearchUserServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageUserActivityServlet</servlet-name>
+        <url-pattern>/ManageUserActivityServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchProductServlet</servlet-name>
+        <url-pattern>/SearchProductServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>jsp/home/home.jsp</welcome-file>
+        <welcome-file>StartServlet</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>

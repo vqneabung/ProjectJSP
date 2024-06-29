@@ -21,7 +21,7 @@
     }
 
     .sidenav a:hover {
-        color: #f1f1f1;
+        color: #818181;
     }
 
     .main {
@@ -38,15 +38,75 @@
             font-size: 18px;
         }
     }
+
+    .styled-table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .styled-table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+    }
+
+    .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+    }
+
+    .styled-table tbody tr.active-row {
+        font-weight: bold;
+        color: #009879;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: #000;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .pagination a.active {
+        font-weight: bold;
+        background-color: #ddd;
+    }
 </style>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<div class="sidenav">
-    <p><a href="/ProjectJSP/StaticAdminServlet">Thống kê</a></p>
-    <p><a href="/ProjectJSP/ManageUserServlet" >Quản lí người dùng</a></p>
-    <p><a href="/ProjectJSP/ManageProductServlet" >Quản lí sản phẩm</a></p>
-    <p><a href="/ProjectJSP/ManageSpecMealServlet" >Quản lí của chuyên gia</a></p>
-    <p><a href="/ProjectJSP/ManageRecipeDetailServlet" >Quản lí thực đơn</a></p>
-    <p><a href="/ProjectJSP/ManageOrderServlet" >Quản lí giao hàng</a></p>
-    <p><a href="/ProjectJSP/jsp/home/home.jsp" >Home</a></p>
-    <p><a href="/ProjectJSP/LogoutServlet" >Log out</a></p>
+
+<div class="border-end bg-white sidenav" id="sidebar-wrapper" style="margin-top: 3.5rem">
+    <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/StaticAdminServlet">Thống kê</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/ManageUserServlet" >Quản lí người dùng</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/ManageProductServlet" >Quản lí sản phẩm</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/ManageSpecMealServlet" >Quản lí của chuyên gia</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/ManageRecipeDetailServlet" >Quản lí thực đơn</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/ManageOrderServlet" >Quản lí giao hàng</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/jsp/home/home.jsp" >Home</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/LogoutServlet" >Log out</a>
+    </div>
 </div>

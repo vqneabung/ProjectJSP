@@ -64,11 +64,9 @@ public class UpdateUserMealDetailServlet extends HttpServlet {
                 out.println(productID);
                 out.println(dishID);
                 out.println(userMealDetailID);
-                out.print("<p>Da update thanh cong </p>");
-                out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                request.getRequestDispatcher("jsp/admin/admin_home.jsp").forward(request, response);
             } else {
-                out.print("<p>something wrong</p>");
-                out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                request.getRequestDispatcher("jsp/admin/admin_home.jsp").forward(request, response);
             }
         }
     }

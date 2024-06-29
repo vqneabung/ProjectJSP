@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin.management.product;
+package controller.admin.management.user;
 
-import dao.CategoryDAO;
-import dao.ProductDAO;
-import dao.TypeDAO;
+import dao.UserActivityDAO;
+import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,15 +13,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.CategoryDTO;
-import model.ProductDTO;
-import model.TypeDTO;
+import model.UserActivityDTO;
+import model.UserDTO;
 
 /**
  *
  * @author VQN
  */
-public class ManageProductServlet extends HttpServlet {
+public class ManageUserActivityServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,15 +36,16 @@ public class ManageProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            ProductDAO pd = new ProductDAO();
-            ArrayList<ProductDTO> products = pd.getAllProducts();
-            CategoryDAO c = new CategoryDAO();
-            ArrayList<CategoryDTO> categoryList = c.getAllCategory();
-            System.out.println(products);
-            request.setAttribute("products", products);
-            request.setAttribute("categoryList", categoryList);
+            int userID = Integer.parseInt(request.getParameter("userID"));
+            UserDAO ud = new UserDAO();
+            UserDTO user = ud.getUser(userID);
+            UserActivityDAO uc = new UserActivityDAO();
+            ArrayList<UserActivityDTO> userActivityList = uc.getUserActivity(userID);
+            request.setAttribute("userActivityList", userActivityList);
+            request.setAttribute("user", user);
+            
+            request.getRequestDispatcher("jsp/admin/admin_user_activity.jsp").forward(request, response);
 
-            request.getRequestDispatcher("jsp/admin/admin_products.jsp").forward(request, response);
         }
     }
 

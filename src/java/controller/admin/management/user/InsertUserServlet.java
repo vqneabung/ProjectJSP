@@ -48,7 +48,7 @@ public class InsertUserServlet extends HttpServlet {
             String fileName = null;
             System.out.println(isMultPart);
             if (!isMultPart) {
-                
+
             } else {
                 FileItemFactory factory = new DiskFileItemFactory();
                 ServletFileUpload upload = new ServletFileUpload(factory);
@@ -83,7 +83,7 @@ public class InsertUserServlet extends HttpServlet {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        
+
                     }
                 }//end while
                 String fullName = (String) params.get("insert_fullname");
@@ -96,21 +96,18 @@ public class InsertUserServlet extends HttpServlet {
                 int roleID = Integer.parseInt(stringRoleID);
                 String avatar = "/ProjectJSP/assets/home/image/" + fileName;
                 System.out.println("avatar   " + avatar);
-                
+
                 UserDAO ud = new UserDAO();
                 UserDTO user = ud.getUser(email);
                 if (user == null) { //email khong trung
                     int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address, avatar);
                     if (rs >= 1) {
-                        out.print("<p>Da insert thanh cong </p>");
-                        out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                        request.getRequestDispatcher("/ManagerUserServlet").forward(request, response);
                     } else {
-                        out.print("<p>something wrong</p>");
-                        out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                        request.getRequestDispatcher("/ManagerUserServlet").forward(request, response);
                     }
                 } else {
-                    out.print("email trung");
-                    out.print("<a href='jsp/admin/admin_home.jsp'>back</a>");
+                    request.getRequestDispatcher("/ManagerUserServlet").forward(request, response);
                 }
             }
         }
