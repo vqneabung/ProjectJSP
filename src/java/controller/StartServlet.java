@@ -44,6 +44,8 @@ public class StartServlet extends HttpServlet {
     private final String ABOUT_PAGE = "/jsp/home/about.jsp";
     private final String SPECMEAL = "specmeal";
     private final String SPECMEAL_PAGE = "/SpecMealForUserServlet";
+    private final String FORGOTPASSWORD = "forgotPassword";
+    private final String FORGOTPASSWORD_PAGE = "/ForgorPasswordServlet";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

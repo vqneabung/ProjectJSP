@@ -46,6 +46,8 @@ public class MealShopSearchServlet extends HttpServlet {
 
             String typeCheck = request.getParameter("typeCheck");
             String peopleCheck = request.getParameter("peopleCheck");
+            String[] categoryCheckArr = request.getParameterValues("categoryCheck[]");
+
 
             String veganCheck = "";
             String vegetarianCheck = "";
@@ -57,7 +59,7 @@ public class MealShopSearchServlet extends HttpServlet {
             }
 
             ProductDAO pd = new ProductDAO();
-            ArrayList<ProductDTO> productList = pd.getProductBySearchMultiData(typeCheck, veganCheck, vegetarianCheck, find);
+            ArrayList<ProductDTO> productList = pd.getProductBySearchMultiData(typeCheck, veganCheck, vegetarianCheck, find, categoryCheckArr);
 
             Gson gson = new Gson();
             String jsonProductList = gson.toJson(productList);

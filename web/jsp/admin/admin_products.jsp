@@ -44,14 +44,15 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div  class="col-4" >Có phải là thức ăn dành cho Vegetarian không
+                                <div  class="col-4" >Có phải là thức ăn dành cho người ăn chay không?
                                     <select class="form-control" name="search_isVegetarian">
                                         <option value="">--Chọn--</option>
                                         <option value="1">Có</option>
                                         <option value="0">Không</option>
                                     </select>
                                 </div>
-                                <div  class="col-4">Có phải là thức ăn dành cho Vegan không 
+                                <div  class="col-4">
+                                    Có phải là thức ăn dành cho người ăn chay trường không?
                                     <select class="form-control" name="search_isVegan">
                                         <option value="">--Chọn--</option>
                                         <option value="1">Có</option>
@@ -159,45 +160,53 @@
                 </div>
             </div>
             <h1>Quản lí sản phẩm</h1>
-            <p><a class="btn btn-secondary btn-lg active" href="/ProjectJSP/InsertProductServlet" >Insert Product</a></p> 
+            <p><a class="btn btn-secondary btn-lg active" href="/ProjectJSP/InsertProductServlet" >Insert Product</a>
+                <a class="btn btn-primary btn-lg active" type="button" title="In" onclick="myApp.printTable()"> <i class="fas fa-print"></i> In dữ liệu</a>
+            </p> 
             <div id="productList">
-                <table class="styled-table">
-                    <tr>
-                        <th>Product ID</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Type</th>
-                        <th>Is Vegetarian</th>
-                        <th>Is Vegan</th>
-                        <th>Has Special Dietary Requirements</th>
-                        <th>Product Size</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Unit sold</th>
-                        <th>Status</th>
-                        <th>Remove</th>
-                        <th>Update</th>
-                    </tr>
-                    <c:forEach var="product" items="${requestScope.products}">
+                <table class="styled-table" id="productListTable">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Is Vegetarian</th>
+                            <th>Is Vegan</th>
+                            <th>Has Special Dietary Requirements</th>
+                            <th>Product Size</th>
+                            <th>Price</th>
+                            <th>Discount (%)</th>
+                            <th>Stock</th>
+                            <th>Unit sold</th>
+                            <th>Status</th>
+                            <th>Remove</th>
+                            <th>Update</th>
+                        </tr>
+                    </thead>
+                    <c:forEach var="product" items="${requestScope.productsPage}">
                         <c:if test= "${product.isStatus != 0}" >
-                            <tr>
-                                <th>${product.productID}</th>
-                                <th>${product.productName}</th>
-                                <th>${product.category.categoryName}</th>
-                                <th>${product.type.typeName}</th>
-                                <th>${product.isVegetarian == 1 ? "True" : "False"}</th>
-                                <th>${product.isVegan == 1 ? "True" : "False"}</th>
-                                <th>${product.hasSpecialDietaryRequirements == 1 ? "True" : "False"}</th>
-                                <th><c:forEach items="${product.productSize}" var="size" varStatus="loop">
-                                        ${size}<c:if test="${not loop.last}">,</c:if>
-                                    </c:forEach></th>
-                                <th>${product.productPrice}</th>
-                                <th>${product.productStock}</th>
-                                <th>${product.productUnitSold}</th>
-                                <th>${product.isStatus == 1 ? "Activate" : "Deactivate"}</th>
-                                <th><a class="btn btn-primary" href="RemoveProduceServlet?productID=${product.productID}">remove</a></th>
-                                <th><a class="btn btn-primary" href="UpdateProductServlet?productID=${product.productID}">update</a></th>
-                            </tr>   
+                            <tbody>
+                                <tr>
+                                    <th>${product.productID}</th>
+                                    <th>${product.productName}</th>
+                                    <th>${product.category.categoryName}</th>
+                                    <th>${product.type.typeName}</th>
+                                    <th>${product.isVegetarian == 1 ? "True" : "False"}</th>
+                                    <th>${product.isVegan == 1 ? "True" : "False"}</th>
+                                    <th>${product.hasSpecialDietaryRequirements == 1 ? "True" : "False"}</th>
+                                    <th><c:forEach items="${product.productSize}" var="size" varStatus="loop">
+                                            ${size}<c:if test="${not loop.last}">,</c:if>
+                                        </c:forEach></th>
+                                    <th>${product.productPrice}</th>
+                                    <th>${product.discount}</th>
+                                    <th>${product.productStock}</th>
+                                    <th>${product.productUnitSold}</th>
+                                    <th>${product.isStatus == 1 ? "Activate" : "Deactivate"}</th>
+                                    <th><a class="btn btn-primary" href="RemoveProduceServlet?productID=${product.productID}">Xóa</a></th>
+                                    <th><a class="btn btn-primary" href="UpdateProductServlet?productID=${product.productID}">Cập nhật</a></th>
+                                </tr>  
+                            </tbody>
                             <tr>
                                 <td colspan="15">
                                     <h2>Mô tả</h2>
@@ -211,7 +220,28 @@
                     </c:forEach>   
                 </table>
             </div>
+            <div class="pagination">
+                <c:if test="${currentPage > 1}">
+                    <a href="ManageProductServlet?page=${currentPage - 1}">Previous</a>
+                </c:if>
+                <c:forEach var="i" begin="1" end="${noOfPages}">
+                    <a href="ManageProductServlet?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                </c:forEach>
+                <c:if test="${currentPage < noOfPages}">
+                    <a href="ManageProductServlet?page=${currentPage + 1}">Next</a>
+                </c:if>
+            </div>
             <script>
+
+                var myApp = new function () {
+                    this.printTable = function () {
+                        var tab = document.getElementById('productList');
+                        var win = window.open('', '', 'height=700,width=700');
+                        win.document.write(tab.outerHTML);
+                        win.document.close();
+                        win.print();
+                    };
+                };
 
                 $(document).ready(function () {
                     $('#searchProductForm').on('submit', function (event) {
@@ -235,7 +265,7 @@
                                 order_type: $('select[name="order_type"]').val()
                             },
                             success: function (data) {
-                                var html = ' <table class="table table-hover" > <tr><th>Product Name</th><th>Category</th><th>Type</th><th>Is Vegetarian</th><th>Is Vegan</th><th>Has Special Dietary Requirements</th><th>Product Size</th><th>Price</th><th>Stock</th><th>Unit sold</th><th>Status</th><th>Remove</th><th>Update</th></tr>';
+                                var html = ' <table class="styled-table" > <tr><th>ProductID</th><th>Product Name</th><th>Category</th><th>Type</th><th>Is Vegetarian</th><th>Is Vegan</th><th>Has Special Dietary Requirements</th><th>Product Size</th><th>Price</th><th>Discount (%)</th><th>Stock</th><th>Unit sold</th><th>Status</th><th>Remove</th><th>Update</th></tr>';
                                 var productList = data; // Dựa vào cấu trúc dữ liệu trả về từ Servlet để xử lý
 
                                 $.each(productList, function (index, product) {
@@ -256,6 +286,7 @@
                                     });
                                     html += '</td>';
                                     html += '<td>' + product.productPrice + '</td>';
+                                    html += '<td>' + product.discount + '</td>'
                                     html += '<td>' + product.productStock + '</td>';
                                     html += '<td>' + product.productUnitSold + '</td>';
                                     html += '<td>' + (product.isStatus === 1 ? "Activate" : "Deactivate") + '</td>';

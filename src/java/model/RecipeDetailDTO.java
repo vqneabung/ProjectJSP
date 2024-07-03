@@ -14,12 +14,14 @@ public class RecipeDetailDTO {
     private ProductDTO food;
     private ProductDTO ingredient;
     private int status;
+    private int weight;
 
-    public RecipeDetailDTO(int recipeDetailID, ProductDTO food, ProductDTO ingredient, int status) {
+    public RecipeDetailDTO(int recipeDetailID, ProductDTO food, ProductDTO ingredient, int status, int weight) {
         this.recipeDetailID = recipeDetailID;
         this.food = food;
         this.ingredient = ingredient;
         this.status = status;
+        this.weight = weight;
     }
 
     public int getRecipeDetailID() {
@@ -52,6 +54,14 @@ public class RecipeDetailDTO {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 
 }

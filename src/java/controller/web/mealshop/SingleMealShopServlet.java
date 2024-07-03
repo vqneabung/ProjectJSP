@@ -4,14 +4,19 @@
  */
 package controller.web.mealshop;
 
+import dao.CategoryDAO;
 import dao.ProductDAO;
+import dao.RecipeDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CategoryDTO;
 import model.ProductDTO;
+import model.RecipeDetailDTO;
 
 /**
  *
@@ -34,9 +39,19 @@ public class SingleMealShopServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             int productID = Integer.parseInt(request.getParameter("productID"));
+            int categoryID = Integer.parseInt(request.getParameter("categoryID"));
             ProductDAO pd = new ProductDAO();
             ProductDTO product = pd.getProduct(productID);
+            CategoryDAO c = new CategoryDAO();
+            ArrayList<ProductDTO> productRamdom = pd.getAllProductsRamdom();
+            ArrayList<ProductDTO> productByCategoryID = pd.getProductByCategoryID(categoryID);
 
+            RecipeDetailDAO rd = new RecipeDetailDAO();
+            ArrayList<RecipeDetailDTO> recipeDetailListByFoodID = rd.getRecipeDetailByFoodID(productID);
+
+            request.setAttribute("productRamdom", productRamdom);
+            request.setAttribute("recipeDetailListByFoodID", recipeDetailListByFoodID);
+            request.setAttribute("productByCategoryID", productByCategoryID);
             request.setAttribute("product", product);
             request.getRequestDispatcher("jsp/home/single-mealshop.jsp").forward(request, response);
         }

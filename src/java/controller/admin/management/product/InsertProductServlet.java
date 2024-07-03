@@ -109,6 +109,7 @@ public class InsertProductServlet extends HttpServlet {
                 int stock = Integer.parseInt((String) params.get("insert_stock"));
                 int unitSold = Integer.parseInt((String) params.get("insert_unitSold"));
                 String describe = new String(((String) params.get("insert_describe")).getBytes("iso-8859-1"), "utf-8");
+                int discount = Integer.parseInt((String) params.get("insert_discount"));
 
 //          String[] image = Utils.stringToArray(request.getParameter("insert_image"));
                 String[] image = utils.Utils.stringToArray(multiFileName);
@@ -117,12 +118,17 @@ public class InsertProductServlet extends HttpServlet {
                 ProductDTO product = pd.getProduct(productName);
                 out.print(product);
                 if (product == null) { //email khong trung
-                    int rs = pd.insertProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, image);
+                    if (typeID == 2) {
+                        isVegetarian = 0;
+                        isVegan = 0;
+                        hasSpecialDietaryRequirements = 0;
+                    }
+                    int rs = pd.insertProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, image, discount);
 
                     if (rs >= 1) {
-                        request.getRequestDispatcher("/ProjectJSP/ManageProductServlet").forward(request, response);
+                        response.sendRedirect("/ProjectJSP/ManageProductServlet");
                     } else {
-                        request.getRequestDispatcher("/ProjectJSP/ManageProductServlet").forward(request, response);
+                        response.sendRedirect("/ProjectJSP/ManageProductServlet");
                     }
                 } else {
                     request.getRequestDispatcher("/ProjectJSP/ManageProductServlet").forward(request, response);

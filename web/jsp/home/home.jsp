@@ -4,6 +4,9 @@
     Author     : VQN
 --%>
 
+<%@page import="model.CategoryDTO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="dao.CategoryDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -56,12 +59,14 @@
                                                     <!-- Product Type-->
                                                     <h5 class="fw-bolder">Loại: ${product.type.typeName}</h5>
                                                     <!-- Product price-->
-                                                    Giá: ${product.productPrice}Đ
+                                                    Giá: <del>${product.productPrice}Đ</del> -${product.discount}%
+                                                    <br>
+                                                    Giá còn: ${product.productPrice - product.discount*product.productPrice/100}Đ
                                                 </div>
                                             </div>
                                             <!-- Product actions-->
                                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                                <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}">Chi tiết</a></div>
+                                                <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}&categoryID=${product.category.categoryID}">Chi tiết</a></div>
                                             </div>
                                         </div>
                                     </div>
@@ -72,44 +77,44 @@
                     <!-- Pagination-->
                 </div>
                 <!-- Side widgets-->
+                <%
+                    CategoryDAO c = new CategoryDAO();
+                    ArrayList<CategoryDTO> categoryList = c.getAllCategory();
+                %>
                 <div class="col-lg-4">
-                    <!-- Search widget-->
                     <div class="card mb-4">
-                        <div class="card-header">Search</div>
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Categories widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Categories</div>
+                        <div class="card-header">Thể loại</div>
                         <div class="card-body">
                             <div class="row">
+                                <%
+                                    for (int i = 0; i < Math.ceil(categoryList.size() / 3); i++) {
+                                %>
                                 <div class="col-sm-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">Web Design</a></li>
-                                        <li><a href="#!">HTML</a></li>
-                                        <li><a href="#!">Freebies</a></li>
+                                        <li><a href="/ProjectJSP/MealShopServlet?categoryID=<%= categoryList.get(i * 3).getCategoryID()%>">+ <%= categoryList.get(i * 3).getCategoryName()%></a></li>
+                                        <li><a href="/ProjectJSP/MealShopServlet?categoryID=<%= categoryList.get(i * 3 + 1).getCategoryID()%>">+ <%= categoryList.get(i * 3 + 1).getCategoryName()%></a></li>
+                                        <li><a href="/ProjectJSP/MealShopServlet?categoryID=<%= categoryList.get(i * 3 + 2).getCategoryID()%>">+ <%= categoryList.get(i * 3 + 2).getCategoryName()%></a></li>
                                     </ul>
+                                    <br>
                                 </div>
-                                <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">JavaScript</a></li>
-                                        <li><a href="#!">CSS</a></li>
-                                        <li><a href="#!">Tutorials</a></li>
-                                    </ul>
-                                </div>
+                                <%
+                                    }
+                                %>
                             </div>
                         </div>
                     </div>
-                    <!-- Side widget-->
-                    <div class="card mb-4">
-                        <div class="card-header">Side Widget</div>
-                        <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+                    <div>
+                        <img src="https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-vegetables.jpg" width="100%">
                     </div>
+                    <br>
+                    <div>
+                        <img src="https://media.cnn.com/api/v1/images/stellar/prod/140430115517-06-comfort-foods.jpg?q=w_1110,c_fill" width="100%">
+                    </div>
+                    <br>
+                    <div>
+                        <img src="https://www.eatright.org/-/media/images/eatright-landing-pages/foodgroupslp_804x482.jpg?as=0&w=967&rev=d0d1ce321d944bbe82024fff81c938e7&hash=E6474C8EFC5BE5F0DA9C32D4A797D10D" width="100%">
+                    </div>
+                    <br>
                 </div>
             </div>
         </div>

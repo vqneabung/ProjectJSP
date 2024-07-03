@@ -290,6 +290,18 @@
         <servlet-name>SearchProductServlet</servlet-name>
         <servlet-class>controller.admin.management.product.SearchProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchRecipeDetailServlet</servlet-name>
+        <servlet-class>controller.admin.management.recipe.SearchRecipeDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateRecipeDetailServlet</servlet-name>
+        <servlet-class>controller.admin.management.recipe.UpdateRecipeDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <servlet-class>controller.web.login.ForgotPasswordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>StartServlet</servlet-name>
         <url-pattern>/StartServlet</url-pattern>
@@ -473,6 +485,18 @@
     <servlet-mapping>
         <servlet-name>SearchProductServlet</servlet-name>
         <url-pattern>/SearchProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchRecipeDetailServlet</servlet-name>
+        <url-pattern>/SearchRecipeDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateRecipeDetailServlet</servlet-name>
+        <url-pattern>/UpdateRecipeDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <url-pattern>/ForgotPasswordServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

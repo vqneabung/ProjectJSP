@@ -26,6 +26,8 @@ public class UserMealDAO {
 
     public static final String GET_DATA_BY_ID = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanID = ? ";
 
+    public static final String GET_DATA_BY_NAME = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanName LIKE ? AND UserID = ? ";
+
     public static final String REMOVE_USERMEAL = "UPDATE [dbo].[UserMeal]\n"
             + "   SET [IsStatus] = 0\n"
             + " WHERE UserPlanID = ?";
@@ -90,6 +92,49 @@ public class UserMealDAO {
                 String sql = GET_DATA_BY_USERID;
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    //b3: Doc cac dong trong rs va cat vao ArrayList
+                    while (rs.next()) {
+                        int userMealID = rs.getInt("UserPlanID");
+                        String userMealName = rs.getString("UserPlanName");
+                        UserDTO user = u.getUser(userID);
+                        int isStatus = rs.getInt("IsStatus");
+
+                        UserMealDTO userMeal = new UserMealDTO(userMealID, userMealName, user, isStatus);
+                        userMealList.add(userMeal);
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return userMealList;
+    }
+
+    public ArrayList<UserMealDTO> getAllUserMealByName(String userMealNameSearch, int userID) {
+        ArrayList<UserMealDTO> userMealList = new ArrayList<>();
+        UserDAO u = new UserDAO();
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+                //select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal where UserID = ?
+                String sql = GET_DATA_BY_NAME;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, '%' + userMealNameSearch + '%');
+                pst.setInt(2, userID);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null) {
                     //b3: Doc cac dong trong rs va cat vao ArrayList

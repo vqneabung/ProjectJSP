@@ -35,6 +35,8 @@ public class UserDAO {
 
     public static final String UPDATE_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?, UserStatus = ?, UserAvatar = ? WHERE UserID = ?";
 
+    public static final String UPDATE_USER_PASSWORD = "UPDATE Users SET UserPassword = ? WHERE UserID = ?";
+
     public ArrayList<UserDTO> getAllAcounts() {
         ArrayList<UserDTO> userList = new ArrayList<>();
 
@@ -332,5 +334,35 @@ public class UserDAO {
         }
 
         return rs;
+    }
+
+    public boolean updateUserPassword(String password, int userID) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = UPDATE_USER_PASSWORD;
+                //UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, password);
+                pst.setInt(2, userID);
+
+                rs = pst.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
     }
 }

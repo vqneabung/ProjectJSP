@@ -4,6 +4,10 @@
     Author     : VQN
 --%>
 
+<%@page import="model.CategoryDTO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="dao.CategoryDAO"%>
+<%@page import="dao.ProductDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -75,6 +79,28 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div>
+                                        <h4>+ Dạng</h4>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkBox" value="" id="allCategory" name="categoryCheck" checked=""> 
+                                            <label class="form-check-label" for="veganCheck">
+                                                Tất cả
+                                            </label>
+                                        </div>
+                                        <%
+                                            CategoryDAO c = new CategoryDAO();
+                                            ArrayList<CategoryDTO> categoryList = c.getAllCategory();
+                                        %>
+                                        <c:forEach items="<%=categoryList%>" var="category">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="${category.categoryID}" id="${category.categoryID}" name="categoryCheck">
+                                                <label class="form-check-label" for="veganCheck">
+                                                    ${category.categoryName}
+                                                </label>
+                                            </div>
+                                        </c:forEach>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -94,12 +120,14 @@
                                                 <!-- Product Type-->
                                                 <h5 class="fw-bolder">Loại: ${product.type.typeName}</h5>
                                                 <!-- Product price-->
-                                                Giá: ${product.productPrice}Đ
+                                                Giá: <del>${product.productPrice}Đ</del> -${product.discount}%
+                                                <br>
+                                                Giá còn: ${product.productPrice - product.discount*product.productPrice/100}Đ
                                             </div>
                                         </div>
                                         <!-- Product actions-->
                                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                            <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}">Chi tiết</a></div>
+                                            <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}&categoryID=${product.category.categoryID   }">Chi tiết</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -113,6 +141,80 @@
     </body>
 
     <script>
+
+        $(document).ready(function () {
+        <c:if test="${requestScope.categorySearch != null}">
+            $('#${requestScope.categorySearch}').prop('checked', true);
+            $('#allCategory').prop('checked', false);
+            $(document).ready(function () {
+
+                var typeCheck = $("input[name='typeCheck']:checked").val();
+                var peopleCheck = $("input[name='peopleCheck']:checked").val();
+                var categoryCheck = [];
+                $("input[name='categoryCheck']:checked").each(function () {
+                    categoryCheck.push($(this).val());
+                });
+                ;
+                var find = $("#find").val();
+                searchMealShop(typeCheck, peopleCheck, find);
+
+                function searchMealShop(typeCheck, peopleCheck, find) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/ProjectJSP/MealShopSearchServlet',
+                        data: {
+                            typeCheck: typeCheck,
+                            peopleCheck: peopleCheck,
+                            categoryCheck: categoryCheck,
+                            find: find
+                        },
+                        success: function (data) {
+                            var productList = data; // Danh sách sản phẩm từ server
+                            var html = '';
+                            $.each(productList, function (index, product) {
+                                // Tạo HTML cho mỗi sản phẩm
+                                html += '<div class="col mb-5">';
+                                html += '<div class="card h-100">';
+                                html += '<img class="card-img-top" src="' + product.productImage[0] + '" alt="..." width="100%" height="150px"/>';
+                                html += '<div class="card-body p-4">';
+                                html += '<div class="text-center">';
+                                html += '<h5 class="fw-bolder">' + product.productName + '</h5>';
+                                html += '<h5 class="fw-bolder">Loại: ' + product.type.typeName + '</h5>';
+                                html += 'Giá: ' + product.productPrice + 'Đ';
+                                html += '</div></div>';
+                                html += '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">';
+                                html += '<div class="text-center">';
+                                html += '<button class="btn btn-outline-dark mt-auto addToCard" data-product-id="' + product.productID + '">Mua</button>';
+                                html += '<a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '">Chi tiết</a>';
+                                html += '</div></div></div></div>';
+                            });
+                            $('#productList').html(html);
+                        },
+                        error: function () {
+                            alert('Error updating order status');
+                        }
+                    });
+                }
+            });
+        </c:if>
+
+            $('input[name="categoryCheck"]').change(function () {
+                if ($(this).next('label').text().trim() === 'Tất cả') {
+                    if (this.checked) {
+                        $('input[name="categoryCheck"]').not(this).prop('checked', false);
+                    }
+                } else {
+                    if (this.checked) {
+                        $('input[name="categoryCheck"]').each(function () {
+                            if ($(this).next('label').text().trim() === 'Tất cả') {
+                                $(this).prop('checked', false);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
         $(document).on('click', '.addToCard', function () {
             var productID = $(this).data('product-id');
             addToCart(productID);
@@ -142,6 +244,11 @@
 
             var typeCheck = $("input[name='typeCheck']:checked").val();
             var peopleCheck = $("input[name='peopleCheck']:checked").val();
+            var categoryCheck = [];
+            $("input[name='categoryCheck']:checked").each(function () {
+                categoryCheck.push($(this).val());
+            });
+            ;
             var find = $("#find").val();
             searchMealShop(typeCheck, peopleCheck, find);
 
@@ -152,6 +259,7 @@
                     data: {
                         typeCheck: typeCheck,
                         peopleCheck: peopleCheck,
+                        categoryCheck: categoryCheck,
                         find: find
                     },
                     success: function (data) {
@@ -171,7 +279,7 @@
                             html += '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">';
                             html += '<div class="text-center">';
                             html += '<button class="btn btn-outline-dark mt-auto addToCard" data-product-id="' + product.productID + '">Mua</button>';
-                            html += '<a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '">Chi tiết</a>';
+                            html += '<a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '">Chi tiết</a>';
                             html += '</div></div></div></div>';
                         });
                         $('#productList').html(html);

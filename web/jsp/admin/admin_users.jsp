@@ -16,6 +16,7 @@
                 <div>
                     <a class="btn btn-secondary btn-lg active" href="/ProjectJSP/InsertUserServlet">Insert User</a> 
                     <a class="btn btn-third btn-lg active" href="/ProjectJSP/ManageUserServlet?action=deactivateUser">Deactivate Users</a> 
+                    <a class="btn btn-primary btn-lg active" type="button" title="In" onclick="myApp.printTable()"> <i class="fas fa-print"></i> In dữ liệu</a>
                 </div>
                 <br>
                 <div>
@@ -76,45 +77,54 @@
                 </div>
             </div>
             <br>
+            <style>
+                #head th{
+                    text-align: center;
+                }
+            </style>
             <div id="userList">
-                <table class="styled-table">
-                    <tr class="text-center">
-                        <th>Avatar</th>
-                        <th>Username</th>
-                        <th>Tên đầy đủ</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Vai trò</th>
-                        <th>Password</th>
-                        <th>Địa chỉ</th>
-                        <th>Thời gian tạo</h1>
-                        <th>Trạng thái</th>
-                        <th>Hành động</th>
-                        <th>Lịch sử hoạt đông</th>
-                    </tr>
-                    <c:forEach var="user" items="${requestScope.usersPage}">
-                        <c:if test="${user.status == 1}">
-                            <tr style="font-size: medium" class="text-center">
-                                <td><img src="${user.avatar}" alt="${user.userID}" width="100" height="100"/></td>
-                                <td>${user.userName}</td>
-                                <td>${user.fullName}</td>
-                                <td>${user.email}</td>
-                                <td>${user.phone}</td>
-                                <td>${user.roleID == 1 ? "Người dùng" : "Admin"}</td>
-                                <td><t:Taglib encode="${user.password}"/></td>
-                                <td>${user.address}</td>
-                                <td>${user.dateCreate}</td>
-                                <td>${user.status == 1 ? "Hoạt động" : "Không hoạt động"}</td>
-                                <td>
-                                    <a class="btn btn-primary" href="/ProjectJSP/RemoveUserServlet?userID=${user.userID}">Xóa</a>
-                                    <a class="btn btn-outline-primary" href="/ProjectJSP/UpdateUserServlet?userID=${user.userID}">Cập nhật</a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-outline-primary" href="/ProjectJSP/ManageUserActivityServlet?userID=${user.userID}">Chi tiết</a>
-                                </td>
-                            </tr>
-                        </c:if>
-                    </c:forEach>
+                <table class="styled-table" id="userListTable">
+                    <thead>
+                        <tr class="text-center" id="head"> 
+                            <th>Avatar</th>
+                            <th>Username</th>
+                            <th>Tên đầy đủ</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Vai trò</th>
+                            <th>Password</th>
+                            <th>Địa chỉ</th>
+                            <th>Thời gian tạo</h1>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                            <th>Lịch sử hoạt đông</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="user" items="${requestScope.usersPage}">
+                            <c:if test="${user.status == 1}">
+                                <tr style="font-size: medium" class="text-center">
+                                    <td><img src="${user.avatar}" alt="${user.userID}" width="100" height="100"/></td>
+                                    <td>${user.userName}</td>
+                                    <td>${user.fullName}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.phone}</td>
+                                    <td>${user.roleID == 1 ? "Người dùng" : "Admin"}</td>
+                                    <td><t:Taglib encode="${user.password}"/></td>
+                                    <td>${user.address}</td>
+                                    <td>${user.dateCreate}</td>
+                                    <td>${user.status == 1 ? "Hoạt động" : "Không hoạt động"}</td>
+                                    <td>
+                                        <a class="btn btn-primary" href="/ProjectJSP/RemoveUserServlet?userID=${user.userID}">Xóa</a>
+                                        <a class="btn btn-outline-primary" href="/ProjectJSP/UpdateUserServlet?userID=${user.userID}">Cập nhật</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary" href="/ProjectJSP/ManageUserActivityServlet?userID=${user.userID}">Chi tiết</a>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                    </tbody>
                 </table>
             </div>
             <div class="pagination">
@@ -131,12 +141,30 @@
         </div>
     </div>
     <script>
+
+        var myApp = new function () {
+            this.printTable = function () {
+                var tab = document.getElementById('userListTable');
+                var win = window.open('', '', 'height=700,width=700');
+                win.document.write(tab.outerHTML);
+                win.document.close();
+                win.print();
+            };
+        };
+
         $(document).ready(function () {
+            $('#userListTable').DataTable({
+                "paging": false,
+                "searching": false,
+                "info": false,
+                "columnDefs": [
+                    {"orderable": false, "targets": [9, 10, 11]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
+                ]
+
+            });
             $('#searchForm').submit(function (event) {
                 // Ngăn chặn hành động mặc định của form (tải lại trang)
                 event.preventDefault();
-                // Lấy giá trị từ input tìm kiếm
-                // Gửi yêu cầu Ajax
                 $.ajax({
                     type: 'POST',
                     url: '/ProjectJSP/SearchUserServlet',
@@ -152,7 +180,7 @@
                     success: function (data) {
                         var html = '';
                         var userList = data;
-                        html += '<table class="styled-table"><tr class="text-center"><th>Avatar</th><th>Username</th><th>Tên đầy đủ</th><th>Email</th><th>Phone</th><th>Vai trò</th><th>Password</th><th>Địa chỉ</th><th>Thời gian tạo</h1><th>Trạng thái</th><th>Hành động</th><th>Lịch sử hoạt đông</th></tr>';
+                        html += '<table class="styled-table" id="userListTable"><thead><tr class="text-center" id="head"> <th>Avatar</th><th>Username</th><th>Tên đầy đủ</th><th>Email</th><th>Phone</th><th>Vai trò</th><th>Password</th><th>Địa chỉ</th><th>Thời gian tạo</h1><th>Trạng thái</th><th>Hành động</th><th>Lịch sử hoạt đông</th></tr></thead>';
                         $.each(userList, function (index, user) {
                             if (user.status === 1) {
                                 html += '<tr class="text-center" style="font-size: medium">';
@@ -174,8 +202,17 @@
                                 html += '</tr>';
                             }
                         });
-                        html += '</table>'
+                        html += '</table>';
                         $('#userList').html(html);
+                        $('#userListTable').DataTable({
+                            "paging": false,
+                            "searching": false,
+                            "info": false,
+                            "columnDefs": [
+                                {"orderable": false, "targets": [9, 10, 11]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
+                            ]
+
+                        });
                     },
                     error: function () {
                         alert('Đã xảy ra lỗi khi gửi yêu cầu tìm kiếm.');
@@ -184,6 +221,7 @@
             });
         }
         );
+
     </script>
 </body>
 </html>

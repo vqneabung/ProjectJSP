@@ -10,6 +10,9 @@ import dao.TypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.CategoryDTO;
 import model.ProductDTO;
 import model.TypeDTO;
+import model.UserDTO;
 
 /**
  *
@@ -43,9 +47,43 @@ public class ManageProductServlet extends HttpServlet {
             CategoryDAO c = new CategoryDAO();
             ArrayList<CategoryDTO> categoryList = c.getAllCategory();
             System.out.println(products);
-            request.setAttribute("products", products);
             request.setAttribute("categoryList", categoryList);
 
+            int maxProductPrice = Collections.max(products, new Comparator<ProductDTO>() {
+                @Override
+                public int compare(ProductDTO t, ProductDTO t1) {
+                    return t.getProductPrice() - t1.getProductPrice();
+                }
+            }).getProductPrice();
+
+            int minProductPrice = Collections.min(products, new Comparator<ProductDTO>() {
+                @Override
+                public int compare(ProductDTO t, ProductDTO t1) {
+                    return t.getProductPrice() - t1.getProductPrice();
+                }
+            }).getProductPrice();
+
+
+            //--------Tao thanh phan trang--------------------
+            int page = 1;
+            int recordsPerPage = 10;
+
+            if (request.getParameter("page") != null) {
+                page = Integer.parseInt(request.getParameter("page"));
+            }
+
+            int start = (page - 1) * recordsPerPage;
+            int end = Math.min(start + recordsPerPage, products.size());
+            List<ProductDTO> productsPage = products.subList(start, end);
+
+            int noOfPages = (int) Math.ceil(products.size() * 1.0 / recordsPerPage);
+
+            request.setAttribute("productsPage", productsPage);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("products", products);
+
+            //---------------------------------------------------------
             request.getRequestDispatcher("jsp/admin/admin_products.jsp").forward(request, response);
         }
     }

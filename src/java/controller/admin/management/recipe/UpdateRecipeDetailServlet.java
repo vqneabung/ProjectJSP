@@ -2,23 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin.management.order;
+package controller.admin.management.recipe;
 
-import dao.OrderDAO;
+import com.google.gson.Gson;
+import dao.RecipeDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.OrderDTO;
 
 /**
  *
  * @author VQN
  */
-public class ManageOrderServlet extends HttpServlet {
+public class UpdateRecipeDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,18 +33,18 @@ public class ManageOrderServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            OrderDAO od = new OrderDAO();
-            ArrayList<OrderDTO> orders = od.getAllOrders(); // Assuming you have a method to get all orders
-            ArrayList<String> addressList = od.getAllAddress();
-            request.setAttribute("orders", orders);
-            request.setAttribute("addressList", addressList);
-            System.out.println("addressList" + addressList);
-            String function = request.getParameter("function");
-            if (function.equals("order")) {
-                request.getRequestDispatcher("jsp/admin/admin_orders.jsp").forward(request, response);
-            } else if (function.equals("orderByAddress")) {
-                request.getRequestDispatcher("jsp/admin/admin_orders_sortby_address.jsp").forward(request, response);
-            }
+            int recipeDetailID = Integer.parseInt(request.getParameter("recipeDetailID"));
+            int weight = Integer.parseInt(request.getParameter("weight"));
+            RecipeDetailDAO rd = new RecipeDetailDAO();
+
+            int rs = rd.updateRecipeDetail(recipeDetailID, weight);
+
+            Gson gson = new Gson();
+            String rsJSon = gson.toJson(rs);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(rsJSon);
+
         }
     }
 

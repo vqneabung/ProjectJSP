@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.admin.management.order;
+package controller.admin.management.recipe;
 
-import dao.OrderDAO;
+import com.google.gson.Gson;
+import dao.ProductDAO;
+import dao.RecipeDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -12,13 +14,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.OrderDTO;
+import model.ProductDTO;
+import model.RecipeDetailDTO;
 
 /**
  *
  * @author VQN
  */
-public class ManageOrderServlet extends HttpServlet {
+public class SearchRecipeDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,23 +32,54 @@ public class ManageOrderServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    class Data {
+
+        ArrayList<ProductDTO> foodList;
+        ArrayList<RecipeDetailDTO> recipeDetailList;
+
+        public Data(ArrayList<ProductDTO> foodList, ArrayList<RecipeDetailDTO> recipeDetailList) {
+            this.foodList = foodList;
+            this.recipeDetailList = recipeDetailList;
+        }
+
+        public ArrayList<ProductDTO> getFoodList() {
+            return foodList;
+        }
+
+        public void setFoodList(ArrayList<ProductDTO> foodList) {
+            this.foodList = foodList;
+        }
+
+        public ArrayList<RecipeDetailDTO> getRecipeDetailList() {
+            return recipeDetailList;
+        }
+
+        public void setRecipeDetailList(ArrayList<RecipeDetailDTO> recipeDetailList) {
+            this.recipeDetailList = recipeDetailList;
+        }
+
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            OrderDAO od = new OrderDAO();
-            ArrayList<OrderDTO> orders = od.getAllOrders(); // Assuming you have a method to get all orders
-            ArrayList<String> addressList = od.getAllAddress();
-            request.setAttribute("orders", orders);
-            request.setAttribute("addressList", addressList);
-            System.out.println("addressList" + addressList);
-            String function = request.getParameter("function");
-            if (function.equals("order")) {
-                request.getRequestDispatcher("jsp/admin/admin_orders.jsp").forward(request, response);
-            } else if (function.equals("orderByAddress")) {
-                request.getRequestDispatcher("jsp/admin/admin_orders_sortby_address.jsp").forward(request, response);
-            }
+            String searchFood = request.getParameter("searchFood");
+            ProductDAO p = new ProductDAO();
+            RecipeDetailDAO rd = new RecipeDetailDAO();
+
+            ArrayList<ProductDTO> foodList = p.getProductBySearch(searchFood);
+            ArrayList<RecipeDetailDTO> recipeDetailList = rd.getRecipeDetail();
+
+            Data data = new Data(foodList, recipeDetailList);
+
+            Gson gson = new Gson();
+            String dataJSon = gson.toJson(data);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(dataJSon);
+
         }
     }
 

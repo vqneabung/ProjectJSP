@@ -44,22 +44,26 @@ public class ManageUserMealServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+
+            String action = request.getParameter("searchUserMeal_btn");
+            String searchUserMeal = request.getParameter("searchUserMeal");
+
             UserMealDAO um = new UserMealDAO();
             UserMealDetailDAO umd = new UserMealDetailDAO();
             DayDAO d = new DayDAO();
 
             HttpSession session = request.getSession();
             UserDTO user = (UserDTO) session.getAttribute("User");
-
+            ArrayList<UserMealDTO> userMealList = new ArrayList<>();
             if (user != null) {
 
-                ArrayList<UserMealDTO> userMealList = um.getAllUserMealByUserID(user.getUserID());
+                if (action != null) {
+                    userMealList = um.getAllUserMealByName(searchUserMeal, user.getUserID());
+                } else {
+                    userMealList = um.getAllUserMealByUserID(user.getUserID());
+                }
                 ArrayList<UserMealDetailDTO> userMealDetailList = umd.getAllUserMealDetail();
                 ArrayList<DayDTO> dayList = d.getAllDay();
-
-                out.println(user.getUserID());
-                out.println(userMealList);
-                out.println(userMealDetailList);
 
                 request.setAttribute("userMealList", userMealList);
                 request.setAttribute("userMealDetailList", userMealDetailList);

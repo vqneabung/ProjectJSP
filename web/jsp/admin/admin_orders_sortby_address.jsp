@@ -17,49 +17,48 @@
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
         <div class="main">
             <h1>Quản lí Đơn hàng</h1>
-            <a class="btn btn-primary" type="button" title="In" onclick="myApp.printTable()">
-                <i class="fas fa-print"></i> In dữ liệu</a>
-            <a class="btn btn-primary" type="button" title="In" href="/ProjectJSP/ManageOrderServlet?function=orderByAddress" >
-                <i class="fas fa-print"></i>Chế độ phân loại theo địa chỉ</a>
-            <table class="styled-table" id="orderList">
-                <thead>
-                    <tr class="order-head">
-                        <th class='text-center'>Order ID</th>
-                        <th>User</th>
-                        <th>Total Price</th>
-                        <th>Payment Method</th>
-                        <th>Order Date</th>
-                        <th>Order Address</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                        <th>Detail</th>
-                    </tr>
-                <thead>
-                <tbody>
-                    <c:forEach var="order" items="${requestScope.orders}">
-                        <tr class="order-body">
-                            <td>${order.orderID}</td>
-                            <td>${order.user.userName}</td>
-                            <td>${order.totalPrice}</td>
-                            <td>${order.payment.paymentName}</td> 
-                            <td><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
-                            <td>${order.user.address}</td>
-                            <td id="status_id_${order.orderID}">
-                                ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
-                            </td> 
-                            <td id="action_id_${order.orderID}">
-                                <c:if test="${order.orderStatus != 2 && order.orderStatus != 3}">
-                                    <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
-                                    <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
-                                </c:if>
-                            </td>
-                            <td>                           
-                                <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
-                            </td>
+            <c:forEach items="${requestScope.addressList}" var="address">
+                <h3 style="margin-top: 1rem">Địa chỉ: ${address}</h3>
+                <table class="styled-table orderList" >
+                    <thead>
+                        <tr class="order-head">
+                            <th class='text-center'>Order ID</th>
+                            <th>User</th>
+                            <th>Total Price</th>
+                            <th>Payment Method</th>
+                            <th>Order Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            <th>Detail</th>
                         </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+                    <thead>
+                    <tbody>
+                        <c:forEach var="order" items="${requestScope.orders}">
+                            <c:if test="${order.user.address == address}">
+                                <tr class="order-body">
+                                    <td>${order.orderID}</td>
+                                    <td>${order.user.userName}</td>
+                                    <td>${order.totalPrice}</td>
+                                    <td>${order.payment.paymentName}</td> 
+                                    <td><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
+                                    <td id="status_id_${order.orderID}">
+                                        ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
+                                    </td> 
+                                    <td id="action_id_${order.orderID}">
+                                        <c:if test="${order.orderStatus != 2 && order.orderStatus != 3}">
+                                            <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
+                                            <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
+                                        </c:if>
+                                    </td>
+                                    <td>                           
+                                        <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:forEach>
             <script>
 
                 var myApp = new function () {
@@ -76,7 +75,7 @@
                 $(document).ready(function () {
                     // Xử lý khi click vào nút Confirm
 
-                    $('#orderList').DataTable({
+                    $('.orderList').DataTable({
                         "language": {
                             "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
                         }

@@ -63,9 +63,9 @@ public class AddToUserMeal extends HttpServlet {
                 totalResultFromAddUserMealDetail += resultFromAddUserMealDetail;
             }
             if (totalResultFromAddUserMealDetail >= 1) {
-                request.getRequestDispatcher("/ProjectJSP/LoginServlet");
+                request.getRequestDispatcher("/StartServlet?action=mealUser").forward(request, response);
             } else {
-                request.getRequestDispatcher("/ProjectJSP/LoginServlet");
+                request.getRequestDispatcher("/StartServlet?action=mealUser").forward(request, response);
             }
 
         }

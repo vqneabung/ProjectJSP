@@ -35,12 +35,12 @@ public class MealShopServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
+            
             ProductDAO p = new ProductDAO();
-
             ArrayList<ProductDTO> productList = p.getAllProducts();
-
+            
             request.setAttribute("productList", productList);
+            request.setAttribute("categorySearch", request.getParameter("categoryID"));
 
             //tao cookies de chua find name va luu cookies nay vao may tinh cua client
             request.getRequestDispatcher("jsp/home/mealshop_list.jsp").forward(request, response);

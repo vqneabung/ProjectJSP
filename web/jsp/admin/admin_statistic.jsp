@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-hover">
+                        <table class="styled-table" style="width: 100%">
                 <tr>
                     <th>Order ID</th>
                     <th>User</th>

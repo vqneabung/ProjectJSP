@@ -24,8 +24,9 @@ public class ProductDTO {
     private String productDescribe;
     private int isStatus;
     private String[] productImage;
+    private int discount;
 
-    public ProductDTO(int productID, String productName, CategoryDTO category, TypeDTO type, int isVegetarian, int isVegan, int hasSpecialDietaryRequirements, String[] size, int productPrice, int productStock, int productUnitSold, String productDescribe, int isStatus, String[] productImage) {
+    public ProductDTO(int productID, String productName, CategoryDTO category, TypeDTO type, int isVegetarian, int isVegan, int hasSpecialDietaryRequirements, String[] productSize, int productPrice, int productStock, int productUnitSold, String productDescribe, int isStatus, String[] productImage, int discount) {
         this.productID = productID;
         this.productName = productName;
         this.category = category;
@@ -33,13 +34,14 @@ public class ProductDTO {
         this.isVegetarian = isVegetarian;
         this.isVegan = isVegan;
         this.hasSpecialDietaryRequirements = hasSpecialDietaryRequirements;
-        this.productSize = size;
+        this.productSize = productSize;
         this.productPrice = productPrice;
         this.productStock = productStock;
         this.productUnitSold = productUnitSold;
         this.productDescribe = productDescribe;
         this.isStatus = isStatus;
         this.productImage = productImage;
+        this.discount = discount;
     }
 
     public int getProductID() {
@@ -152,6 +154,14 @@ public class ProductDTO {
 
     public void setProductImage(String[] productImage) {
         this.productImage = productImage;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 
 }

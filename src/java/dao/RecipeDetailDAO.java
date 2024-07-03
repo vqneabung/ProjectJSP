@@ -19,13 +19,15 @@ import utils.DBUtils;
  */
 public class RecipeDetailDAO {
 
-    public static final String GET_DATA = "select RecipeDetailID, FoodID, IngredientID, IsStatus from RecipeDetail Where IsStatus = 1 ";
+    public static final String GET_DATA = "select RecipeDetailID, FoodID, IngredientID, IsStatus, Weight from RecipeDetail Where IsStatus = 1 ";
 
-    public static final String GET_RECIPE_BY_FOODID = "select RecipeDetailID, FoodID, IngredientID, IsStatus from RecipeDetail where FoodID = ? and IsStatus = 1";
+    public static final String GET_RECIPE_BY_FOODID = "select RecipeDetailID, FoodID, IngredientID, IsStatus, Weight from RecipeDetail where FoodID = ? and IsStatus = 1";
 
-    public static final String INSERT_RECIPE = "insert into RecipeDetail(FoodID, IngredientID, IsStatus) values (?, ?, 1)";
+    public static final String INSERT_RECIPE = "insert into RecipeDetail(FoodID, IngredientID, IsStatus, Weight) values (?, ?, 1, ?)";
 
     public static final String REMOVE_RECIPE = "UPDATE [dbo].[RecipeDetail] SET [IsStatus] = 0 WHERE RecipeDetailID = ?";
+
+    public static final String UPDATE_RECIPE = "UPDATE [dbo].[RecipeDetail] SET [Weight] = ? WHERE RecipeDetailID = ?";
 
     public ArrayList<RecipeDetailDTO> getRecipeDetail() {
 
@@ -50,7 +52,8 @@ public class RecipeDetailDAO {
                         ProductDTO food = p.getProduct(rs.getInt("FoodID"));
                         ProductDTO ingredient = p.getProduct(rs.getInt("IngredientID"));
                         int status = rs.getInt("IsStatus");
-                        RecipeDetailDTO recipeDetail = new RecipeDetailDTO(recipeDetailID, food, ingredient, status);
+                        int weight = rs.getInt("Weight");
+                        RecipeDetailDTO recipeDetail = new RecipeDetailDTO(recipeDetailID, food, ingredient, status, weight);
                         recipeDetailList.add(recipeDetail);
                     }
 
@@ -98,7 +101,8 @@ public class RecipeDetailDAO {
                         ProductDTO food = p.getProduct(rs.getInt("FoodID"));
                         ProductDTO ingredient = p.getProduct(rs.getInt("IngredientID"));
                         int status = rs.getInt("IsStatus");
-                        RecipeDetailDTO recipeDetail = new RecipeDetailDTO(recipeDetailID, food, ingredient, status);
+                        int weight = rs.getInt("Weight");
+                        RecipeDetailDTO recipeDetail = new RecipeDetailDTO(recipeDetailID, food, ingredient, status, weight);
                         recipeDetailList.add(recipeDetail);
                     }
 
@@ -160,6 +164,35 @@ public class RecipeDetailDAO {
                 //INSERT INTO Product(ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, recipeDetailID);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
+    }
+
+    public int updateRecipeDetail(int recipeDetailID, int weight) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = UPDATE_RECIPE;
+                //UPDATE [dbo].[RecipeDetail] SET [Weight] = ? WHERE RecipeDetailID = ?
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, weight);
+                pst.setInt(2, recipeDetailID);
 
                 rs = pst.executeUpdate();
             }
