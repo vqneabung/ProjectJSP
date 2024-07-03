@@ -28,75 +28,122 @@
                     </form>
                 </div>
             </div>
-            <c:forEach items="${requestScope.userMealList}" var="userMeal">
-                <c:if test="${userMeal.isStatus == 1}">
-                    <h1 style="margin-top: 1rem">${userMeal.userMealName}</h1>
-                    <div class="card">
-                        <div class="card-body">
-                            <p><a class="btn btn-secondary" href="/ProjectJSP/InsertUserMealDetailServlet?userMealID=${userMeal.userMealID}"> + Thêm bữa ăn</a>   <a class="btn btn-primary"    href="/ProjectJSP/RemoveUserMealServlet?userMealID=${userMeal.userMealID}">Remove</a></p>
-                            <c:forEach items="${requestScope.dayList}" var="day">
-                                <h3>- ${day.dayText}</h3>
-                                <table class="styled-table" style="width: 100%">
-                                    <thead>
-                                        <tr class="text-center" >
-                                            <th style="width: 10%">Buổi</th>
-                                            <th style="width: 20%">Hình ảnh</th>
-                                            <th style="width: 20%">Product Name</th>
-                                            <th>Remove</th>
-                                            <th>Update</th>
+            <br>
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="styled-table" style="width: 100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <td>Thực đơn</td>
+                                    <td>Chi tiết</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${requestScope.userMealList}" var="userMeal">
+                                    <c:if test="${userMeal.isStatus == 1}">
+                                        <tr class="text-center">
+                                            <td>
+                                                ${userMeal.userMealName}
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userMealDetail${userMeal.userMealID}">Chi tiết</button>
+                                            </td>
                                         </tr>
-                                    <thead>
-                                    <tbody>
-                                        <tr>
-                                            <td rowspan="0" style="vertical-align : middle;text-align:center; width: 10%"><strong>+ Buổi sáng</strong></td>
-                                        </tr>
-                                        <c:forEach var="userMealDetail" items="${requestScope.userMealDetailList}">
-                                            <c:if test= "${(userMealDetail.isStatus != 0 && userMealDetail.userMeal.userMealID == userMeal.userMealID) && (day.dayNum == userMealDetail.day.dayNum  && userMealDetail.dish.dishID == 1)}" >
-                                                <tr id="userlMealDetail_${userMealDetail.userMealDetailID}" style="font-size: medium" >
-                                                    <th class="text-center"><img src="${userMealDetail.product.productImage[0]}" width="100" height="100"></th>
-                                                    <th class="text-center">${userMealDetail.product.productName}</th>
-                                                    <th class="text-center"><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
-                                                    <th class="text-center"><a href="UpdateUserMealDetailServlet?userMealDetailID=${userMealDetail.userMealDetailID}" class="btn btn-secondary">update</a></th>
-                                                </tr>
-                                            </c:if>
-                                        </c:forEach>   
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td rowspan="0" style="vertical-align : middle;text-align:center; width: 10%" ><strong>+ Buổi chiều</strong></td>
-                                        </tr>
-                                        <c:forEach var="userMealDetail" items="${requestScope.userMealDetailList}">
-                                            <c:if test= "${(userMealDetail.isStatus != 0 && userMealDetail.userMeal.userMealID == userMeal.userMealID) && (day.dayNum == userMealDetail.day.dayNum  && userMealDetail.dish.dishID == 2)}" >
-                                                <tr id="userlMealDetail_${userMealDetail.userMealDetailID}" style="font-size: medium" >
-                                                    <th class="text-center">${userMealDetail.product.productName}</th>
-                                                    <th><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
-                                                    <th><a href="UpdateUserMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}" class="btn btn-secondary">update</a></th>
-                                                </tr>
-                                            </c:if>
-                                        </c:forEach>   
-                                    </tbody>
-                                    <tbody>
-                                        <tr>
-                                            <td rowspan="0" style="vertical-align : middle;text-align:center; width: 10%"><strong>+ Buổi tối</strong></td>
-                                        </tr>
-                                        <c:forEach var="userMealDetail" items="${requestScope.userMealDetailList}">
-                                            <c:if test= "${(userMealDetail.isStatus != 0 && userMealDetail.userMeal.userMealID == userMeal.userMealID) && (day.dayNum == userMealDetail.day.dayNum  && userMealDetail.dish.dishID == 3)}" >
-                                                <tr id="userlMealDetail_${userMealDetail.userMealDetailID}" style="font-size: medium" >
-                                                    <th class="text-center">${userMealDetail.product.productName}</th>
-                                                    <th><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
-                                                    <th><a href="UpdateUserMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}" class="btn btn-secondary">update</a></th>
-                                                </tr>
-                                            </c:if>
-                                        </c:forEach>  
-                                    <tbody>
-                                </table>
+                                    </c:if>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                        <div>
+                            <c:forEach items="${requestScope.userMealList}" var="userMealForModal">
+                                <c:if test="${userMealForModal.isStatus == 1}">
+                                    <div class="modal fade" id="userMealDetail${userMealForModal.userMealID}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <p><a class="btn btn-secondary" href="/ProjectJSP/InsertUserMealDetailServlet?userMealID=${userMealForModal.userMealID}"> + Thêm bữa ăn</a>   <a class="btn btn-primary"    href="/ProjectJSP/RemoveUserMealServlet?userMealID=${userMeal.userMealID}">Remove</a></p>
+                                                            <c:forEach items="${requestScope.dayList}" var="day">
+                                                                <h3>- ${day.dayText}</h3>
+                                                                <table class="styled-table" style="width: 100%">
+                                                                    <thead>
+                                                                        <tr class="text-center" >
+                                                                            <th style="width: 10%">Buổi</th>
+                                                                            <th style="width: 20%">Hình ảnh</th>
+                                                                            <th style="width: 20%">Product Name</th>
+                                                                            <th>Remove</th>
+                                                                            <th>Update</th>
+                                                                        </tr>
+                                                                    <thead>
+                                                                    <tbody>
+                                                                        
+                                                                        <tr>
+                                                                            <td rowspan="0" style="vertical-align : middle;text-align:center; width: 10%"><strong>+ Buổi sáng</strong></td>
+                                                                        </tr>
+                                                                        <c:forEach var="userMealDetail" items="${requestScope.userMealDetailList}">
+                                                                            <c:if test= "${(userMealDetail.isStatus != 0 && userMealDetail.userMeal.userMealID == userMealForModal.userMealID) && (day.dayNum == userMealDetail.day.dayNum  && userMealDetail.dish.dishID == 1)}" >
+                                                                                <tr id="userlMealDetail_${userMealDetail.userMealDetailID}" style="font-size: medium" >
+                                                                                    <th class="text-center"><img src="${userMealDetail.product.productImage[0]}" width="100" height="100"></th>
+                                                                                    <th class="text-center">${userMealDetail.product.productName}</th>
+                                                                                    <th class="text-center"><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
+                                                                                    <th class="text-center"><a href="UpdateUserMealDetailServlet?userMealDetailID=${userMealDetail.userMealDetailID}" class="btn btn-secondary">update</a></th>
+                                                                                </tr>
+                                                                            </c:if>
+                                                                        </c:forEach>   
+                                                                    </tbody>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td rowspan="0" style="vertical-align : middle;text-align:center; width: 10%" ><strong>+ Buổi chiều</strong></td>
+                                                                        </tr>
+                                                                        <c:forEach var="userMealDetail" items="${requestScope.userMealDetailList}">
+                                                                            <c:if test= "${(userMealDetail.isStatus != 0 && userMealDetail.userMeal.userMealID == userMealForModal.userMealID) && (day.dayNum == userMealDetail.day.dayNum  && userMealDetail.dish.dishID == 2)}" >
+                                                                                <tr id="userlMealDetail_${userMealDetail.userMealDetailID}" style="font-size: medium" >
+                                                                                    <th class="text-center">${userMealDetail.product.productName}</th>
+                                                                                    <th><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
+                                                                                    <th><a href="UpdateUserMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}" class="btn btn-secondary">update</a></th>
+                                                                                </tr>
+                                                                            </c:if>
+                                                                        </c:forEach>   
+                                                                    </tbody>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td rowspan="0" style="vertical-align : middle;text-align:center; width: 10%"><strong>+ Buổi tối</strong></td>
+                                                                        </tr>
+                                                                        <c:forEach var="userMealDetail" items="${requestScope.userMealDetailList}">
+                                                                            <c:if test= "${(userMealDetail.isStatus != 0 && userMealDetail.userMeal.userMealID == userMealForModal.userMealID) && (day.dayNum == userMealDetail.day.dayNum  && userMealDetail.dish.dishID == 3)}" >
+                                                                                <tr id="userlMealDetail_${userMealDetail.userMealDetailID}" style="font-size: medium" >
+                                                                                    <th class="text-center">${userMealDetail.product.productName}</th>
+                                                                                    <th><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
+                                                                                    <th><a href="UpdateUserMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}" class="btn btn-secondary">update</a></th>
+                                                                                </tr>
+                                                                            </c:if>
+                                                                        </c:forEach>  
+                                                                    <tbody>
+                                                                </table>
+                                                            </c:forEach>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Send message</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
                             </c:forEach>
                         </div>
                     </div>
-                </c:if>
-            </c:forEach>  
+                </div>
+            </div>
         </div>
-        <%@include file="../../common/web/footer.jsp" %>    
+        <%@include file="../../common/web/footer.jsp" %> 
     </body>
 </html>
 

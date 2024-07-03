@@ -62,7 +62,7 @@
                                 <div  class="col-4">Điền size<input type="text" class="form-control" name="search_size" placeholder="Enter Size" value=""/></div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Điền giá <input type="number" class="form-control" name="search_price" placeholder="Enter Price" /></div>
+                                <div class="col-4">Điền giá: <b style="padding-right: 0.5rem">${requestScope.minProductPrice} </b> <input id="productPriceSlider" type="text" class="span2 form-control" value="" data-slider-min="${requestScope.minProductPrice}" data-slider-max="${requestScope.maxProductPrice}" data-slider-step="1000" data-slider-value="[${requestScope.minProductPrice + 999},${requestScope.maxProductPrice}]"/> <b style="padding-left: 1rem">${requestScope.maxProductPrice}</b></div>
                                 <div class="col-4">Điền số lượng còn <input type="number" class="form-control" name="search_stock" placeholder="Enter Stock" /></div>
                                 <div class="col-4">Điền số lượng bán <input type="number" class="form-control" name="search_unitSold" placeholder="Enter Unit Sold" /></div>
                             </div>
@@ -96,6 +96,8 @@
                                 </div>
                             </div>
                             <script type="text/javascript">
+
+                                $("#productPriceSlider").bootstrapSlider();
                                 $(document).ready(function () {
                                     var foodOptions = [
                                 <c:forEach items="${requestScope.categoryList}" var="category">
@@ -164,7 +166,7 @@
                 <a class="btn btn-primary btn-lg active" type="button" title="In" onclick="myApp.printTable()"> <i class="fas fa-print"></i> In dữ liệu</a>
             </p> 
             <div id="productList">
-                <table class="styled-table" id="productListTable">
+                <table class="styled-table" id="productListTable" style="font-size:15px">
                     <thead>
                         <tr>
                             <th>Product ID</th>
@@ -184,9 +186,9 @@
                             <th>Update</th>
                         </tr>
                     </thead>
-                    <c:forEach var="product" items="${requestScope.productsPage}">
-                        <c:if test= "${product.isStatus != 0}" >
-                            <tbody>
+                    <tbody>
+                        <c:forEach var="product" items="${requestScope.products}">
+                            <c:if test= "${product.isStatus != 0}" >
                                 <tr>
                                     <th>${product.productID}</th>
                                     <th>${product.productName}</th>
@@ -204,35 +206,33 @@
                                     <th>${product.productUnitSold}</th>
                                     <th>${product.isStatus == 1 ? "Activate" : "Deactivate"}</th>
                                     <th><a class="btn btn-primary" href="RemoveProduceServlet?productID=${product.productID}">Xóa</a></th>
-                                    <th><a class="btn btn-primary" href="UpdateProductServlet?productID=${product.productID}">Cập nhật</a></th>
+                                    <th><a class="btn btn-primary" href="UpdateProductServlet?productID=${product.productID}">Cập nhật</a><button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#describeBox${product.productID}">Describe</button>
+                                    </th>
                                 </tr>  
-                            </tbody>
-                            <tr>
-                                <td colspan="15">
-                                    <h2>Mô tả</h2>
-                                    ${product.productDescribe}
-                                </td>
-                            </tr>
-                        </c:if>
-                        <c:if test="${requestScope.update_status} != null">
-                            <p>Update successful</p>
+                            <div>
+                                <div class="modal fade" id="describeBox${product.productID}" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Mô tả</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>${product.productDescribe}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </c:if>
                     </c:forEach>   
+                    </tbody>
                 </table>
             </div>
-            <div class="pagination">
-                <c:if test="${currentPage > 1}">
-                    <a href="ManageProductServlet?page=${currentPage - 1}">Previous</a>
-                </c:if>
-                <c:forEach var="i" begin="1" end="${noOfPages}">
-                    <a href="ManageProductServlet?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
-                </c:forEach>
-                <c:if test="${currentPage < noOfPages}">
-                    <a href="ManageProductServlet?page=${currentPage + 1}">Next</a>
-                </c:if>
-            </div>
             <script>
-
                 var myApp = new function () {
                     this.printTable = function () {
                         var tab = document.getElementById('productList');
@@ -244,6 +244,18 @@
                 };
 
                 $(document).ready(function () {
+                    $('#productListTable').DataTable({
+                        "paging": false,
+                        "searching": false,
+                        "info": false,
+                        "columnDefs": [
+                            {"orderable": false, "targets": [12, 13, 14]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
+                        ]
+
+                    });
+
+
+
                     $('#searchProductForm').on('submit', function (event) {
                         // Ngăn chặn hành động mặc định của form (tải lại trang)
                         event.preventDefault();
@@ -258,7 +270,7 @@
                                 isVegetarian: $('select[name="search_isVegetarian"]').val(),
                                 isVegan: $('select[name="search_isVegan"]').val(),
                                 size: $('input[name="search_size"]').val().trim(),
-                                price: $('input[name="search_price"]').val().trim(),
+                                price: $("#productPriceSlider").val(),
                                 stock: $('input[name="search_stock"]').val().trim(),
                                 unitSold: $('input[name="search_unitSold"]').val().trim(),
                                 order_product: $('select[name="order_product"]').val(),

@@ -87,7 +87,7 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UserActivityDAO ua = new UserActivityDAO();
         java.util.Date utilDate = new java.util.Date();
-        String userSession = (String) session.getAttribute("User");
+        UserDTO userSession = (UserDTO) session.getAttribute("User");
         try {
             if (userSession != null) {
                 response.sendRedirect(HOME);

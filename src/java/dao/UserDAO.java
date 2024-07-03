@@ -35,6 +35,8 @@ public class UserDAO {
 
     public static final String UPDATE_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?, UserStatus = ?, UserAvatar = ? WHERE UserID = ?";
 
+    public static final String UPDATE_USER_FOR_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserPassword = ?, UserAddress = ?, UserAvatar = ? WHERE UserID = ?";
+
     public static final String UPDATE_USER_PASSWORD = "UPDATE Users SET UserPassword = ? WHERE UserID = ?";
 
     public ArrayList<UserDTO> getAllAcounts() {
@@ -318,6 +320,41 @@ public class UserDAO {
                 pst.setInt(8, status);
                 pst.setString(9, avatar);
                 pst.setInt(10, userID);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
+    }
+
+    public int updateUserForUser(String userName, String fullName, String email, String phone, String password, String address, int userID, String avatar) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = UPDATE_USER_FOR_USER;
+                //UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, userName);
+                pst.setString(2, fullName);
+                pst.setString(3, email);
+                pst.setString(4, phone);
+                pst.setString(5, password);
+                pst.setString(6, address);
+                pst.setString(7, avatar);
+                pst.setInt(8, userID);
 
                 rs = pst.executeUpdate();
             }

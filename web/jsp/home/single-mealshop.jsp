@@ -91,7 +91,7 @@
                             <h2 class="fw-bolder mb-4 text-center">Sản phẩm cùng loại</h2>
                             <div class="row" id="productList">
                                 <c:forEach items="${requestScope.productByCategoryID}" var="product">
-                                    <div class="col-4" style="margin: 2rem 1rem 1rem 0rem">
+                                    <div class="col-4" style="margin-bottom: 1rem">
                                         <div class="card h-100">
                                             <!-- Product image-->
                                             <img class="card-img-top" src="${product.productImage[0]}" alt="..." width="100%" height="150px"/>

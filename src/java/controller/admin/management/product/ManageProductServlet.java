@@ -63,26 +63,10 @@ public class ManageProductServlet extends HttpServlet {
                 }
             }).getProductPrice();
 
-
+            request.setAttribute("maxProductPrice", maxProductPrice);
+            request.setAttribute("minProductPrice", minProductPrice);
             //--------Tao thanh phan trang--------------------
-            int page = 1;
-            int recordsPerPage = 10;
-
-            if (request.getParameter("page") != null) {
-                page = Integer.parseInt(request.getParameter("page"));
-            }
-
-            int start = (page - 1) * recordsPerPage;
-            int end = Math.min(start + recordsPerPage, products.size());
-            List<ProductDTO> productsPage = products.subList(start, end);
-
-            int noOfPages = (int) Math.ceil(products.size() * 1.0 / recordsPerPage);
-
-            request.setAttribute("productsPage", productsPage);
-            request.setAttribute("noOfPages", noOfPages);
-            request.setAttribute("currentPage", page);
-            request.setAttribute("products", products);
-
+            request.setAttribute("products", products); 
             //---------------------------------------------------------
             request.getRequestDispatcher("jsp/admin/admin_products.jsp").forward(request, response);
         }

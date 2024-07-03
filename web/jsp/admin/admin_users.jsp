@@ -63,7 +63,8 @@
                                             <label for="search_address">Địa chỉ:</label>
                                             <input class="form-control" type="text" id="search_address" name="search_address">
                                         </div>
-                                        <div class="col-4">
+                                        
+                                        <div class="col-4" style="margin-top: 1rem">
                                             <label for="search_dateCreate">Thời gian</label>
                                             <input id="search_dateCreate" class="form-control" type="date" />
                                         </div>

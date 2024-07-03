@@ -22,7 +22,7 @@
                         <ul>
                             <li><i class="fa fa-fax"></i>  Address : Lô E2a-7, Đường D1, Khu Công nghệ cao, P.Long Thạnh Mỹ, Tp. Thủ Đức, TP.HCM.</li>
                             <li><i class="fa fa-envelope-o"></i> <a href="#">vqn@vqn.com</a></li>
-                            <li><i class="fa fa-phone"></i> 0(1234) 567 890</li>s
+                            <li><i class="fa fa-phone"></i> 0(1234) 567 890</li>
                         </ul>        
                         <h3><strong>Working hours</strong></h3>
                         <p><strong>Monday – Saturday</strong>:  08AM – 22PM</p>       

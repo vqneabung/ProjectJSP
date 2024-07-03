@@ -42,7 +42,7 @@
                     <c:forEach items="${requestScope.dayList}" var="day">
                         <h3>- ${day.dayText}</h3>
                         <div>
-                            <table class="styled-table" style="margin-left: 3.5em; border-collapse: collapse; width: 100%">
+                            <table class="styled-table" style="margin-left: 3.5em; margin-right: 3.5rem;">
                                 <tr class="text-center">
                                     <th>Buổi</th>
                                     <th>Ảnh sản phẩm </th>

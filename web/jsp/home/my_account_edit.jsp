@@ -1,6 +1,6 @@
 <%-- 
-    Document   : admin_update_user
-    Created on : May 19, 2024, 10:55:27 PM
+    Document   : my_account_edit
+    Created on : Jul 3, 2024, 4:39:07 PM
     Author     : VQN
 --%>
 
@@ -13,7 +13,6 @@
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
-        <%@include file="../../common/admin/sidebar.jsp" %>
         <div class="main">
             <div class="card">
                 <div class="card-body">
@@ -25,7 +24,19 @@
                         <p>Số điện thoại <input type="text" class="form-control" name="update_phone" placeholder="Enter Phone" value="${requestScope.phone}" required=""/></p>
                         <p>Mật khẩu <input type="password" class="form-control" name="update_password" placeholder="Enter password" value="${requestScope.password}" required=""/></p>
                         <p>Địa chỉ <input type="text" class="form-control" name="update_address" placeholder="Enter Address" value="${requestScope.address}" required=""/></p>
-                        <div>
+                        <p>Vai trò 
+                            <select class="form-control" name="update_role">
+                                <option value="0">Admin</option>
+                                <option value="1">User</option>
+                            </select>
+                        </p>
+                        <p>Tình trạng
+                            <select class="form-control" name="update_status">
+                                <option value="1">Activate</option>
+                                <option value="0">Deactivate</option>
+                            </select>
+                        </p>
+                        <div style="margin-bottom: 1rem">
                             Chọn ảnh <input class="form-control" type="file" name="insert_avatar" value="" onchange='previewFile()' /> <br>
                             <img src="/ProjectJSP/assets/home/image/1200px-Picture_icon_BLACK.svg.png" height="200" alt="avatar" id="image" >
                             <input type="button" value="Remove Image" name="remove_image" onclick="removeFile()"/>

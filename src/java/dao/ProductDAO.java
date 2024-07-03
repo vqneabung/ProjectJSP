@@ -37,7 +37,7 @@ public class ProductDAO {
 
     public static final String GET_PRODUCT_BY_SEARCH_MULTIDATA = "SELECT  * FROM [WEEKLYMEAL].[dbo].[Product] Where TypeID Like ? AND IsVegan Like ? AND IsVegetarian like ? AND ProductName Like ?";
 
-    public static final String GET_PRODUCT_BY_SEARCH_ALLDATA = "SELECT [ProductID],[ProductName],[CategoryID],[TypeID],[IsVegetarian],[IsVegan],[HasSpecialDietaryRequirements],[ProductSize],[ProductPrice],[ProductStock],[ProductUnitSold],[ProductDescribe],[ProductImage],[IsStatus], Discount FROM [dbo].[Product] WHERE [ProductName] LIKE ? AND [CategoryID] LIKE ? AND [TypeID] LIKE ? AND [IsVegetarian] LIKE ? AND [IsVegan] LIKE ? AND [ProductSize] LIKE ? AND [ProductPrice] LIKE ? AND [ProductStock] LIKE ? AND [ProductUnitSold] LIKE ?";
+    public static final String GET_PRODUCT_BY_SEARCH_ALLDATA = "SELECT [ProductID],[ProductName],[CategoryID],[TypeID],[IsVegetarian],[IsVegan],[HasSpecialDietaryRequirements],[ProductSize],[ProductPrice],[ProductStock],[ProductUnitSold],[ProductDescribe],[ProductImage],[IsStatus], Discount FROM [dbo].[Product] WHERE [ProductName] LIKE ? AND [CategoryID] LIKE ? AND [TypeID] LIKE ? AND [IsVegetarian] LIKE ? AND [IsVegan] LIKE ? AND [ProductSize] LIKE ? AND [ProductPrice] BETWEEN ? AND ? AND [ProductStock] LIKE ? AND [ProductUnitSold] LIKE ?";
 
     public static final String GET_PRODUCT_BY_ID = "SELECT * FROM Product WHERE ProductID = ?";
 
@@ -379,7 +379,7 @@ public class ProductDAO {
 
     }
 
-    public ArrayList<ProductDTO> getProductBySearchAllData(String searchProductName, String searchCategoryID, String searchTypeID, String searchIsVegetarian, String searchIsVegan, String searchSize, String searchPrice, String searchStock, String searchUnitSold, String order_product, String order_type) {
+    public ArrayList<ProductDTO> getProductBySearchAllData(String searchProductName, String searchCategoryID, String searchTypeID, String searchIsVegetarian, String searchIsVegan, String searchSize, String searchPriceArr[], String searchStock, String searchUnitSold, String order_product, String order_type) {
         ArrayList<ProductDTO> productList = new ArrayList<>();
         TypeDAO t = new TypeDAO();
         CategoryDAO c = new CategoryDAO();
@@ -400,9 +400,10 @@ public class ProductDAO {
                 pst.setString(4, "%" + searchIsVegetarian + "%");
                 pst.setString(5, "%" + searchIsVegan + "%");
                 pst.setString(6, "%" + searchSize + "%");
-                pst.setString(7, "%" + searchPrice + "%");
-                pst.setString(8, "%" + searchStock + "%");
-                pst.setString(9, "%" + searchUnitSold + "%");
+                pst.setString(7, searchPriceArr[0].trim());
+                pst.setString(8, searchPriceArr[1].trim());
+                pst.setString(9, "%" + searchStock + "%");
+                pst.setString(10, "%" + searchUnitSold + "%");
 
 //    public static final String GET_PRODUCT_BY_SEARCH_ALLDATA = "SELECT [ProductID],[ProductName],[CategoryID],[TypeID],[IsVegetarian],[IsVegan],[ProductSize],[ProductPrice],[ProductStock],[ProductUnitSold],[ProductImage],[IsStatus] FROM [dbo].[Product] WHERE [ProductName] LIKE ? AND [CategoryID] LIKE ? AND [TypeID] LIKE ? AND [IsVegetarian] LIKE ? AND [IsVegan] LIKE ? AND [HasSpecialDietaryRequirements] LIKE ? AND [ProductSize] LIKE ? AND [ProductPrice] LIKE ? AND [ProductStock] LIKE ? AND [ProductUnitSold] LIKE ? AND [ProductImage] LIKE ? AND [IsStatus] LIKE ? ?";
                 ResultSet rs = pst.executeQuery();

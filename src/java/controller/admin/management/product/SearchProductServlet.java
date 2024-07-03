@@ -43,13 +43,14 @@ public class SearchProductServlet extends HttpServlet {
             String isVegan = request.getParameter("isVegan");
             String size = request.getParameter("size");
             String price = request.getParameter("price");
+            String[] priceArr = price.split(",");
             String stock = request.getParameter("stock");
             String unitSold = request.getParameter("unitSold");
             String order_product = request.getParameter("order_product");
             String order_type = request.getParameter("order_type");
 
             ProductDAO p = new ProductDAO();
-            ArrayList<ProductDTO> productList = p.getProductBySearchAllData(productName, categoryID, typeID, isVegetarian, isVegan, size, price, stock, unitSold, order_product, order_type);
+            ArrayList<ProductDTO> productList = p.getProductBySearchAllData(productName, categoryID, typeID, isVegetarian, isVegan, size, priceArr, stock, unitSold, order_product, order_type);
             Gson gson = new Gson();
 
             String productJSon = gson.toJson(productList);
