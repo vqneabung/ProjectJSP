@@ -90,6 +90,7 @@ public class StartServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
+
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

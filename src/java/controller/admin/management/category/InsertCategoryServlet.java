@@ -2,33 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.web.usermeal;
+package controller.admin.management.category;
 
-import dao.DayDAO;
-import dao.SpecMealDAO;
-import dao.SpecMealDetailDAO;
-import dao.UserMealDAO;
-import dao.UserMealDetailDAO;
+import dao.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.DayDTO;
-import model.SpecMealDTO;
-import model.SpecMealDetailDTO;
-import model.UserDTO;
-import model.UserMealDTO;
-import model.UserMealDetailDTO;
 
 /**
  *
  * @author VQN
  */
-public class ManageUserMealServlet extends HttpServlet {
+public class InsertCategoryServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,37 +32,14 @@ public class ManageUserMealServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
-            String action = request.getParameter("searchUserMeal_btn");
-            String searchUserMeal = request.getParameter("searchUserMeal");
-
-            UserMealDAO um = new UserMealDAO();
-
-            DayDAO d = new DayDAO();
-
-            HttpSession session = request.getSession();
-            UserDTO user = (UserDTO) session.getAttribute("User");
-            ArrayList<UserMealDTO> userMealList = new ArrayList<>();
-            if (user != null) {
-
-                if (action != null) {
-                    userMealList = um.getAllUserMealByName(searchUserMeal, user.getUserID());
-                } else {
-                    userMealList = um.getAllUserMealByUserID(user.getUserID());
-                }
-                ArrayList<DayDTO> dayList = d.getAllDay();
-
-                session.setAttribute("userMealList", userMealList);
-                session.setAttribute("dayList", dayList);
-
-                if (userMealList != null) {
-                    request.getRequestDispatcher("jsp/home/usermeals.jsp").forward(request, response);
-                } else {
-                    request.getRequestDispatcher("jsp/home/home.jsp").forward(request, response);
-                }
-            } else {
-                request.getRequestDispatcher("jsp/home/home.jsp").forward(request, response);
-            }
+            String categoryName = request.getParameter("insert_categoryName");
+            String typeID = request.getParameter("insert_typeID");
+            
+            CategoryDAO c = new CategoryDAO();
+            int rs = c.insertCategory(categoryName, Integer.parseInt(typeID));
+            
+            response.sendRedirect("ManageCategoryServlet");
+            
         }
     }
 

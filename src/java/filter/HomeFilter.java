@@ -16,13 +16,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author VQN
  */
-public class LoginFilterServlet implements Filter {
+public class HomeFilter implements Filter {
 
     private static final boolean debug = true;
 
@@ -31,13 +30,13 @@ public class LoginFilterServlet implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
 
-    public LoginFilterServlet() {
+    public HomeFilter() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("LoginFilterServlet:DoBeforeProcessing");
+            log("HomeFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -65,7 +64,7 @@ public class LoginFilterServlet implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("LoginFilterServlet:DoAfterProcessing");
+            log("HomeFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -101,17 +100,15 @@ public class LoginFilterServlet implements Filter {
             throws IOException, ServletException {
 
         if (debug) {
-            log("LoginFilterServlet:doFilter()");
+            log("HomeFilter:doFilter()");
         }
 
         doBeforeProcessing(request, response);
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession session = req.getSession();
-        if (session.getAttribute("User") == null) {
-            res.sendRedirect("/ProjectJSP/StartServlet?action=login");
-        } else {
-
+        String url = req.getServletPath();
+        if (url.endsWith(".jsp")) {
+            res.sendRedirect("ErrorServlet");
         }
 
         Throwable problem = null;
@@ -169,7 +166,7 @@ public class LoginFilterServlet implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {
-                log("LoginFilterServlet:Initializing filter");
+                log("HomeFilter:Initializing filter");
             }
         }
     }
@@ -180,9 +177,9 @@ public class LoginFilterServlet implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("LoginFilterServlet()");
+            return ("HomeFilter()");
         }
-        StringBuffer sb = new StringBuffer("LoginFilterServlet(");
+        StringBuffer sb = new StringBuffer("HomeFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

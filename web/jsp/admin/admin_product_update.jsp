@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Cập nhật sản phẩm</title>
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
@@ -79,6 +79,11 @@
                             </div>
                         </div>
                         <script type="text/javascript">
+
+                            var textarea = new FroalaEditor('textarea', {
+                                imageUpload: false
+                            });
+
                             function removeFile() {
                                 var preview = document.querySelector("input[type='file']");
                                 preview.value = "";

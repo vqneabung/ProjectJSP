@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Quản lí sản phẩm</title>
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
@@ -245,12 +245,15 @@
 
                 $(document).ready(function () {
                     $('#productListTable').DataTable({
-                        "paging": false,
                         "searching": false,
                         "info": false,
                         "columnDefs": [
                             {"orderable": false, "targets": [12, 13, 14]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
-                        ]
+                        ],
+                        "language": {
+                            "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
+                        }
+
 
                     });
 

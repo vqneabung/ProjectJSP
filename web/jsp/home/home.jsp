@@ -30,7 +30,6 @@
             <div class="row">
                 <!-- Blog entries-->
                 <div class="col-lg-8">
-                    <!-- Featured blog post-->
                     <div class="card mb-4">
                         <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
                         <div class="card-body">
@@ -40,33 +39,29 @@
                             <a class="btn btn-primary" href="StartServlet?action=specmeal">Read more →</a>
                         </div>
                     </div>
-                    <!-- Nested row for non-featured blog posts-->
                     <div class="row">
                         <!-- Blog post-->
                         <div class="col-12">
                             <h1 class="text-center" style="margin-bottom: 1rem">Best Seller</h1>
                             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 justify-content-center" id="productList">
                                 <c:forEach items="${requestScope.bestSellerProductList}" begin="1" end="3" var="product">
-                                    <div class="col mb-5">
-                                        <div class="card h-100">
-                                            <!-- Product image-->
-                                            <img class="card-img-top" src="${product.productImage[0]}" alt="..." width="100%" height="150px"/>
-                                            <!-- Product details-->
-                                            <div class="card-body p-4">
-                                                <div class="text-center">
-                                                    <!-- Product name-->
-                                                    <h5 class="fw-bolder">${product.productName}</h5>
-                                                    <!-- Product Type-->
-                                                    <h5 class="fw-bolder">Loại: ${product.type.typeName}</h5>
-                                                    <!-- Product price-->
-                                                    Giá: <del>${product.productPrice}Đ</del> -${product.discount}%
-                                                    <br>
-                                                    Giá còn: ${product.productPrice - product.discount*product.productPrice/100}Đ
+                                    <div class="col-4" style="margin-bottom: 1rem">
+                                        <div class="card p-4 bg-white">
+                                            <div class="about-product text-center mt-2"><img src="${product.productImage[0]}" style="width: 100%; height: 150px; margin-bottom: 1rem">
+                                                <div>
+                                                    <h4>${product.productName}</h4>
+                                                    <h6 class="mt-0 text-black-50">Loại: ${product.type.typeName}</h6>
                                                 </div>
                                             </div>
-                                            <!-- Product actions-->
-                                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                                <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}&categoryID=${product.category.categoryID}">Chi tiết</a></div>
+                                            <div class="stats mt-2">
+                                                <div class="d-flex justify-content-between p-price"><span>Giá gốc</span><span><del>${product.productPrice}Đ</del></span></div>
+                                                <div class="d-flex justify-content-between p-price"><span>Giảm đến: </span><span>${product.discount}%`</span></div>
+                                                <div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>${product.discount*product.productPrice/100}199</span></div>
+                                            </div>
+                                            <div class="d-flex justify-content-between total font-weight-bold mt-2"><span>Total</span><span>${product.productPrice - product.discount*product.productPrice/100}Đ</span>
+                                            </div>
+                                            <div class="text-center" style=" padding-top: 1rem;">
+                                                <button class="btn btn-outline-dark addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}&categoryID=${product.category.categoryID}">Chi tiết</a>
                                             </div>
                                         </div>
                                     </div>

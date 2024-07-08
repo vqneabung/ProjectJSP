@@ -30,4 +30,21 @@
       <type>java.lang.String</type>
     </attribute>
   </tag>
+  <tag>
+    <name>recipeDetailListByFoodID</name>
+    <tag-class>taglib.recipeDetailListByFoodID</tag-class>
+    <body-content>scriptless</body-content>
+    <attribute>
+      <name>foodID</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>int</type>
+    </attribute>
+    <attribute>
+      <name>var</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.lang.String</type>
+    </attribute>
+  </tag>
 </taglib>

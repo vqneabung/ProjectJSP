@@ -1,6 +1,6 @@
 <%-- 
-    Document   : admin_orders
-    Created on : Jun 17, 2024, 10:05:22 PM
+    Document   : admin_categories
+    Created on : Jul 4, 2024, 8:05:33 AM
     Author     : VQN
 --%>
 
@@ -9,62 +9,67 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Quản lí đơn hàng</title>
+        <title>Quản lí thể loại</title>
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
         <%@include file="../../common/admin/sidebar.jsp" %>
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
         <div class="main">
-            <h1>Quản lí Đơn hàng</h1>
+            <h1>Quản lí Thể loại</h1>
             <a class="btn btn-primary" type="button" title="In" onclick="myApp.printTable()">
                 <i class="fas fa-print"></i> In dữ liệu</a>
-            <a class="btn btn-primary" type="button" title="In" href="/ProjectJSP/ManageOrderServlet?function=orderByAddress" >
-                <i class="fas fa-print"></i>Chế độ phân loại theo địa chỉ</a>
-            <table class="styled-table" id="orderList">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertCategory">Chèn thể loại</button>
+            <table class="styled-table" id="categoryList">
                 <thead>
-                    <tr class="order-head">
+                    <tr class="category-head">
                         <th class='text-center'>Order ID</th>
-                        <th>User</th>
-                        <th>Total Price</th>
-                        <th>Payment Method</th>
-                        <th>Order Date</th>
-                        <th>Order Address</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                        <th>Detail</th>
+                        <th>CategoryID</th>
+                        <th>Tên thể loại</th>
+                        <th>Hành động</th>
                     </tr>
                 <thead>
                 <tbody>
-                    <c:forEach var="order" items="${requestScope.orders}">
-                        <tr class="order-body">
-                            <td>${order.orderID}</td>
-                            <td>${order.user.userName}</td>
-                            <td>${order.totalPrice}</td>
-                            <td>${order.payment.paymentName}</td> 
-                            <td><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
-                            <td>${order.user.address}</td>
-                            <td id="status_id_${order.orderID}">
-                                ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
-                            </td> 
-                            <td id="action_id_${order.orderID}">
-                                <c:if test="${order.orderStatus != 2 && order.orderStatus != 3}">
-                                    <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
-                                    <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
-                                </c:if>
-                            </td>
-                            <td>                           
-                                <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
-                            </td>
+                    <c:forEach var="category" items="${requestScope.categories}">
+                        <tr class="category-body">
+                            <td>${category.categoryID}</td>
+                            <td>${category.categoryName}</td>
+                            <td>${category.type.typeName}</td>
+                            <td><a class="btn btn-primary" href="RemoveCategoryServlet?categoryID=${category.categoryID}">Xóa</a></td>                
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
+            <div class="modal fade" id="insertCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Chèn thể loại</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="InsertCategoryServlet" method="get">
+                                Nhập tên thể loại<input type="text" name="insert_categoryName" value="" class="form-control">
+                                Nhập dạng 
+                                <select class="form-control" name="insert_typeID" onchange="">
+                                    <option value="1">Thức ăn</option>
+                                    <option value="2">Nguyên liệu</option>
+                                </select>
+                                <br>
+                                <input type="submit" name="btn_insert" value="Chèn" class="form-control">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <script>
 
                 var myApp = new function () {
                     this.printTable = function () {
-                        var tab = document.getElementById('orderList');
+                        var tab = document.getElementById('categoryList');
                         var win = window.open('', '', 'height=700,width=700');
                         win.document.write(tab.outerHTML);
                         win.document.close();

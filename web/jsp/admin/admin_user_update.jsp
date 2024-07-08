@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Cập nhật người dùng</title>
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1>Update user</h1>
-                    <form action="/ProjectJSP/EditProfileServlet" method="post" enctype="multipart/form-data">
+                    <form action="/ProjectJSP/UpdateUserServlet" method="post" enctype="multipart/form-data">
                         <p>Tên đầy đủ <input class="form-control" type="text" name="update_fullname" placeholder="Enter Fullname" value="${requestScope.fullName}" required=""/></p>
                         <p>User name <input type="text" class="form-control" name="update_username" placeholder="Enter Username" value="${requestScope.userName}" required=""/></p>
                         <p>Email <input type="email" class="form-control" name="update_email" placeholder="Enter Email" value="${requestScope.email}" required=""/></p>  

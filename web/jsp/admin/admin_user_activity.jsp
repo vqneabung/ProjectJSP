@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Thời gian hoạt động của ${requestScope.user.userName}</title>
     </head>
     <body>
         <%@ include file="../../common/web/header.jsp" %>

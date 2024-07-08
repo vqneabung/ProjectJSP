@@ -4,12 +4,16 @@
     Author     : VQN
 --%>
 
+<%@page import="model.RecipeDetailDTO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="dao.RecipeDetailDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="/WEB-INF/tlds/web_taglib" prefix="s"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Kế hoạch của chuyên gia</title>
     </head>
     <body>     
         <%@include file="../../common/web/header.jsp" %>  
@@ -29,8 +33,26 @@
                                 <strong>+ Buổi sáng: </strong><br>
                                 <c:forEach var="specMealDetail" items="${requestScope.specMealDetailList}">
                                     <c:if test= "${(specMealDetail.isStatus != 0 && specMealDetail.specMeal.specMealID == specMeal.specMealID) && (day.dayNum == specMealDetail.day.dayNum  && specMealDetail.dish.dishID == 1)}" >
-                                        <a href="SingleMealShopServlet?productID=${specMealDetail.product.productID}">${specMealDetail.product.productName}:</a>    <br/>
-                                        * ${specMealDetail.product.productDescribe} </br>                   
+                                        <a href="SingleMealShopServlet?productID=${specMealDetail.product.productID}">${specMealDetail.product.productName}:</a>    
+                                        <br/>
+                                        * ${specMealDetail.product.productDescribe} </br>  
+                                        <div>
+                                            <table class="styled-table" style="width: 100%">
+                                                <tr class="text-center">
+                                                    <th>Nguyên liệu</th>
+                                                    <th>Trọng lượng (Gram)</th>
+                                                </tr>
+                                                <s:recipeDetailListByFoodID foodID="${specMealDetail.product.productID}" var="recipeDetailListByFoodID"/>
+                                                <c:forEach var="recipeDetail" items="${recipeDetailListByFoodID}">
+                                                    <c:if test= "${recipeDetail.status != 0}" >
+                                                        <tr class="text-center">
+                                                            <td>${recipeDetail.ingredient.productName}</td>
+                                                            <td>${recipeDetail.weight}</td>
+                                                        </tr>
+                                                    </c:if>
+                                                </c:forEach>         
+                                            </table>
+                                        </div>
                                     </c:if>
                                 </c:forEach>   
                                 <br/>

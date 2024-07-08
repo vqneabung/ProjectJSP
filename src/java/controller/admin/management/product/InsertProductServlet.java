@@ -131,7 +131,7 @@ public class InsertProductServlet extends HttpServlet {
                         response.sendRedirect("/ProjectJSP/ManageProductServlet");
                     }
                 } else {
-                    request.getRequestDispatcher("/ProjectJSP/ManageProductServlet").forward(request, response);
+                    response.sendRedirect("/ProjectJSP/ManageProductServlet");
                 }
             }
         }

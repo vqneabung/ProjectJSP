@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Danh sách người dùng/title>
     </head>
     <body>
         <%@ include file="../../common/web/header.jsp" %>
@@ -63,7 +63,7 @@
                                             <label for="search_address">Địa chỉ:</label>
                                             <input class="form-control" type="text" id="search_address" name="search_address">
                                         </div>
-                                        
+
                                         <div class="col-4" style="margin-top: 1rem">
                                             <label for="search_dateCreate">Thời gian</label>
                                             <input id="search_dateCreate" class="form-control" type="date" />
@@ -160,7 +160,10 @@
                 "info": false,
                 "columnDefs": [
                     {"orderable": false, "targets": [9, 10, 11]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
-                ]
+                ],
+                "language": {
+                    "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
+                }
 
             });
             $('#searchForm').submit(function (event) {

@@ -20,7 +20,7 @@ import utils.DBUtils;
  */
 public class UserMealDAO {
 
-    public static final String GET_DATA = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal";
+    public static final String GET_DATA = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where IsStatus = 1";
 
     public static final String GET_DATA_BY_USERID = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal where UserID = ?";
 

@@ -14,7 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="/common/web/add_css_js.jsp"%>  
-        <title>JSP Page</title>
+        <title>Chén thêm sản phẩm</title>
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
@@ -60,7 +60,7 @@
                         </p>
                         <p>Điền size <input class="form-control" type="text" name="insert_size" placeholder="Enter Size" value=""/></p>
                         <p>Điền giá* <input class="form-control" type="number" name="insert_price" placeholder="Enter Price" required=""/></p>
-                        <p>Điền giảm giá* <input class="form-control" type="number" name="insert_discount" placeholder="Enter Discount" required=""/></p>
+                        <p>Điền giảm giá* <input class="form-control" type="number" name="insert_discount" placeholder="Enter Discount" required="" max="100"/></p>
                         <p>Điền số lượng còn* <input class="form-control" type="number" name="insert_stock" placeholder="Enter Stock" required=""/></p>
                         <p>Điền số lượng bán* <input class="form-control" type="number" name="insert_unitSold" placeholder="Enter Unit Sold" required=""/></p>
                         <label>Viết miêu tả* </label><br>
@@ -74,6 +74,10 @@
                         <br>
                         <p><input type="submit" class="btn btn-primary" name="btn_insert" value="Insert"/></p>
                         <script type="text/javascript">
+
+                            var textarea = new FroalaEditor('textarea');
+
+
                             function removeFile() {
                                 var preview = document.querySelector("input[type='file']");
                                 preview.value = "";

@@ -15,7 +15,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Cửa hàng thực phẩm</title>
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
@@ -27,16 +27,17 @@
             </div>
         </header>
         <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row">
+            <div class="px-4 px-lg-5 mt-5">
+                <div class="row" style="margin: 0 4rem">
                     <div class="col-3">
                         <div class="card">
                             <div class="card-body">
                                 <div>
-                                    <div>
-                                        <input type="text" name="find" id="find" value="${requestScope.find}"/>
-                                        <input type="submit" class="btn btn-primary" value="Find" id="findProduct"/>
+                                    <div class="row">                
+                                        <div class="col-9" ><input type="text"  name="find" id="find" class="form-control" value="${requestScope.find}"/></div>
+                                        <div class="col-3" ><input type="submit" class="btn btn-primary" value="Find" id="findProduct"/></div>
                                     </div>
+                                    <br>
                                     <div>
                                         <h4>+ Thể loại</h4>
                                         <div class="form-check">
@@ -93,41 +94,43 @@
                                         %>
                                         <c:forEach items="<%=categoryList%>" var="category">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="${category.categoryID}" id="${category.categoryID}" name="categoryCheck">
+                                                <input class="form-check-input" type="checkbox" value="${category.categoryID}" id="${category.categoryID}" name="categoryCheck"/>
                                                 <label class="form-check-label" for="veganCheck">
                                                     ${category.categoryName}
                                                 </label>
-                                            </div>
+                                            </div> 
                                         </c:forEach>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-8">
-                        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 justify-content-center" id="productList">
+                    <div class="col-9">
+                        <div class="row justify-content-center" id="productList">
+                            <script>
+                                var productListSearch = [];
+                            </script>
                             <c:forEach items="${requestScope.productList}" var="product">
-                                <div class="col mb-5">
-                                    <div class="card h-100">
-                                        <!-- Product image-->
-                                        <img class="card-img-top" src="${product.productImage[0]}" alt="..." width="100%" height="150px"/>
-                                        <!-- Product details-->
-                                        <div class="card-body p-4">
-                                            <div class="text-center">
-                                                <!-- Product name-->
-                                                <h5 class="fw-bolder">${product.productName}</h5>
-                                                <!-- Product Type-->
-                                                <h5 class="fw-bolder">Loại: ${product.type.typeName}</h5>
-                                                <!-- Product price-->
-                                                Giá: <del>${product.productPrice}Đ</del> -${product.discount}%
-                                                <br>
-                                                Giá còn: ${product.productPrice - product.discount*product.productPrice/100}Đ
+                                <script>
+                                    productListSearch.push('${product.productName}');
+                                </script>
+                                <div class="col-4" style="margin-bottom: 1rem">
+                                    <div class="card p-4 bg-white">
+                                        <div class="about-product text-center mt-2"><img src="${product.productImage[0]}" style="width: 100%; height: 150px; margin-bottom: 1rem">
+                                            <div>
+                                                <h4>${product.productName}</h4>
+                                                <h6 class="mt-0 text-black-50">Loại: ${product.type.typeName}</h6>
                                             </div>
                                         </div>
-                                        <!-- Product actions-->
-                                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                            <div class="text-center"><button class="btn btn-outline-dark mt-auto addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}&categoryID=${product.category.categoryID   }">Chi tiết</a></div>
+                                        <div class="stats mt-2">
+                                            <div class="d-flex justify-content-between p-price"><span>Giá gốc</span><span><del>${product.productPrice}Đ</del></span></div>
+                                            <div class="d-flex justify-content-between p-price"><span>Giảm đến: </span><span>$999</span></div>
+                                            <div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>${product.discount*product.productPrice/100}199</span></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between total font-weight-bold mt-2"><span>Total</span><span>${product.productPrice - product.discount*product.productPrice/100}Đ</span>
+                                        </div>
+                                        <div class="text-center" style=" padding-top: 1rem;">
+                                            <button class="btn btn-outline-dark addToCard" onclick="console.log('text')" data-product-id="${product.productID}" >Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=${product.productID}&categoryID=${product.category.categoryID}">Chi tiết</a>
                                         </div>
                                     </div>
                                 </div>
@@ -136,12 +139,17 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section>                                        
         <%@include file="../../common/web/footer.jsp" %>   
     </body>
 
     <script>
 
+        $(() => {
+            $('#find').autocomplete({
+                source: productListSearch
+            });
+        });
         $(document).ready(function () {
         <c:if test="${requestScope.categorySearch != null}">
             $('#${requestScope.categorySearch}').prop('checked', true);
@@ -157,7 +165,6 @@
                 ;
                 var find = $("#find").val();
                 searchMealShop(typeCheck, peopleCheck, find);
-
                 function searchMealShop(typeCheck, peopleCheck, find) {
                     $.ajax({
                         type: 'POST',
@@ -173,22 +180,27 @@
                             var html = '';
                             $.each(productList, function (index, product) {
                                 // Tạo HTML cho mỗi sản phẩm
-                                html += '<div class="col mb-5">';
-                                html += '<div class="card h-100">';
-                                html += '<img class="card-img-top" src="' + product.productImage[0] + '" alt="..." width="100%" height="150px"/>';
-                                html += '<div class="card-body p-4">';
-                                html += '<div class="text-center">';
-                                html += '<h5 class="fw-bolder">' + product.productName + '</h5>';
-                                html += '<h5 class="fw-bolder">Loại: ' + product.type.typeName + '</h5>';
-                                html += 'Giá: ' + product.productPrice + 'Đ';
-                                html += '</div></div>';
-                                html += '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">';
-                                html += '<div class="text-center">';
-                                html += '<button class="btn btn-outline-dark mt-auto addToCard" data-product-id="' + product.productID + '">Mua</button>';
-                                html += '<a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '">Chi tiết</a>';
-                                html += '</div></div></div></div>';
+                                html += '<div class="col-4" style="margin-bottom: 1rem">';
+                                html += '<div class="card p-4 bg-white">';
+                                html += '<div class="about-product text-center mt-2"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem">';
+                                html += '<div>';
+                                html += '<h4>' + product.productName + '</h4>';
+                                html += '<h6 class="mt-0 text-black-50">Loại: ' + product.type.typeName + '</h6>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '<div class="stats mt-2">';
+                                html += '<div class="d-flex justify-content-between p-price"><span>Giá gốc</span><span><del>' + product.productPrice + 'Đ</del></span></div>';
+                                html += '<div class="d-flex justify-content-between p-price"><span>Giảm đến: </span><span>' + product.discount + '%</span></div>';
+                                html += '<div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>' + product.discount * product.productPrice / 100 + 'Đ</span></div>';
+                                html += '</div>';
+                                html += '<div class="d-flex justify-content-between total font-weight-bold mt-2"><span>Total</span><span>' + (product.productPrice - (product.discount * product.productPrice / 100)) + 'Đ</span>';
+                                html += '</div>';
+                                html += '<div class="text-center" style="padding-top: 1rem;">';
+                                html += '<button class="btn btn-outline-dark addToCard" onclick="console.log("text")" data-product-id="' + product.productID + '">Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '">Chi tiết</a>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</div>';
                             });
-                            $('#productList').html(html);
                         },
                         error: function () {
                             alert('Error updating order status');
@@ -214,11 +226,9 @@
                 }
             });
         });
-
         $(document).on('click', '.addToCard', function () {
             var productID = $(this).data('product-id');
             addToCart(productID);
-
             function addToCart(productID) {
                 $.ajax({
                     type: 'POST',
@@ -230,7 +240,6 @@
                     success: function (data) {
                         var cartCount = data;
                         $("#cartCount").text(parseInt(cartCount));
-
                     },
                     error: function () {
                         alert('Error updating order status');
@@ -239,7 +248,6 @@
             }
 
         });
-
         $(document).on('click', '#findProduct', function () {
 
             var typeCheck = $("input[name='typeCheck']:checked").val();
@@ -248,10 +256,8 @@
             $("input[name='categoryCheck']:checked").each(function () {
                 categoryCheck.push($(this).val());
             });
-            ;
             var find = $("#find").val();
             searchMealShop(typeCheck, peopleCheck, find);
-
             function searchMealShop(typeCheck, peopleCheck, find) {
                 $.ajax({
                     type: 'POST',
@@ -267,20 +273,26 @@
                         var html = '';
                         $.each(productList, function (index, product) {
                             // Tạo HTML cho mỗi sản phẩm
-                            html += '<div class="col mb-5">';
-                            html += '<div class="card h-100">';
-                            html += '<img class="card-img-top" src="' + product.productImage[0] + '" alt="..." width="100%" height="150px"/>';
-                            html += '<div class="card-body p-4">';
-                            html += '<div class="text-center">';
-                            html += '<h5 class="fw-bolder">' + product.productName + '</h5>';
-                            html += '<h5 class="fw-bolder">Loại: ' + product.type.typeName + '</h5>';
-                            html += 'Giá: ' + product.productPrice + 'Đ';
-                            html += '</div></div>';
-                            html += '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">';
-                            html += '<div class="text-center">';
-                            html += '<button class="btn btn-outline-dark mt-auto addToCard" data-product-id="' + product.productID + '">Mua</button>';
-                            html += '<a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '">Chi tiết</a>';
-                            html += '</div></div></div></div>';
+                            html += '<div class="col-4" style="margin-bottom: 1rem">';
+                            html += '<div class="card p-4 bg-white">';
+                            html += '<div class="about-product text-center mt-2"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem">';
+                            html += '<div>';
+                            html += '<h4>' + product.productName + '</h4>';
+                            html += '<h6 class="mt-0 text-black-50">Loại: ' + product.type.typeName + '</h6>';
+                            html += '</div>';
+                            html += '</div>';
+                            html += '<div class="stats mt-2">';
+                            html += '<div class="d-flex justify-content-between p-price"><span>Giá gốc</span><span><del>' + product.productPrice + 'Đ</del></span></div>';
+                            html += '<div class="d-flex justify-content-between p-price"><span>Giảm đến: </span><span>' + product.discount + '%</span></div>';
+                            html += '<div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>' + product.discount * product.productPrice / 100 + 'Đ</span></div>';
+                            html += '</div>';
+                            html += '<div class="d-flex justify-content-between total font-weight-bold mt-2"><span>Total</span><span>' + (product.productPrice - (product.discount * product.productPrice / 100)) + 'Đ</span>';
+                            html += '</div>';
+                            html += '<div class="text-center" style="padding-top: 1rem;">';
+                            html += '<button class="btn btn-outline-dark addToCard" onclick="console.log("text")" data-product-id="' + product.productID + '">Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '">Chi tiết</a>';
+                            html += '</div>';
+                            html += '</div>';
+                            html += '</div>';
                         });
                         $('#productList').html(html);
                     },

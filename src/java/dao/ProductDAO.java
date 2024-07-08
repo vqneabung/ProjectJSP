@@ -454,14 +454,16 @@ public class ProductDAO {
             if (cn != null) {
                 //-------------------------------------------------------
                 String sql = GET_PRODUCT_BY_SEARCH_MULTIDATA;
-                sql += " AND CategoryID IN (";
-                for (int i = 0; i < searchCategoryCheckArr.length; i++) {
-                    sql += searchCategoryCheckArr[i] + ",";
+                if (!searchCategoryCheckArr[0].equals("")) {
+                    sql += " AND CategoryID IN (";
+                    for (int i = 0; i < searchCategoryCheckArr.length; i++) {
+                        sql += searchCategoryCheckArr[i] + ",";
+                    }
+                    if (sql.endsWith(",")) {
+                        sql = sql.substring(0, sql.length() - 1);
+                    }
+                    sql += ")";
                 }
-                if (sql.endsWith(",")) {
-                    sql = sql.substring(0, sql.length() - 1);
-                }
-                sql += ")";
                 //-------------------------------------------
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, "%" + searchTypeID + "%");

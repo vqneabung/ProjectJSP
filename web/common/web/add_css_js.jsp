@@ -6,6 +6,14 @@
 <link href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
+<link href="assets/common/css/jquery-ui.css" rel="stylesheet" type="text/css" />
+<link href="assets/common/css/jquery-ui.structure.css" rel="stylesheet" type="text/css" />
+<link href="assets/common/css/jquery-ui.theme.css" rel="stylesheet" type="text/css" />
+
+
 
 
 
@@ -19,6 +27,9 @@
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.js"></script> 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+<script type="text/javascript" src="assets/common/js/jquery-ui.js"></script>
+
 
 <style>
     .sidenav {

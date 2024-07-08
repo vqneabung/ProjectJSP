@@ -37,7 +37,7 @@ import utils.Utils;
 public class UpdateProductServlet extends HttpServlet {
 
     public static final String UPDATE_PRODUCT = "jsp/admin/admin_product_update.jsp";
-    public static final String MANAGE_PRODUCT = "/ManageProductServlet";
+    public static final String MANAGE_PRODUCT = "ManageProductServlet";
 
     public static ProductDAO pd = new ProductDAO();
     public static CategoryDAO c = new CategoryDAO();
@@ -181,10 +181,9 @@ public class UpdateProductServlet extends HttpServlet {
 
                 result = pd.updateProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, status, image, discount, productID);
                 if (result > 0) {
-                    request.setAttribute("update_status", "Update successfully!");
-                    request.getRequestDispatcher(url).forward(request, response);
+                    response.sendRedirect(url + "?msg=Update Sucessfully");
                 } else {
-                    out.print("<h1>Something wrong</h1>");
+                    response.sendRedirect(url + "?msg=Update Failed");
                 }
             }
         }

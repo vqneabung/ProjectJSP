@@ -115,7 +115,7 @@ public class InsertUserMealDetailServlet extends HttpServlet {
 //            out.print("<h1>" + dish.get(0).getDishName());
 //            out.print("<h1>" + day.get(0).getDayText());
 //            out.print("<h1>" + specMeal.toString());
-            request.getRequestDispatcher("/jsp/home/usermealdetail_insert.jsp").forward(request, response);
+            request.getRequestDispatcher("/ManageUserMealServlet");
         } else {
             processRequest(request, response);
         }

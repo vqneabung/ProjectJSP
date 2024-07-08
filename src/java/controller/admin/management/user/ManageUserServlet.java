@@ -36,6 +36,7 @@ public class ManageUserServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            String msg = request.getParameter("msg");
             String action = request.getParameter("action");
             UserDAO ud = new UserDAO();
             ArrayList<UserDTO> users = ud.getAllAcounts();
@@ -58,6 +59,7 @@ public class ManageUserServlet extends HttpServlet {
             request.setAttribute("noOfPages", noOfPages);
             request.setAttribute("currentPage", page);
             session.setAttribute("users", users);
+            request.setAttribute("msg", msg);
 
             //---------------------------------------------------------
             if (action == null || action.equals("activateUser")) {
