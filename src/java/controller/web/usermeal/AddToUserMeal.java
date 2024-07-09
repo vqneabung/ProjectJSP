@@ -63,11 +63,9 @@ public class AddToUserMeal extends HttpServlet {
                 totalResultFromAddUserMealDetail += resultFromAddUserMealDetail;
             }
             if (totalResultFromAddUserMealDetail >= 1) {
-                out.print("<p>Da insert thanh cong </p>");
-                out.print("<p><a href='jsp/home/home.jsp'>back</a></p>");
+                response.sendRedirect("StartServlet?action=mealUser");
             } else {
-                out.print("<p>something wrong</p>");
-                out.print("<p><a href='jsp/home/home.jsp'>back</a></p>");
+                response.sendRedirect("StartServlet?action=mealUser");
             }
 
         }

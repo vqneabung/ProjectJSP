@@ -9,6 +9,8 @@ import dao.ProductDAO;
 import dao.TypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,8 +26,8 @@ import model.TypeDTO;
  * @author VQN
  */
 public class StartServlet extends HttpServlet {
-
-    private final String HOME = "jsp/home/home.jsp";
+    
+    private final String HOME = "home";
     private final String LOGIN = "login";
     private final String SEARCH = "Search";
     private final String LOGOUT = "logout";
@@ -36,8 +38,14 @@ public class StartServlet extends HttpServlet {
     private final String WELCOME = "/jsp/home/home.jsp";
     private final String LOGIN_SERVLET = "/jsp/home/login.jsp";
     private final String SEARCH_SERVLET = "SearchServlet";
-    private final String CART_SERVLET = "=/AddToCartServlet";
+    private final String CART_SERVLET = "jsp/home/cart.jsp";
     private final String SHOP_SERVLET = "/MealShopServlet";
+    private final String ABOUT = "about";
+    private final String ABOUT_PAGE = "/jsp/home/about.jsp";
+    private final String SPECMEAL = "specmeal";
+    private final String SPECMEAL_PAGE = "/SpecMealForUserServlet";
+    private final String FORGOTPASSWORD = "forgotPassword";
+    private final String FORGOTPASSWORD_PAGE = "/ForgorPasswordServlet";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,7 +64,7 @@ public class StartServlet extends HttpServlet {
         try {
             String action = request.getParameter("action");
             HttpSession session = request.getSession();
-            if (action == null) {
+            if (action == null || action.equals(HOME)) {
                 getDataForHome(request, response);
             } else if (action.equals(LOGOUT)) {
                 url = WELCOME;
@@ -74,32 +82,40 @@ public class StartServlet extends HttpServlet {
                 url = SHOP_SERVLET;
             } else if (action.equals(MEALUSER)) {
                 url = MEALUSER_SERVLET;
+            } else if (action.equals(ABOUT)) {
+                url = ABOUT_PAGE;
+            } else if (action.equals(SPECMEAL)) {
+                url = SPECMEAL_PAGE;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
+            
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
-
+    
     protected void getDataForHome(HttpServletRequest request, HttpServletResponse response) {
         try {
-            ProductDAO pDao = new ProductDAO();
-            CategoryDAO cDao = new CategoryDAO();
-            TypeDAO tDao = new TypeDAO();
-            CategoryDAO caDao = new CategoryDAO();
-
-            List<ProductDTO> listProducts = pDao.getAllProducts();
-            List<CategoryDTO> listCategories = cDao.getAllCategory();
-            List<ProductDTO> listProductsNew = pDao.getAllProducts();
-
-            request.setAttribute("LIST_PRODUCTS", listProducts);
-            request.setAttribute("LIST_CATEGORIESS", listCategories);
-            request.setAttribute("LIST_PRODUCTS_NEW", listProductsNew);
+            ProductDAO pd = new ProductDAO();
+            CategoryDAO c = new CategoryDAO();
+            TypeDAO t = new TypeDAO();
+            
+            List<ProductDTO> bestSellerProductList = pd.getAllProducts();
+            
+            Collections.sort(bestSellerProductList, new Comparator<ProductDTO>() {
+                @Override
+                public int compare(ProductDTO t, ProductDTO t1) {
+                    return t1.getProductUnitSold() - t.getProductUnitSold();
+                }
+            }
+            );
+            
+            request.setAttribute("bestSellerProductList", bestSellerProductList);
         } catch (Exception ex) {
             log("DispatchServlet error:" + ex.getMessage());
         }
-
+        
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 

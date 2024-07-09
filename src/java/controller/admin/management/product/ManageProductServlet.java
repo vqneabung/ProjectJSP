@@ -4,15 +4,23 @@
  */
 package controller.admin.management.product;
 
+import dao.CategoryDAO;
 import dao.ProductDAO;
+import dao.TypeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CategoryDTO;
 import model.ProductDTO;
+import model.TypeDTO;
+import model.UserDTO;
 
 /**
  *
@@ -36,8 +44,30 @@ public class ManageProductServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             ProductDAO pd = new ProductDAO();
             ArrayList<ProductDTO> products = pd.getAllProducts();
+            CategoryDAO c = new CategoryDAO();
+            ArrayList<CategoryDTO> categoryList = c.getAllCategory();
             System.out.println(products);
-            request.setAttribute("products", products);
+            request.setAttribute("categoryList", categoryList);
+
+            int maxProductPrice = Collections.max(products, new Comparator<ProductDTO>() {
+                @Override
+                public int compare(ProductDTO t, ProductDTO t1) {
+                    return t.getProductPrice() - t1.getProductPrice();
+                }
+            }).getProductPrice();
+
+            int minProductPrice = Collections.min(products, new Comparator<ProductDTO>() {
+                @Override
+                public int compare(ProductDTO t, ProductDTO t1) {
+                    return t.getProductPrice() - t1.getProductPrice();
+                }
+            }).getProductPrice();
+
+            request.setAttribute("maxProductPrice", maxProductPrice);
+            request.setAttribute("minProductPrice", minProductPrice);
+            //--------Tao thanh phan trang--------------------
+            request.setAttribute("products", products); 
+            //---------------------------------------------------------
             request.getRequestDispatcher("jsp/admin/admin_products.jsp").forward(request, response);
         }
     }

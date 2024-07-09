@@ -60,11 +60,9 @@ public class InsertUserMealDetailServlet extends HttpServlet {
             int rs = umd.insertUserMealDetail(productID, dishID, userMealID, dayNum);
 
             if (rs >= 1) {
-                out.print("<p>Da insert thanh cong </p>");
-                out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                response.sendRedirect("/ProjectJSP/ManageUserMealServlet");
             } else {
-                out.print("<p>something wrong</p>");
-                out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                response.sendRedirect("/ProjectJSP/ManageUserMealServlet");
             }
         }
     }
@@ -99,14 +97,6 @@ public class InsertUserMealDetailServlet extends HttpServlet {
             ArrayList<DayDTO> day = d.getAllDay();
             UserMealDTO userMeal = um.getUserMealByUserID(Integer.parseInt(request.getParameter("userMealID").trim()));
 
-            SpecMealDAO sm = new SpecMealDAO();
-            SpecMealDetailDAO smd = new SpecMealDetailDAO();
-
-            ArrayList<SpecMealDTO> specMealList = sm.getAllSpecMeal();
-            ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetail();
-
-            request.setAttribute("specMealList", specMealList);
-            request.setAttribute("specMealDetailList", specMealDetailList);
 
             request.setAttribute("productList", product);
             request.setAttribute("dishList", dish);
@@ -117,7 +107,7 @@ public class InsertUserMealDetailServlet extends HttpServlet {
 //            out.print("<h1>" + dish.get(0).getDishName());
 //            out.print("<h1>" + day.get(0).getDayText());
 //            out.print("<h1>" + specMeal.toString());
-            request.getRequestDispatcher("/jsp/home/usermealdetail_insert.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/home/usermealdetail_insert.jsp").forward(request, response);
         } else {
             processRequest(request, response);
         }

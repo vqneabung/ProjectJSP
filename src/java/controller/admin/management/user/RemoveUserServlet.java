@@ -37,8 +37,8 @@ public class RemoveUserServlet extends HttpServlet {
             if (result > 0) {
                 response.sendRedirect("ManageUserServlet");
             } else {
-                out.print("No delete");
-                out.print("<p><a href='index.html'>back</a></p>");
+                response.sendRedirect("ManageUserServlet");
+
             }
         }
     }

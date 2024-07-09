@@ -110,6 +110,8 @@ public class LoginFilterServlet implements Filter {
         HttpSession session = req.getSession();
         if (session.getAttribute("User") == null) {
             res.sendRedirect("/ProjectJSP/StartServlet?action=login");
+        } else {
+
         }
 
         Throwable problem = null;

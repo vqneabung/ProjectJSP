@@ -161,11 +161,10 @@ public class UpdateUserServlet extends HttpServlet {
                 result = ud.updateUser(username, fullName, email, phone, password, Integer.parseInt(roleID.trim()), address, Integer.parseInt(status), userID, avatar);
 
                 if (result > 0) {
-                    request.setAttribute("update_status", "Update successfully!");
                     Thread.sleep(2000);
-                    request.getRequestDispatcher(url).forward(request, response);
+                    response.sendRedirect(url + "?msg=Update Succefully");
                 } else {
-                    out.print("<h1>Something wrong</h1>");
+                    response.sendRedirect(url + "?msg=Update Failed");
                 }
             }
         } catch (Exception e) {

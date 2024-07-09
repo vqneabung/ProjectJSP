@@ -37,7 +37,7 @@ import utils.Utils;
 public class UpdateProductServlet extends HttpServlet {
 
     public static final String UPDATE_PRODUCT = "jsp/admin/admin_product_update.jsp";
-    public static final String MANAGE_PRODUCT = "/ManageProductServlet";
+    public static final String MANAGE_PRODUCT = "ManageProductServlet";
 
     public static ProductDAO pd = new ProductDAO();
     public static CategoryDAO c = new CategoryDAO();
@@ -88,6 +88,7 @@ public class UpdateProductServlet extends HttpServlet {
             request.setAttribute("hasSpecialDietaryRequirements", product.getHasSpecialDietaryRequirements());
             request.setAttribute("size", Utils.arrayToString(product.getProductSize()));
             request.setAttribute("price", product.getProductPrice());
+            request.setAttribute("discount", product.getDiscount());
             request.setAttribute("stock", product.getProductStock());
             request.setAttribute("unitSold", product.getProductUnitSold());
             request.setAttribute("describe", product.getProductDescribe());
@@ -172,17 +173,17 @@ public class UpdateProductServlet extends HttpServlet {
                 int unitSold = Integer.parseInt((String) params.get("update_unitSold"));
                 String describe = new String(((String) params.get("update_describe")).getBytes("iso-8859-1"), "utf-8");
                 int status = Integer.parseInt((String) params.get("update_status"));
+                int discount = Integer.parseInt((String) params.get("update_discount"));
                 String[] image = product.getProductImage();
                 if (!multiFileName.equals("")) {
                     image = utils.Utils.stringToArray(multiFileName);
                 }
 
-                result = pd.updateProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, status, image, productID);
+                result = pd.updateProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, status, image, discount, productID);
                 if (result > 0) {
-                    request.setAttribute("update_status", "Update successfully!");
-                    request.getRequestDispatcher(url).forward(request, response);
+                    response.sendRedirect(url + "?msg=Update Sucessfully");
                 } else {
-                    out.print("<h1>Something wrong</h1>");
+                    response.sendRedirect(url + "?msg=Update Failed");
                 }
             }
         }

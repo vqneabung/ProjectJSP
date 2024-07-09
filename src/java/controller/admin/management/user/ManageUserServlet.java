@@ -8,6 +8,7 @@ import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,11 +36,37 @@ public class ManageUserServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            String msg = request.getParameter("msg");
+            String action = request.getParameter("action");
             UserDAO ud = new UserDAO();
             ArrayList<UserDTO> users = ud.getAllAcounts();
-            HttpSession session = request.getSession();            
+            HttpSession session = request.getSession();
+            //--------Tao thanh phan trang--------------------
+            int page = 1;
+            int recordsPerPage = 10;
+
+            if (request.getParameter("page") != null) {
+                page = Integer.parseInt(request.getParameter("page"));
+            }
+
+            int start = (page - 1) * recordsPerPage;
+            int end = Math.min(start + recordsPerPage, users.size());
+            List<UserDTO> usersPage = users.subList(start, end);
+
+            int noOfPages = (int) Math.ceil(users.size() * 1.0 / recordsPerPage);
+
+            request.setAttribute("usersPage", usersPage);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
             session.setAttribute("users", users);
-            request.getRequestDispatcher("jsp/admin/admin_users.jsp").forward(request, response);
+            request.setAttribute("msg", msg);
+
+            //---------------------------------------------------------
+            if (action == null || action.equals("activateUser")) {
+                request.getRequestDispatcher("jsp/admin/admin_users.jsp").forward(request, response);
+            } else if (action.equals("deactivateUser")) {
+                request.getRequestDispatcher("jsp/admin/admin_users_deactivate.jsp").forward(request, response);
+            }
         }
     }
 

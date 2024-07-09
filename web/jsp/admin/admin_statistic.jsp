@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Thống kê</title>
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-hover">
+                        <table class="styled-table" style="width: 100%">
                 <tr>
                     <th>Order ID</th>
                     <th>User</th>

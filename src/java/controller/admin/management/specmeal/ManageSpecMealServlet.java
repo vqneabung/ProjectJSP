@@ -41,7 +41,14 @@ public class ManageSpecMealServlet extends HttpServlet {
             SpecMealDAO sm = new SpecMealDAO();
             SpecMealDetailDAO smd = new SpecMealDetailDAO();
             DayDAO d = new DayDAO();
+            SpecMealDTO specMeal = null;
 
+            String specMealID = request.getParameter("specMealID");
+            if (specMealID != null) {
+                specMeal = sm.getSpecMeal(Integer.parseInt(specMealID));
+            } else {
+                specMeal = sm.getSpecMeal(1);
+            }
             ArrayList<SpecMealDTO> specMealList = sm.getAllSpecMeal();
             ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetail();
             ArrayList<DayDTO> dayList = d.getAllDay();
@@ -49,6 +56,7 @@ public class ManageSpecMealServlet extends HttpServlet {
             request.setAttribute("specMealList", specMealList);
             request.setAttribute("specMealDetailList", specMealDetailList);
             request.setAttribute("dayList", dayList);
+            request.setAttribute("specMeal", specMeal);
 
             request.getRequestDispatcher("jsp/admin/admin_specmeals.jsp").forward(request, response);
 

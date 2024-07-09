@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.sql.Date;
+
 /**
  *
  * @author VQN
@@ -20,8 +22,9 @@ public class UserDTO {
     private String address;
     private int status;
     private String avatar;
+    private Date dateCreate;
 
-    public UserDTO(int userID, String userName, String fullName, String email, String phone, String password, int roleID, String address, int status, String avatar) {
+    public UserDTO(int userID, String userName, String fullName, String email, String phone, String password, int roleID, String address, int status, String avatar, Date dateCreate) {
         this.userID = userID;
         this.userName = userName;
         this.fullName = fullName;
@@ -32,6 +35,7 @@ public class UserDTO {
         this.address = address;
         this.status = status;
         this.avatar = avatar;
+        this.dateCreate = dateCreate;
     }
 
     public int getUserID() {
@@ -112,6 +116,14 @@ public class UserDTO {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
     }
 
 }

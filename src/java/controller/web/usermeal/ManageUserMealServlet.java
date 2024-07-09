@@ -4,6 +4,7 @@
  */
 package controller.web.usermeal;
 
+import dao.DayDAO;
 import dao.SpecMealDAO;
 import dao.SpecMealDetailDAO;
 import dao.UserMealDAO;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.DayDTO;
 import model.SpecMealDTO;
 import model.SpecMealDetailDTO;
 import model.UserDTO;
@@ -42,33 +44,36 @@ public class ManageUserMealServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+
+            String action = request.getParameter("searchUserMeal_btn");
+            String searchUserMeal = request.getParameter("searchUserMeal");
+
             UserMealDAO um = new UserMealDAO();
-            UserMealDetailDAO umd = new UserMealDetailDAO();
+
+            DayDAO d = new DayDAO();
 
             HttpSession session = request.getSession();
             UserDTO user = (UserDTO) session.getAttribute("User");
-
+            ArrayList<UserMealDTO> userMealList = new ArrayList<>();
             if (user != null) {
 
-                ArrayList<UserMealDTO> userMealList = um.getAllUserMealByUserID(user.getUserID());
-                ArrayList<UserMealDetailDTO> userMealDetailList = umd.getAllUserMealDetail();
+                if (action != null) {
+                    userMealList = um.getAllUserMealByName(searchUserMeal, user.getUserID());
+                } else {
+                    userMealList = um.getAllUserMealByUserID(user.getUserID());
+                }
+                ArrayList<DayDTO> dayList = d.getAllDay();
 
-                out.println(user.getUserID());
-                out.println(userMealList);
-                out.println(userMealDetailList);
+                session.setAttribute("userMealList", userMealList);
+                session.setAttribute("dayList", dayList);
 
-                
-
-                request.setAttribute("userMealList", userMealList);
-                request.setAttribute("userMealDetailList", userMealDetailList);
-
-                if (userMealList != null || userMealDetailList != null) {
+                if (userMealList != null) {
                     request.getRequestDispatcher("jsp/home/usermeals.jsp").forward(request, response);
                 } else {
-                    response.sendRedirect("jsp/home/home.jsp");
+                    request.getRequestDispatcher("jsp/home/home.jsp").forward(request, response);
                 }
             } else {
-                response.sendRedirect("jsp/home/home.jsp");
+                request.getRequestDispatcher("jsp/home/home.jsp").forward(request, response);
             }
         }
     }

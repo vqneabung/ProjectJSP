@@ -38,8 +38,7 @@ public class RemoveUserMealDetailServlet extends HttpServlet {
             if (result > 0) {
                 response.sendRedirect("ManageUserMealServlet");
             } else {
-                out.print("No delete");
-                out.print("<p><a href='index.html'>back</a></p>");
+                request.getRequestDispatcher("jsp/home/home.jsp").forward(request, response);
             }
         }
     }

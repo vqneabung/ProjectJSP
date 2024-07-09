@@ -64,11 +64,9 @@ public class UpdateUserMealDetailServlet extends HttpServlet {
                 out.println(productID);
                 out.println(dishID);
                 out.println(userMealDetailID);
-                out.print("<p>Da update thanh cong </p>");
-                out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                response.sendRedirect("/ProjectJSP/ManageUserMealServlet");
             } else {
-                out.print("<p>something wrong</p>");
-                out.print("<p><a href='jsp/admin/admin_home.jsp'>back</a></p>");
+                response.sendRedirect("/ProjectJSP/ManageUserMealServlet");
             }
         }
     }
@@ -115,7 +113,7 @@ public class UpdateUserMealDetailServlet extends HttpServlet {
 //            out.print("<h1>" + dish.get(0).getDishName());
 //            out.print("<h1>" + day.get(0).getDayText());
 //            out.print("<h1>" + specMeal.toString());
-            request.getRequestDispatcher("/jsp/home/usermealdetail_update.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/home/usermealdetail_update.jsp").forward(request, response);
         } else {
             processRequest(request, response);
         }

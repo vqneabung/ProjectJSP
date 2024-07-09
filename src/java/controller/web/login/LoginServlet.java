@@ -4,10 +4,11 @@
  */
 package controller.web.login;
 
+import dao.UserActivityDAO;
 import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
+import java.sql.Timestamp;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -84,36 +85,45 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String url = HOME;
         HttpSession session = request.getSession();
+        UserActivityDAO ua = new UserActivityDAO();
+        java.util.Date utilDate = new java.util.Date();
+        UserDTO userSession = (UserDTO) session.getAttribute("User");
         try {
-            String email = request.getParameter("login_email");
-            String password = request.getParameter("login_password");
-            System.out.println(email + " & " + password);
-            UserDAO ud = new UserDAO();
-            UserDTO user = ud.getUser(email.trim());
-            String userSession = (String) session.getAttribute("User");
-            if (user != null && password.equals(user.getPassword()) && user.getStatus() != 0) {
-                if (userSession != null) {
-                    response.sendRedirect(HOME);
-                }else {
+            if (userSession != null) {
+                response.sendRedirect(HOME);
+            } else {
+                String email = request.getParameter("login_email");
+                String password = request.getParameter("login_password");
+                System.out.println(email + " & " + password);
+                UserDAO ud = new UserDAO();
+                UserDTO user = ud.getUser(email.trim());
+                if (user != null && password.equals(user.getPassword()) && user.getStatus() != 0) {
                     session.setAttribute("User", user);
                     session.setAttribute("UserRoleID", user.getRoleID());
+                    //Cap nhat tinh trang dang nhap
+                    int rs = ua.insertUserActivity(new Timestamp(utilDate.getTime()), user.getUserID());
+                    if (rs >= 1) {
+                        System.out.println("Da luu hoat dong nguoi dung thanh cong");
+                    } else {
+                        System.out.println("Da luu that bai");
+                    }
                     if (user.getRoleID() == 0) {
                         response.sendRedirect(ADMIN_DASHBOARD);
                     } else {
                         response.sendRedirect("MealShopServlet");
                     }
+                } else {
+                    request.setAttribute("msg", "Bạn nhập sai tài khoản hoặc mật khẩu!");
+                    RequestDispatcher rd = request.getRequestDispatcher(LOGIN);
+                    rd.forward(request, response);
                 }
-            }else {
-                request.setAttribute("msg", "Bạn nhập sai tài khoản hoặc mật khẩu!");
-                RequestDispatcher rd = request.getRequestDispatcher(LOGIN);
-                rd.forward(request, response);
             }
         } catch (Exception ex) {
             log("LoginServlet error:" + ex.getMessage());
         } finally {
             out.close();
         }
-        }
+    }
 
     /**
      * Returns a short description of the servlet.

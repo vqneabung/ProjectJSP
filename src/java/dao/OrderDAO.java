@@ -34,7 +34,7 @@ public class OrderDAO {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 //b2:viet query va exec query
-                String sql = "SELECT [OrderID],[UserID],[TotalPrice],[PaymentID],[OrderDate],[OrderStatus] FROM [WEEKLYMEAL].[dbo].[Orders] Order by OrderDate desc";
+                String sql = "SELECT [OrderID],[UserID],[TotalPrice],[PaymentID],[OrderDate],[OrderStatus] FROM [WEEKLYMEAL].[dbo].[Orders] Order by OrderID desc";
                 Statement st = cn.createStatement();
                 ResultSet rs = st.executeQuery(sql);
                 if (rs != null) {
@@ -105,6 +105,42 @@ public class OrderDAO {
         }
 
         return orderDetailList;
+    }
+
+    public ArrayList<String> getAllAddress() {
+        ArrayList<String> addressList = new ArrayList<>();
+        Connection cn = null;
+        try {
+            UserDAO u = new UserDAO();
+            PaymentDAO p = new PaymentDAO();
+            //b1tao ket noi
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //b2:viet query va exec query
+                String sql = "SELECT DISTINCT u.UserAddress AS Address FROM [WEEKLYMEAL].[dbo].[Orders] o INNER JOIN Users u ON o.UserID = u.UserID";
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs != null) {
+                    while (rs.next()) {
+                        String address = rs.getString("Address");
+
+                        addressList.add(address);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return addressList;
     }
 
     public int updateOrderStatus(int orderID, int status) {

@@ -117,10 +117,12 @@ public class AdminFilterServlet implements Filter {
             } else {
                 UserDTO user = (UserDTO) session.getAttribute("User");
                 if (user.getRoleID() != 0) {
-                    res.sendRedirect("/ProjectJSP/ErrorServlet");
+                    res.sendRedirect("StartServlet");
+                } else {
+                    chain.doFilter(request, response);
                 }
+                return;
             }
-            chain.doFilter(request, response);
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then

@@ -5,9 +5,11 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import model.UserDTO;
 import utils.DBUtils;
@@ -18,18 +20,24 @@ import utils.DBUtils;
  */
 public class UserDAO {
 
-    public static final String GET_DATA = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar from [dbo].[Users]";
+    public static final String GET_DATA = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users]";
 
-    public static final String GET_USER_BY_EMAIL = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar from [dbo].[Users] Where UserEmail=?";
+    public static final String GET_DATA_BY_SEARCH = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users] WHERE UserName LIKE ? AND UserFullName LIKE ? AND UserEmail LIKE ? AND UserPhone LIKE ? AND UserRoleID LIKE ? AND UserAddress LIKE ? AND convert(varchar(25), UserDateCreate, 120) LIKE ?";
 
-    public static final String GET_USER_BY_ID = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar from [dbo].[Users] Where UserID=?";
+    public static final String GET_USER_BY_EMAIL = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users] Where UserEmail=?";
+
+    public static final String GET_USER_BY_ID = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users] Where UserID=?";
 
     public static final String REMOVE_USER = "UPDATE Users SET UserStatus = 0 WHERE UserID = ?";
 
-    public static final String INSERT_USER = "INSERT INTO Users (UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar)\n"
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)";
+    public static final String INSERT_USER = "INSERT INTO Users (UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate)\n"
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?,GETDATE())";
 
     public static final String UPDATE_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?, UserStatus = ?, UserAvatar = ? WHERE UserID = ?";
+
+    public static final String UPDATE_USER_FOR_USER = "UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserPassword = ?, UserAddress = ?, UserAvatar = ? WHERE UserID = ?";
+
+    public static final String UPDATE_USER_PASSWORD = "UPDATE Users SET UserPassword = ? WHERE UserID = ?";
 
     public ArrayList<UserDTO> getAllAcounts() {
         ArrayList<UserDTO> userList = new ArrayList<>();
@@ -56,8 +64,78 @@ public class UserDAO {
                         String address = rs.getString("UserAddress");
                         int status = rs.getInt("UserStatus");
                         String avatar = rs.getString("UserAvatar");
+                        Date dateCreate = rs.getDate("UserDateCreate");
 
-                        UserDTO user = new UserDTO(userID, userName, fullName, email, phone, password, roleID, address, status, avatar);
+                        UserDTO user = new UserDTO(userID, userName, fullName, email, phone, password, roleID, address, status, avatar, dateCreate);
+                        userList.add(user);
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return userList;
+    }
+
+    public ArrayList<UserDTO> getAllAcountsBySearch(String searchUserName, String searchFullName, String searchEmail, String searchPhone, String searchRoleID, String searchAddress, String searchDateCreate) {
+        ArrayList<UserDTO> userList = new ArrayList<>();
+
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+
+                String sql = GET_DATA_BY_SEARCH;
+                /*
+                    public static final String GET_DATA_BY_SEARCH = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar from [dbo].[Users] 
+                WHERE UserName LIKE ? AND UserFullName LIKE ? AND UserEmail LIKE ? AND UserPhone LIKE ? AND UserRoleID LIKE ? AND UserAddress LIKE ?";
+                
+                //Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users] 
+                WHERE UserName LIKE ? 
+                AND UserFullName LIKE ? 
+                AND UserEmail LIKE ? 
+                AND UserPhone LIKE ? 
+                AND UserRoleID LIKE ? 
+                AND UserAddress LIKE ? 
+                AND UserDateCreate = ?
+                 */
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, "%" + searchUserName + "%");
+                pst.setString(2, "%" + searchFullName + "%");
+                pst.setString(3, "%" + searchEmail + "%");
+                pst.setString(4, "%" + searchPhone + "%");
+                pst.setString(5, "%" + searchRoleID + "%");
+                pst.setString(6, "%" + searchAddress + "%");
+                pst.setString(7, "%" + searchDateCreate + "%");
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    //b3: Doc cac dong trong rs va cat vao ArrayList
+                    while (rs.next()) {
+                        int userID = rs.getInt("UserID");
+                        String userName = rs.getString("UserName");
+                        String fullName = rs.getString("UserFullName");
+                        String email = rs.getString("UserEmail");
+                        String phone = rs.getString("UserPhone");
+                        int roleID = rs.getInt("UserRoleID");
+                        String password = rs.getString("UserPassword");
+                        String address = rs.getString("UserAddress");
+                        int status = rs.getInt("UserStatus");
+                        String avatar = rs.getString("UserAvatar");
+                        Date dateCreate = rs.getDate("UserDateCreate");
+
+                        UserDTO user = new UserDTO(userID, userName, fullName, email, phone, password, roleID, address, status, avatar, dateCreate);
                         userList.add(user);
                     }
 
@@ -101,8 +179,9 @@ public class UserDAO {
                     String address = rs.getString("UserAddress");
                     int status = rs.getInt("UserStatus");
                     String avatar = rs.getString("UserAvatar");
+                    Date dateCreate = rs.getDate("UserDateCreate");
 
-                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status, avatar);
+                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status, avatar, dateCreate);
                 }
             }
         } catch (Exception e) {
@@ -142,8 +221,9 @@ public class UserDAO {
                     String address = rs.getString("UserAddress");
                     int status = rs.getInt("UserStatus");
                     String avatar = rs.getString("UserAvatar");
+                    Date dateCreate = rs.getDate("UserDateCreate");
 
-                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status, avatar);
+                    user = new UserDTO(userID, username, fullName, email, phone, password, roleID, address, status, avatar, dateCreate);
                 }
             }
         } catch (Exception e) {
@@ -202,7 +282,7 @@ public class UserDAO {
                 pst.setInt(5, roleID);
                 pst.setString(6, password);
                 pst.setString(7, address);
-                pst.setString(8, avatar);
+                pst.setString(8, "https://cdn-icons-png.flaticon.com/512/149/149071.png");
 
                 rs = pst.executeUpdate();
             }
@@ -256,5 +336,70 @@ public class UserDAO {
         }
 
         return rs;
+    }
+
+    public int updateUserForUser(String userName, String fullName, String email, String phone, String password, String address, int userID, String avatar) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = UPDATE_USER_FOR_USER;
+                //UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, userName);
+                pst.setString(2, fullName);
+                pst.setString(3, email);
+                pst.setString(4, phone);
+                pst.setString(5, password);
+                pst.setString(6, address);
+                pst.setString(7, avatar);
+                pst.setInt(8, userID);
+
+                rs = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rs;
+    }
+
+    public boolean updateUserPassword(String password, int userID) {
+        int rs = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = UPDATE_USER_PASSWORD;
+                //UPDATE Users SET UserName = ?,  UserFullName = ? , UserEmail = ?,  UserPhone = ?, UserRoleID = ?, UserPassword = ?, UserAddress = ?,  UserStatus = ? WHERE UserID = ?
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, password);
+                pst.setInt(2, userID);
+
+                rs = pst.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
     }
 }

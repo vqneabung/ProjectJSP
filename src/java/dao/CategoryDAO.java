@@ -23,6 +23,10 @@ public class CategoryDAO {
 
     public static final String GET_CATEGORY_LIST = "Select CategoryID, CategoryName, TypeID from Categories";
 
+    public static final String REMOVE_CATEGORY = "DELETE FROM [dbo].[Categories] WHERE CategoryID = ?";
+
+    public static final String INSERT_CATEGORY = "INSERT INTO [dbo].[Categories] ([CategoryName] ,[TypeID]) VALUES (?, ?)";
+
     public ArrayList<CategoryDTO> getAllCategory() {
         ArrayList<CategoryDTO> categoryList = new ArrayList<>();
         TypeDAO t = new TypeDAO();
@@ -98,6 +102,59 @@ public class CategoryDAO {
             }
         }
         return category;
+
+    }
+
+    public int removeCategory(int categoryID) {
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = REMOVE_CATEGORY;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, categoryID);
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+
+    }
+
+    public int insertCategory(String categoryName, int typeID) {
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = INSERT_CATEGORY;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setString(1, categoryName);
+                pst.setInt(2, typeID);
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
 
     }
 
