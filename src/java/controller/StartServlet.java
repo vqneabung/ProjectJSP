@@ -26,8 +26,8 @@ import model.TypeDTO;
  * @author VQN
  */
 public class StartServlet extends HttpServlet {
-
-    private final String HOME = "jsp/home/home.jsp";
+    
+    private final String HOME = "home";
     private final String LOGIN = "login";
     private final String SEARCH = "Search";
     private final String LOGOUT = "logout";
@@ -64,7 +64,7 @@ public class StartServlet extends HttpServlet {
         try {
             String action = request.getParameter("action");
             HttpSession session = request.getSession();
-            if (action == null) {
+            if (action == null || action.equals(HOME)) {
                 getDataForHome(request, response);
             } else if (action.equals(LOGOUT)) {
                 url = WELCOME;
@@ -90,19 +90,19 @@ public class StartServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-
+            
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
-
+    
     protected void getDataForHome(HttpServletRequest request, HttpServletResponse response) {
         try {
             ProductDAO pd = new ProductDAO();
             CategoryDAO c = new CategoryDAO();
             TypeDAO t = new TypeDAO();
-
+            
             List<ProductDTO> bestSellerProductList = pd.getAllProducts();
-
+            
             Collections.sort(bestSellerProductList, new Comparator<ProductDTO>() {
                 @Override
                 public int compare(ProductDTO t, ProductDTO t1) {
@@ -110,12 +110,12 @@ public class StartServlet extends HttpServlet {
                 }
             }
             );
-
+            
             request.setAttribute("bestSellerProductList", bestSellerProductList);
         } catch (Exception ex) {
             log("DispatchServlet error:" + ex.getMessage());
         }
-
+        
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 

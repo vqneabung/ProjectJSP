@@ -54,6 +54,7 @@
                     </table>
                     <h5><span id="totalCartValue">Tổng: ${total} VND</span></h5>
                     <h5>Ngày : <%= new Date()%></h5>
+                    <h5>${requestScope.msgOrder}</h5>
                     <c:choose>
                         <c:when test="${not empty sessionScope.cart}">
                             <p><a class="btn btn-primary" href="/ProjectJSP/OrderServlet">Xác nhận mua hàng</a></p>

@@ -21,17 +21,33 @@
                     <th>Mã</th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng</th>
                     <th>Hình ảnh</th>
-
                 </tr>
                 <c:forEach var="orderDetail" items="${requestScope.orderDetailList}">
+                    <c:set var="total" value="${total + (orderDetail.product.productPrice * orderDetail.quantity)}" />
                     <tr style="font-size: medium">               
-                        <th>${orderDetail.orderDetailID}</th>
-                        <th>${orderDetail.product.productName}</th>
-                        <th>${orderDetail.quantity}</th>
-                        <th><img src="${orderDetail.product.productImage[0]}" alt="${orderDetail.product.productImage[0]}" weight="100" height="100" image"/></th>
+                        <td>${orderDetail.orderDetailID}</td>
+                        <td>${orderDetail.product.productName}</td>
+                        <td>${orderDetail.quantity}</td>
+                        <td>${orderDetail.product.productPrice}</td>
+                        <td>${orderDetail.product.productPrice * orderDetail.quantity}</td>
+                        <td><img src="${orderDetail.product.productImage[0]}" alt="${orderDetail.product.productImage[0]}" weight="100" height="100" image"/></td>
                     </tr>
                 </c:forEach>
+                <tr>
+                    <th colspan="3">
+                    </th>
+                    <th>
+                        <h5>Tổng:</h5>
+                    </th>
+                    <th>
+                        <span id="totalCartValue">${total} VND</span>
+                    </th>
+                    <th>
+                    </th>
+                </tr>
             </table> 
         </div>
     </body>

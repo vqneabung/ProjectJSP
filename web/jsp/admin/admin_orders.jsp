@@ -79,7 +79,11 @@
                     $('#orderList').DataTable({
                         "language": {
                             "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
-                        }
+                        },
+                        "columnDefs": [
+                            {"type": "date", "targets": 4} // Cột chứa ngày là cột thứ 3 (chỉ số 2)
+                        ],
+                        "order": [[4, "desc"]] // Sắp xếp cột thứ 3 theo thứ tự giảm dần
                     });
 
                     $('.btn-confirm').click(function () {

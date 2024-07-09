@@ -84,6 +84,15 @@
                         .then(data => {
                             document.getElementById('loadSecond').innerHTML = data;
                             $('#loadingModal').modal('hide');
+
+                            var content = document.getElementById('loadSecond');
+                            var scripts = content.getElementsByTagName('script');
+
+                            for (var i = 0; i < scripts.length; i++) {
+                                var script = document.createElement('script');
+                                script.text = scripts[i].innerText;
+                                document.body.appendChild(script);
+                            }
                         })
                         .catch(error => {
                             console.error('Error loading content:', error);
@@ -92,11 +101,24 @@
             });
 
 
-            $(window).on('load', function () {
-                if (!$('#loadingModal').hasClass('show')) {
-                    $('#loadingModal').modal('hide');
-                }
-            });
+            const adjustModalZIndex = () => {
+                const modals = document.querySelectorAll('.modal.show');
+                const modalCount = modals.length;
+
+                modals.forEach((modal, index) => {
+                    const baseZIndex = 1040;
+                    modal.style.zIndex = baseZIndex + (index * 20) + 10;
+                });
+
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach((backdrop, index) => {
+                    const baseZIndex = 1040;
+                    backdrop.style.zIndex = baseZIndex + (index * 20);
+                });
+            };
+
+            document.addEventListener('shown.bs.modal', adjustModalZIndex);
+            document.addEventListener('hidden.bs.modal', adjustModalZIndex);
         </script>
         <%@include file="../../common/web/footer.jsp" %> 
     </body>

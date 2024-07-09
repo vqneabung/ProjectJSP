@@ -37,7 +37,6 @@ public class AddToCartServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String productID = request.getParameter("productID");
-            int num = Integer.parseInt(request.getParameter("quantity"));
             ProductDAO p = new ProductDAO();
             ProductDTO productName = p.getProduct(Integer.parseInt(productID));
 
@@ -55,11 +54,7 @@ public class AddToCartServlet extends HttpServlet {
                         break;
                     }
                 }
-                if (findProduct != null) {
-                    int quantity = cart.get(findProduct);
-                    quantity = quantity + num;
-                    cart.put(findProduct, quantity);
-                } else {
+                if (findProduct == null) {
                     cart.put(productName, 1);
                 }
             }

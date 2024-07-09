@@ -235,7 +235,6 @@
                     url: '/ProjectJSP/AddToCartServlet',
                     data: {
                         productID: productID,
-                        quantity: 1
                     },
                     success: function (data) {
                         var cartCount = data;

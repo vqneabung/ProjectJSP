@@ -63,6 +63,7 @@ public class OrderServlet extends HttpServlet {
                     int rs = pd.updateProductQuantity(newProductStock, newProductUnitSold, productID);
                     if (rs >= 1) {
                         System.out.println("Da cap nhat san pham");
+                        request.setAttribute("msgOrder", "Cảm ơn đã mua hàng");
                     } else {
                         System.out.println("Loi cap nhat");
                     }
@@ -71,7 +72,7 @@ public class OrderServlet extends HttpServlet {
 
                 // xoa gio hang
                 session.removeAttribute("cart");
-                request.getRequestDispatcher("/jsp/home/cart.jsp").forward(request, response);
+                response.sendRedirect("/ProjectJSP/StartServlet?action=cart");
 
             }
         }

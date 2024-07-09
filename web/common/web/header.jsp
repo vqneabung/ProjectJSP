@@ -45,7 +45,6 @@
                                 <a class="dropdown-item" href="/ProjectJSP/StaticAdminServlet">Admin</a>
                             </li>
                         </c:if>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
                         <li><a class="dropdown-item" href="/ProjectJSP/ProfileServlet">Profile</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/ProjectJSP/LogoutServlet">Sign out</a></li>

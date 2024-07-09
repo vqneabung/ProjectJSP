@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Danh sách người dùng/title>
+        <title>Danh sách người dùng</title>
     </head>
     <body>
         <%@ include file="../../common/web/header.jsp" %>

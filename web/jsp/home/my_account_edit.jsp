@@ -13,10 +13,10 @@
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
-        <div class="main">
+        <div class="container" style="margin-top: 1rem; margin-bottom: 1rem">
             <div class="card">
                 <div class="card-body">
-                    <h1>Update user</h1>
+                    <h1>Cập nhật profile của bạn</h1>
                     <form action="/ProjectJSP/EditProfileServlet" method="post" enctype="multipart/form-data">
                         <p>Tên đầy đủ <input class="form-control" type="text" name="update_fullname" placeholder="Enter Fullname" value="${requestScope.fullName}" required=""/></p>
                         <p>User name <input type="text" class="form-control" name="update_username" placeholder="Enter Username" value="${requestScope.userName}" required=""/></p>
@@ -39,7 +39,7 @@
                         <div style="margin-bottom: 1rem">
                             Chọn ảnh <input class="form-control" type="file" name="insert_avatar" value="" onchange='previewFile()' /> <br>
                             <img src="/ProjectJSP/assets/home/image/1200px-Picture_icon_BLACK.svg.png" height="200" alt="avatar" id="image" >
-                            <input type="button" value="Remove Image" name="remove_image" onclick="removeFile()"/>
+                            <input type="button" value="Remove Image" name="remove_image" class="btn btn-primary" onclick="removeFile()"/>
                         </div>
                         <input hidden name="userID" value="${requestScope.userID}"/>
                         <p><input class="form-control" type="submit" value="Update" name="update_click"/></p>
@@ -71,5 +71,6 @@
                 </div>
             </div>
         </div>
+        <%@include file="../../common/web/footer.jsp" %>
     </body>
 </html>
