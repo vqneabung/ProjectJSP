@@ -31,7 +31,7 @@
                 <!-- Blog entries-->
                 <div class="col-lg-8">
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/800px-Good_Food_Display_-_NCI_Visuals_Online.jpg" alt="..." /></a>
                         <div class="card-body">
                             <div class="small text-muted">January 1, 2025</div>
                             <h2 class="card-title">Kế hoạch hàng tuần</h2>

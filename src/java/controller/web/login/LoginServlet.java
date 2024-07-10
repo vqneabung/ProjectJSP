@@ -88,9 +88,25 @@ public class LoginServlet extends HttpServlet {
         UserActivityDAO ua = new UserActivityDAO();
         java.util.Date utilDate = new java.util.Date();
         UserDTO userSession = (UserDTO) session.getAttribute("User");
+        //-------------------------
+        Cookie[] cookies = request.getCookies();
+
+        String lastVisitedURL = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("lastVisitedURL".equals(cookie.getName())) {
+                    lastVisitedURL = cookie.getValue();
+                    System.out.println(lastVisitedURL);
+                    url = lastVisitedURL;
+                    break;
+                }
+            }
+        }
+
+        //-------------------------
         try {
             if (userSession != null) {
-                response.sendRedirect(HOME);
+                response.sendRedirect(url);
             } else {
                 String email = request.getParameter("login_email");
                 String password = request.getParameter("login_password");
@@ -108,9 +124,13 @@ public class LoginServlet extends HttpServlet {
                         System.out.println("Da luu that bai");
                     }
                     if (user.getRoleID() == 0) {
-                        response.sendRedirect(ADMIN_DASHBOARD);
+                        if (lastVisitedURL == null) {
+                            response.sendRedirect(ADMIN_DASHBOARD);
+                        } else {
+                            response.sendRedirect(url);
+                        }
                     } else {
-                        response.sendRedirect("MealShopServlet");
+                        response.sendRedirect(url);
                     }
                 } else {
                     request.setAttribute("msg", "Bạn nhập sai tài khoản hoặc mật khẩu!");

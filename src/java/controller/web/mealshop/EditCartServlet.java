@@ -58,7 +58,7 @@ public class EditCartServlet extends HttpServlet {
                 }
             }
             session.setAttribute("cart", cart);
-            request.getRequestDispatcher("jsp/home/cart.jsp").forward(request, response);
+            response.sendRedirect("/ProjectJSP/StartServlet?action=cart");
         }
     }
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

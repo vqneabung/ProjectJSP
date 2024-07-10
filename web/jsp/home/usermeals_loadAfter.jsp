@@ -44,7 +44,7 @@
                         <div class="modal-body">
                             <div class="card">
                                 <div class="card-body">
-                                    <p><a class="btn btn-secondary" href="/ProjectJSP/InsertUserMealDetailServlet?userMealID=${userMealForModal.userMealID}" id="insertUserMealModal" data-user-meal-id="${userMealForModal.userMealID}" data-dismiss="modal" data-toggle="modal"> + Thêm bữa ăn</a> </p>
+                                    <p><a class="btn btn-secondary insertUserMealModal" href="/ProjectJSP/InsertUserMealDetailServlet?userMealID=${userMealForModal.userMealID}" data-user-meal-id="${userMealForModal.userMealID}" data-dismiss="modal" data-toggle="modal"> + Thêm bữa ăn</a> </p>
                                     <c:forEach items="${sessionScope.dayList}" var="day">
                                         <h3>- ${day.dayText}</h3>
                                         <table class="styled-table" style="width: 100%">
@@ -67,7 +67,7 @@
                                                             <th class="text-center"><img src="${userMealDetail.product.productImage[0]}" width="100" height="100"></th>
                                                             <th class="text-center">${userMealDetail.product.productName}</th>
                                                             <th class="text-center"><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
-                                                            <th class="text-center"><a href="UpdateUserMealDetailServlet?userMealDetailID=${userMealDetail.userMealDetailID}" data-user-meal-detail-id="${userMealDetail.userMealDetailID}" id="updateUserMealModal" class="btn btn-secondary">update</a></th>
+                                                            <th class="text-center"><a href="UpdateUserMealDetailServlet?userMealDetailID=${userMealDetail.userMealDetailID}" data-user-meal-detail-id="${userMealDetail.userMealDetailID}" class="btn btn-secondary updateUserMealModal">update</a></th>
                                                         </tr>
                                                     </c:if>
                                                 </c:forEach>   
@@ -82,7 +82,7 @@
                                                             <th class="text-center"><img src="${userMealDetail.product.productImage[0]}" width="100" height="100"></th>
                                                             <th class="text-center">${userMealDetail.product.productName}</th>
                                                             <th class="text-center"><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
-                                                            <th class="text-center"><a href="UpdateUserMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}" data-user-meal-detail-id="${userMealDetail.userMealDetailID}" id="updateUserMealModal" class="btn btn-secondary">update</a></th>
+                                                            <th class="text-center"><a href="UpdateUserMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}" data-user-meal-detail-id="${userMealDetail.userMealDetailID}" class="btn btn-secondary updateUserMealModal">update</a></th>
                                                         </tr>
                                                     </c:if>
                                                 </c:forEach>   
@@ -97,7 +97,7 @@
                                                             <th class="text-center"><img src="${userMealDetail.product.productImage[0]}" width="100" height="100"></th>
                                                             <th class="text-center">${userMealDetail.product.productName}</th>
                                                             <th class="text-center"><button class="btn btn-primary btn-remove" data-usermeal-detail-id="${userMealDetail.userMealDetailID}">remove</button></th>
-                                                            <th class="text-center"><a href="UpdateUserMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}" data-user-meal-detail-id="${userMealDetail.userMealDetailID}" id="updateUserMealModal" class="btn btn-secondary">update</a></th>
+                                                            <th class="text-center"><a href="UpdateUserMealServlet?userMealDetailID=${userMealDetail.userMealDetailID}" data-user-meal-detail-id="${userMealDetail.userMealDetailID}" class="btn btn-secondary updateUserMealModal">update</a></th>
                                                         </tr>
                                                     </c:if>
                                                 </c:forEach>  
@@ -135,7 +135,7 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('#insertUserMealModal').on('click', function (e) {
+            $(".insertUserMealModal").on('click', function (e) {
                 e.preventDefault();
                 var userMealID = $(this).data('user-meal-id');
                 $.ajax({
@@ -152,7 +152,7 @@
                 });
             });
 
-            $('#updateUserMealModal').on('click', function (e) {
+            $(".updateUserMealModal").on('click', function (e) {
                 e.preventDefault();
                 var userMealDetailID = $(this).data('user-meal-detail-id');
                 $.ajax({

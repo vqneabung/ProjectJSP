@@ -4,6 +4,7 @@
  */
 package controller.web.usermeal;
 
+import dao.UserMealDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -32,8 +33,19 @@ public class UpdateUserMealServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            String userMealID = request.getParameter("userMealID");
+            String userMealName = request.getParameter("userMealName");
 
+            UserMealDAO um = new UserMealDAO();
+            int rs = um.updateUserMeal(userMealName, Integer.parseInt(userMealID));
+
+            response.setContentType("application/json");
+            if (rs >= 1) {
+                out.print("{\"status\":\"success\"}");
+            } else {
+                out.print("{\"status\":\"error\"}");
+            }
+            out.flush();
         }
     }
 

@@ -60,9 +60,9 @@ public class InsertUserMealDetailServlet extends HttpServlet {
             int rs = umd.insertUserMealDetail(productID, dishID, userMealID, dayNum);
 
             if (rs >= 1) {
-                response.sendRedirect("/ProjectJSP/ManageUserMealServlet");
+                response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             } else {
-                response.sendRedirect("/ProjectJSP/ManageUserMealServlet");
+                response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             }
         }
     }
@@ -96,7 +96,6 @@ public class InsertUserMealDetailServlet extends HttpServlet {
             ArrayList<DishDTO> dish = dh.getAllDish();
             ArrayList<DayDTO> day = d.getAllDay();
             UserMealDTO userMeal = um.getUserMealByUserID(Integer.parseInt(request.getParameter("userMealID").trim()));
-
 
             request.setAttribute("productList", product);
             request.setAttribute("dishList", dish);

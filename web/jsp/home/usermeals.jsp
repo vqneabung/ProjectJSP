@@ -51,6 +51,7 @@
                                     <tr class="text-center">
                                         <td>Thực đơn</td>
                                         <td>Chi tiết</td>
+                                        <td>Chỉnh sủa</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,16 +59,23 @@
                                         <c:if test="${userMeal.isStatus == 1}">
                                             <tr class="text-center">
                                                 <td>
-                                                    ${userMeal.userMealName}
+                                                    <span class="user-meal-name">${userMeal.userMealName}</span>
+                                                    <input type="text" class="edit-user-meal-name form-control d-none" value="${userMeal.userMealName}" />
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userMealDetail${userMeal.userMealID}">Chi tiết</button> <a class="btn btn-primary" href="/ProjectJSP/RemoveUserMealServlet?userMealID=${userMealForModal.userMealID}">Remove</a>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userMealDetail${userMeal.userMealID}">Chi tiết</button>
+                                                    <a class="btn btn-primary" href="/ProjectJSP/RemoveUserMealServlet?userMealID=${userMeal.userMealID}">Remove</a>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-secondary edit-btn">Edit</button>
+                                                    <button type="button" class="btn btn-success save-btn d-none" data-user-meal-id="${userMeal.userMealID}">Save</button>
+                                                    <button type="button" class="btn btn-danger cancel-btn d-none">Cancel</button>
                                                 </td>
                                             </tr>
                                         </c:if>
                                     </c:forEach>
                                 </tbody>
-                            </table>
+                            </table>    
                         </div>
                     </div>
                 </div>
@@ -98,6 +106,48 @@
                             console.error('Error loading content:', error);
                             $('#loadingModal').modal('hide');
                         });
+            });
+
+            $(document).ready(function () {
+                $('.edit-btn').click(function () {
+                    var row = $(this).closest('tr');
+                    row.find('.user-meal-name').addClass('d-none');
+                    row.find('.edit-user-meal-name').removeClass('d-none');
+                    row.find('.edit-btn').addClass('d-none');
+                    row.find('.save-btn, .cancel-btn').removeClass('d-none');
+                });
+
+                $('.cancel-btn').click(function () {
+                    var row = $(this).closest('tr');
+                    row.find('.user-meal-name').removeClass('d-none');
+                    row.find('.edit-user-meal-name').addClass('d-none');
+                    row.find('.edit-btn').removeClass('d-none');
+                    row.find('.save-btn, .cancel-btn').addClass('d-none');
+                });
+
+                $('.save-btn').click(function () {
+                    var row = $(this).closest('tr');
+                    var userMealID = $('.save-btn').data("user-meal-id");
+                    var newMealName = row.find('.edit-user-meal-name').val();
+
+                    $.ajax({
+                        url: '/ProjectJSP/UpdateUserMealServlet',
+                        method: 'GET',
+                        data: {
+                            userMealID: userMealID,
+                            userMealName: newMealName
+                        },
+                        success: function (response) {
+                            row.find('.user-meal-name').text(newMealName).removeClass('d-none');
+                            row.find('.edit-user-meal-name').addClass('d-none');
+                            row.find('.edit-btn').removeClass('d-none');
+                            row.find('.save-btn, .cancel-btn').addClass('d-none');
+                        },
+                        error: function (error) {
+                            alert('An error occurred while updating the meal name.');
+                        }
+                    });
+                });
             });
 
 

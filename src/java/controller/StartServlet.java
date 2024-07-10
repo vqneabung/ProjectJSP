@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,13 +21,14 @@ import javax.servlet.http.HttpSession;
 import model.CategoryDTO;
 import model.ProductDTO;
 import model.TypeDTO;
+import utils.SavePath;
 
 /**
  *
  * @author VQN
  */
 public class StartServlet extends HttpServlet {
-    
+
     private final String HOME = "home";
     private final String LOGIN = "login";
     private final String SEARCH = "Search";
@@ -90,19 +92,21 @@ public class StartServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
-            
+            if (!url.equals("/jsp/home/login.jsp")) {
+                utils.SavePath.SavePath(response, request.getRequestURI(), request.getQueryString());
+            }
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
-    
+
     protected void getDataForHome(HttpServletRequest request, HttpServletResponse response) {
         try {
             ProductDAO pd = new ProductDAO();
             CategoryDAO c = new CategoryDAO();
             TypeDAO t = new TypeDAO();
-            
+
             List<ProductDTO> bestSellerProductList = pd.getAllProducts();
-            
+
             Collections.sort(bestSellerProductList, new Comparator<ProductDTO>() {
                 @Override
                 public int compare(ProductDTO t, ProductDTO t1) {
@@ -110,12 +114,12 @@ public class StartServlet extends HttpServlet {
                 }
             }
             );
-            
+
             request.setAttribute("bestSellerProductList", bestSellerProductList);
         } catch (Exception ex) {
             log("DispatchServlet error:" + ex.getMessage());
         }
-        
+
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 

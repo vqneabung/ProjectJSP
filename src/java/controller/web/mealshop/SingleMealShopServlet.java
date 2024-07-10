@@ -53,6 +53,7 @@ public class SingleMealShopServlet extends HttpServlet {
             request.setAttribute("recipeDetailListByFoodID", recipeDetailListByFoodID);
             request.setAttribute("productByCategoryID", productByCategoryID);
             request.setAttribute("product", product);
+            utils.SavePath.SavePath(response, request.getRequestURI(), request.getQueryString());
             request.getRequestDispatcher("jsp/home/single-mealshop.jsp").forward(request, response);
         }
     }

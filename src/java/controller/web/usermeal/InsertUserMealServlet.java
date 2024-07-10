@@ -52,9 +52,9 @@ public class InsertUserMealServlet extends HttpServlet {
             int rs = um.insertUserMeal(userMealName, userID);
 
             if (rs >= 1) {
-                request.getRequestDispatcher("/ManageUserMealServlet").forward(request, response);
+                request.getRequestDispatcher("/ProjectJSP/StartServlet?action=mealUser").forward(request, response);
             } else {
-                request.getRequestDispatcher("/ManageUserMealServlet").forward(request, response);
+                request.getRequestDispatcher("/ProjectJSP/StartServlet?action=mealUser").forward(request, response);
             }
         }
     }

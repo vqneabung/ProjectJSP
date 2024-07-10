@@ -28,12 +28,13 @@ public class ProfileServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     public static final String url = "jsp/home/my_account.jsp";
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            utils.SavePath.SavePath(response, request.getRequestURI(), request.getQueryString());
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

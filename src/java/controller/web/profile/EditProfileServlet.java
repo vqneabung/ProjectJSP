@@ -28,10 +28,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @author VQN
  */
 public class EditProfileServlet extends HttpServlet {
-    
+
     private static String UPDATE_USER = "jsp/home/my_account_edit.jsp";
     private static String MANAGE_USER = "ProfileServlet";
-    
+
     public static UserDAO ud = new UserDAO();
 
     /**
@@ -66,7 +66,7 @@ public class EditProfileServlet extends HttpServlet {
             int userID = Integer.parseInt(request.getParameter("userID"));
             String url = UPDATE_USER;
             UserDTO user = ud.getUser(userID);
-            
+
             request.setAttribute("userID", user.getUserID());
             request.setAttribute("userName", user.getUserName());
             request.setAttribute("fullName", user.getFullName());
@@ -75,8 +75,9 @@ public class EditProfileServlet extends HttpServlet {
             request.setAttribute("email", user.getEmail());
             request.setAttribute("password", user.getPassword());
             request.setAttribute("avatar", user.getAvatar());
+            utils.SavePath.SavePath(response, request.getRequestURI(), request.getQueryString());
             request.getRequestDispatcher(url).forward(request, response);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,7 +102,7 @@ public class EditProfileServlet extends HttpServlet {
             String pathName = "";
             System.out.println(isMultPart);
             if (!isMultPart) {
-                
+
             } else {
                 FileItemFactory factory = new DiskFileItemFactory();
                 ServletFileUpload upload = new ServletFileUpload(factory);
@@ -137,7 +138,7 @@ public class EditProfileServlet extends HttpServlet {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        
+
                     }
                 }
                 int result = 0;
@@ -154,11 +155,11 @@ public class EditProfileServlet extends HttpServlet {
                 if (!pathName.isEmpty()) {
                     avatar = pathName;
                 }
-                
+
                 result = ud.updateUserForUser(username, fullName, email, phone, password, address, userID, avatar);
                 request.getSession().removeAttribute("User");
                 request.getSession().setAttribute("User", ud.getUser(userID));
-                
+
                 if (result > 0) {
                     request.setAttribute("update_status", "Update successfully!");
                     Thread.sleep(2000);
@@ -170,7 +171,7 @@ public class EditProfileServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     /**

@@ -36,9 +36,9 @@ public class RemoveUserMealDetailServlet extends HttpServlet {
             UserMealDetailDAO umd = new UserMealDetailDAO();
             int result = umd.removeUserMealDetail(Integer.parseInt(userMealDetailID.trim()));
             if (result > 0) {
-                response.sendRedirect("ManageUserMealServlet");
+                response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             } else {
-                request.getRequestDispatcher("jsp/home/home.jsp").forward(request, response);
+                response.sendRedirect("/ProjectJSP/StartServlet");
             }
         }
     }
