@@ -70,10 +70,10 @@ public class ManageUserMealServlet extends HttpServlet {
                 if (userMealList != null) {
                     request.getRequestDispatcher("jsp/home/usermeals.jsp").forward(request, response);
                 } else {
-                    request.getRequestDispatcher("jsp/home/home.jsp").forward(request, response);
+                    response.sendRedirect("/ProjectJSP/StartServlet");
                 }
             } else {
-                request.getRequestDispatcher("jsp/home/home.jsp").forward(request, response);
+                response.sendRedirect("/ProjectJSP/StartServlet");
             }
         }
     }

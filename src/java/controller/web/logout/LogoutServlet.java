@@ -7,6 +7,7 @@ package controller.web.logout;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,9 +33,25 @@ public class LogoutServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            String url = "/ProjectJSP/StartServlet?action=home";
             HttpSession session = request.getSession();
             session.invalidate();
-            response.sendRedirect("/ProjectJSP/StartServlet?action=home");
+            //-------------------------
+            Cookie[] cookies = request.getCookies();
+
+            String lastVisitedURL = null;
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("lastVisitedURL".equals(cookie.getName())) {
+                        lastVisitedURL = cookie.getValue();
+                        System.out.println(lastVisitedURL);
+                        url = lastVisitedURL;
+                        break;
+                    }
+                }
+            }
+            //-------------------------
+            response.sendRedirect(url);
         }
     }
 

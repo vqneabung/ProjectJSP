@@ -68,7 +68,7 @@ public class AddToCartServlet extends HttpServlet {
                 String cartJSon = gson.toJson(cartCount);
                 response.getWriter().write(cartJSon);
             } else {
-                request.getRequestDispatcher("MealShopServlet").forward(request, response);
+                request.getRequestDispatcher("/ProjectJSP/StartServlet?action=mealUser").forward(request, response);
             }
         }
     }

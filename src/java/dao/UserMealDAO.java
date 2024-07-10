@@ -35,7 +35,7 @@ public class UserMealDAO {
     public static final String INSERT_USERMEAL = "INSERT INTO UserMeal ([UserPlanName],[UserID], [IsStatus])\n"
             + "VALUES (?, ? ,1)";
 
-    public static final String UPDATE_USERMEAL = "select [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal Where UserPlanID = ? ";
+    public static final String UPDATE_USERMEAL = "UPDATE [dbo].[UserMeal] SET [UserPlanName] = ? WHERE UserPlanID = ?";
 
     public static final String GET_NEWEST_DATA = "select TOP 1 [UserPlanID],[UserPlanName],[UserID],[IsStatus] from UserMeal where UserID = ? ORDER BY UserPlanID DESC";
 
@@ -291,7 +291,7 @@ public class UserMealDAO {
         return rs;
     }
 
-    public int updateUserMeal(int userMealID, String userMealName, int userID, int isStatus) {
+    public int updateUserMeal(String userMealName, int userMealID) {
         int rs = 0;
         Connection cn = null;
         try {
@@ -304,10 +304,8 @@ public class UserMealDAO {
             + "Where SpecPlanDetailID = ?
                  */
                 PreparedStatement pst = cn.prepareStatement(sql);
-                pst.setInt(1, userMealID);
-                pst.setString(2, userMealName);
-                pst.setInt(3, userID);
-                pst.setInt(4, isStatus);
+                pst.setString(1, userMealName);
+                pst.setInt(2, userMealID);
 
                 rs = pst.executeUpdate();
             }

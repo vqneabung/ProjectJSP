@@ -64,9 +64,9 @@ public class UpdateUserMealDetailServlet extends HttpServlet {
                 out.println(productID);
                 out.println(dishID);
                 out.println(userMealDetailID);
-                response.sendRedirect("/ProjectJSP/ManageUserMealServlet");
+                response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             } else {
-                response.sendRedirect("/ProjectJSP/ManageUserMealServlet");
+                response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             }
         }
     }

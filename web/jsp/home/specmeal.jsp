@@ -29,7 +29,6 @@
                         <c:forEach items="${requestScope.dayList}" var="day">
                             <h3>${day.dayText}</h3>
                             <div>
-                                <h4> - Tên sản phấm</h4>
                                 <strong>+ Buổi sáng: </strong><br>
                                 <c:forEach var="specMealDetail" items="${requestScope.specMealDetailList}">
                                     <c:if test= "${(specMealDetail.isStatus != 0 && specMealDetail.specMeal.specMealID == specMeal.specMealID) && (day.dayNum == specMealDetail.day.dayNum  && specMealDetail.dish.dishID == 1)}" >
