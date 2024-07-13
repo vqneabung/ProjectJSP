@@ -16,6 +16,9 @@ import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -83,6 +86,8 @@ public class UpdateProductServlet extends HttpServlet {
             request.setAttribute("categoryList", c.getAllCategory());
             System.out.print(c.getAllCategory());
 //                  request.setAttribute("typeList", product.getType());
+            request.setAttribute("categoryID", product.getCategory().getCategoryID());
+            request.setAttribute("typeID", product.getType().getTypeID());
             request.setAttribute("isVegetarian", product.getIsVegetarian());
             request.setAttribute("isVegan", product.getIsVegan());
             request.setAttribute("hasSpecialDietaryRequirements", product.getHasSpecialDietaryRequirements());
@@ -180,12 +185,15 @@ public class UpdateProductServlet extends HttpServlet {
                 }
 
                 result = pd.updateProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, status, image, discount, productID);
+                TimeUnit.SECONDS.sleep(1);
                 if (result > 0) {
                     response.sendRedirect(url + "?msg=Update Sucessfully");
                 } else {
                     response.sendRedirect(url + "?msg=Update Failed");
                 }
             }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(UpdateProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

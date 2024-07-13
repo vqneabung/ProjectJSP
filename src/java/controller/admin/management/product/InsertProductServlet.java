@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -47,7 +50,7 @@ public class InsertProductServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, InterruptedException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
         try (PrintWriter out = response.getWriter()) {
@@ -125,6 +128,7 @@ public class InsertProductServlet extends HttpServlet {
                     }
                     int rs = pd.insertProduct(productName, categoryID, typeID, isVegetarian, isVegan, hasSpecialDietaryRequirements, size, price, stock, unitSold, describe, image, discount);
 
+                    TimeUnit.SECONDS.sleep(1);
                     if (rs >= 1) {
                         response.sendRedirect("/ProjectJSP/ManageProductServlet");
                     } else {
@@ -156,7 +160,11 @@ public class InsertProductServlet extends HttpServlet {
             request.setAttribute("categoryList", categories);
             request.getRequestDispatcher("/jsp/admin/admin_product_insert.jsp").forward(request, response);
         } else {
-            processRequest(request, response);
+            try {
+                processRequest(request, response);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(InsertProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -171,7 +179,11 @@ public class InsertProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(InsertProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

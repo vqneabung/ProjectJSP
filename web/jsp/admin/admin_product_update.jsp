@@ -23,18 +23,21 @@
                     <form action="/ProjectJSP/UpdateProductServlet" enctype="multipart/form-data" method="post">
                         <p>Tên sản phầm *<input class="form-control" type="text" name="update_productName" placeholder="Enter Produce Name" value="${requestScope.productName}" required=""/></p>
                         <p>Tên loại
-                            <select class="form-control" name="update_categoryID" >
-                                <c:forEach items="${requestScope.categoryList}" var="category">
-                                    <c:if test="${category.type.typeID == 1}">
-                                        <option value="${category.categoryID}">${category.categoryID}.${category.categoryName}</option>
-                                    </c:if>
-                                </c:forEach>
+                            <select class="form-control" name="update_typeID">
+                                <option value="1">Thức ăn</option>
+                                <option value="2" ${requestScope.typeID == 2 ? "selected" : ""}>Nguyên liệu</option>
                             </select>
                         </p>
                         <p>Tên loại sản phẩm
-                            <select class="form-control" name="update_typeID">
-                                <option value="1">Thức ăn</option>
-                                <option value="2">Nguyên liệu</option>
+                            <select class="form-control" name="update_categoryID" >
+                                <c:forEach items="${requestScope.categoryList}" var="category">
+                                    <c:if test="${category.type.typeID == 1}">
+                                        <option value="${category.categoryID}" ${requestScope.categoryID == category.categoryID ? "selected" : ""}>${category.categoryID}.${category.categoryName}</option>
+                                    </c:if>
+                                    <c:if test="${category.type.typeID == 2}">
+                                        <option value="${category.categoryID}" ${requestScope.categoryID == category.categoryID ? "selected" : ""}>${category.categoryID}.${category.categoryName}</option>
+                                    </c:if>
+                                </c:forEach>
                             </select>
                         </p>
                         <p>Có phải là thức ăn dành cho người ăn chay không
@@ -105,24 +108,24 @@
                             </c:forEach>
                                 ];
 
-                                $('select[name="insert_typeID"]').change(function () {
+                                $('select[name="update_typeID"]').change(function () {
                                     var selectedType = $(this).val();
                                     var optionsToUse = selectedType === '1' ? foodOptions : ingredientOptions;
 
-                                    var $categorySelect = $('select[name="insert_categoryID"]');
+                                    var $categorySelect = $('select[name="update_categoryID"]');
                                     $categorySelect.empty();
 
                                     $.each(optionsToUse, function (index, item) {
                                         $categorySelect.append($('<option></option>').val(item.id).text(item.id + '.' + item.name));
                                     });
                                     if (selectedType === '1') {
-                                        $('select[name="insert_isVegetarian"]').closest('p').show();
-                                        $('select[name="insert_isVegan"]').closest('p').show();
-                                        $('select[name="insert_hasSpecialDietaryRequirements"]').closest('p').show();
+                                        $('select[name="update_isVegetarian"]').closest('p').show();
+                                        $('select[name="update_isVegan"]').closest('p').show();
+                                        $('select[name="update_hasSpecialDietaryRequirements"]').closest('p').show();
                                     } else {
-                                        $('select[name="insert_isVegetarian"]').closest('p').hide();
-                                        $('select[name="insert_isVegan"]').closest('p').hide();
-                                        $('select[name="insert_hasSpecialDietaryRequirements"]').closest('p').hide();
+                                        $('select[name="update_isVegetarian"]').closest('p').hide();
+                                        $('select[name="update_isVegan"]').closest('p').hide();
+                                        $('select[name="update_hasSpecialDietaryRequirements"]').closest('p').hide();
                                     }
                                 });
                             });

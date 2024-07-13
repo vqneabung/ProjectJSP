@@ -25,7 +25,7 @@ import utils.DBUtils;
  */
 public class ProductDAO {
 
-    public static final String GET_DATA = "select ProductID, ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage, Discount from Product";
+    public static final String GET_DATA = "select ProductID, ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage, Discount from Product WHERE IsStatus = 1 ";
 
     public static final String GET_DATA_BY_FOOD = "select ProductID, ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage, Discount from Product where TypeID = 1";
 

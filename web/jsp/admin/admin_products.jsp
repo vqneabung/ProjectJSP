@@ -170,12 +170,12 @@
                     <thead>
                         <tr>
                             <th>Product ID</th>
+                            <th>Image</th>
                             <th>Product Name</th>
                             <th>Category</th>
                             <th>Type</th>
                             <th>Is Vegetarian</th>
                             <th>Is Vegan</th>
-                            <th>Has Special Dietary Requirements</th>
                             <th>Product Size</th>
                             <th>Price</th>
                             <th>Discount (%)</th>
@@ -191,12 +191,12 @@
                             <c:if test= "${product.isStatus != 0}" >
                                 <tr>
                                     <th>${product.productID}</th>
+                                    <th><img src="${product.productImage[0]}" width="100" height="100"</th>
                                     <th>${product.productName}</th>
                                     <th>${product.category.categoryName}</th>
                                     <th>${product.type.typeName}</th>
                                     <th>${product.isVegetarian == 1 ? "True" : "False"}</th>
                                     <th>${product.isVegan == 1 ? "True" : "False"}</th>
-                                    <th>${product.hasSpecialDietaryRequirements == 1 ? "True" : "False"}</th>
                                     <th><c:forEach items="${product.productSize}" var="size" varStatus="loop">
                                             ${size}<c:if test="${not loop.last}">,</c:if>
                                         </c:forEach></th>
@@ -243,21 +243,20 @@
                     };
                 };
 
+
+
                 $(document).ready(function () {
+
                     $('#productListTable').DataTable({
                         "searching": false,
                         "info": false,
                         "columnDefs": [
-                            {"orderable": false, "targets": [12, 13, 14]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
+                            {"orderable": false, "targets": [12, 13, 14]}
                         ],
                         "language": {
                             "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
                         }
-
-
                     });
-
-
 
                     $('#searchProductForm').on('submit', function (event) {
                         // Ngăn chặn hành động mặc định của form (tải lại trang)
@@ -280,18 +279,20 @@
                                 order_type: $('select[name="order_type"]').val()
                             },
                             success: function (data) {
-                                var html = ' <table class="styled-table" > <tr><th>ProductID</th><th>Product Name</th><th>Category</th><th>Type</th><th>Is Vegetarian</th><th>Is Vegan</th><th>Has Special Dietary Requirements</th><th>Product Size</th><th>Price</th><th>Discount (%)</th><th>Stock</th><th>Unit sold</th><th>Status</th><th>Remove</th><th>Update</th></tr>';
+                                var html = ' <table class="styled-table" id="productListTable" style="font-size:15px"><thead><tr><th>ProductID</th><th>Product Name</th><th>Category</th><th>Type</th><th>Is Vegetarian</th><th>Is Vegan</th><th>Has Special Dietary Requirements</th><th>Product Size</th><th>Price</th><th>Discount (%)</th><th>Stock</th><th>Unit sold</th><th>Status</th><th>Remove</th><th>Update</th></tr></thead>';
+                                html += '<tbody>';
                                 var productList = data; // Dựa vào cấu trúc dữ liệu trả về từ Servlet để xử lý
 
                                 $.each(productList, function (index, product) {
+
                                     html += '<tr>';
                                     html += '<td>' + product.productID + '</td>';
                                     html += '<td>' + product.productName + '</td>';
                                     html += '<td>' + product.category.categoryName + '</td>';
                                     html += '<td>' + product.type.typeName + '</td>';
-                                    html += '<td>' + (product.isVegetarian == 1 ? "True" : "False") + '</td>';
-                                    html += '<td>' + (product.isVegan == 1 ? "True" : "False") + '</td>';
-                                    html += '<td>' + (product.hasSpecialDietaryRequirements == 1 ? "True" : "False") + '</td>';
+                                    html += '<td>' + (product.isVegetarian === 1 ? "True" : "False") + '</td>';
+                                    html += '<td>' + (product.isVegan === 1 ? "True" : "False") + '</td>';
+                                    html += '<td>' + (product.hasSpecialDietaryRequirements === 1 ? "True" : "False") + '</td>';
                                     html += '<td>';
                                     $.each(product.productSize, function (sizeIndex, size) {
                                         html += size;
@@ -301,24 +302,48 @@
                                     });
                                     html += '</td>';
                                     html += '<td>' + product.productPrice + '</td>';
-                                    html += '<td>' + product.discount + '</td>'
+                                    html += '<td>' + product.discount + '</td>';
                                     html += '<td>' + product.productStock + '</td>';
                                     html += '<td>' + product.productUnitSold + '</td>';
                                     html += '<td>' + (product.isStatus === 1 ? "Activate" : "Deactivate") + '</td>';
                                     html += '<td><a class="btn btn-primary" href="RemoveProduceServlet?productID=' + product.productID + '">remove</a></td>';
-                                    html += '<td><a class="btn btn-primary" href="UpdateProductServlet?productID=' + product.productID + '">update</a></td>';
+                                    html += '<td><a class="btn btn-primary" href="UpdateProductServlet?productID=' + product.productID + '">update</a>';
+                                    html += '<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#describeBox' + product.productID + '">Describe</button></td>';
                                     html += '</tr>';
-                                    html += '<tr>';
-                                    html += '<td colspan="15">';
-                                    html += '<h2>Mô tả</h2>';
-                                    html += product.productDescribe;
-                                    html += '</td>';
-                                    html += '</tr>';
+                                    html += '<div>';
+                                    html += '<div class="modal fade" id="describeBox' + product.productID + '" tabindex="-1" aria-hidden="true">';
+                                    html += '<div class="modal-dialog">';
+                                    html += '<div class="modal-content">';
+                                    html += '<div class="modal-header">';
+                                    html += '<h5 class="modal-title" id="exampleModalLabel">Mô tả</h5>';
+                                    html += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+                                    html += '</div>';
+                                    html += '<div class="modal-body">';
+                                    html += '<p>' + product.productDescribe + '</p>';
+                                    html += '</div>';
+                                    html += '<div class="modal-footer">';
+                                    html += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '</div>';
+                                    html += '</div>';
                                 });
-                                html += '</table>'
+                                html += '</tbody>';
+                                html += '</table>';
 
                                 // Thay thế nội dung của bảng với HTML mới xây dựng
                                 $('#productList').html(html); // Thay thế nội dung trong #productList bằng danh sách sản phẩm mới
+                                $('#productListTable').DataTable({
+                                    "searching": false,
+                                    "info": false,
+                                    "columnDefs": [
+                                        {"orderable": false, "targets": [12, 13, 14]}
+                                    ],
+                                    "language": {
+                                        "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
+                                    }
+                                });
                                 $('[data-toggle="tooltip"]').tooltip();
                                 $('.dropdown-toggle').dropdown();
                             },
@@ -326,6 +351,9 @@
                                 alert('Đã xảy ra lỗi khi gửi yêu cầu tìm kiếm sản phẩm.');
                             }
                         });
+
+
+
                     });
                 });
 
