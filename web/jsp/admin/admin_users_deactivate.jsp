@@ -142,7 +142,6 @@
 
         $(document).ready(function () {
             $('#userListTable').DataTable({
-                "paging": false,
                 "searching": false,
                 "info": false,
                 "columnDefs": [
@@ -196,7 +195,6 @@
                         html += '</table>';
                         $('#userList').html(html);
                         $('#userListTable').DataTable({
-                            "paging": false,
                             "searching": false,
                             "info": false,
                             "columnDefs": [

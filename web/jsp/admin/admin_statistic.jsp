@@ -21,7 +21,7 @@
                 <div class="card col-5">
                     <div class="card-body">
                         <div>
-                            <h5>Số lượng nhân viên: ${requestScope.products.size()}</h5>
+                            <h5>Số lượng sản phẩm: ${requestScope.products.size()}</h5>
                         </div>
                     </div>
                 </div>
