@@ -9,7 +9,7 @@
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/ManageSpecMealServlet" >Quản lí của chuyên gia</a>
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/ManageRecipeDetailServlet" >Quản lí thực đơn</a>
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/ManageOrderServlet?function=order" >Quản lí giao hàng</a>
-        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/jsp/home/home.jsp" >Home</a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/StartServlet">Home</a>
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="/ProjectJSP/LogoutServlet" >Log out</a>
     </div>
 </div>

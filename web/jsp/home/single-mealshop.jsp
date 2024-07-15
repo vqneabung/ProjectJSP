@@ -4,6 +4,9 @@
     Author     : VQN
 --%>
 
+<%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="model.ProductDTO"%>
 <%@page import="dao.RecipeDetailDAO"%>
 <%@page import="model.RecipeDetailDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,6 +18,22 @@
     </head>
     <body>
         <%@include file="../../common/web/header.jsp" %>
+        <%
+            HashMap<ProductDTO, Integer> cart = (HashMap<ProductDTO, Integer>) session.getAttribute("cart");
+            System.out.println("Is cart null = " + cart);
+            ProductDTO product = (ProductDTO) request.getAttribute("product");
+            System.out.println("product " + product);
+            int quantityFromCart = 1;
+            if (cart != null) {
+                for (Map.Entry<ProductDTO, Integer> productMap : cart.entrySet()) {
+                    if (productMap.getKey().getProductID() == product.getProductID()) {
+                        quantityFromCart = productMap.getValue();
+                        System.out.println(productMap.getValue());
+                        break;
+                    }
+                }
+            }
+        %>
         <div class="container">
             <div class="row">
                 <div class="col-9">
@@ -31,9 +50,9 @@
                                             <p>+ Dành cho người ăn chay: ${requestScope.product.isVegetarian == 1 ? "Có" : "Không"}</p>
                                             <p>+ Dành cho người ăn chay trường: ${requestScope.product.isVegan  == 1 ? "Có" : "Không"}</p>
                                             <span>Giá: ${requestScope.product.productPrice} Đ</span>
-                                        </div>
+                                        </div>  
                                         <div class="d-flex">
-                                            <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem">
+                                            <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 5rem">
                                             <button class="btn btn-outline-dark flex-shrink-0 addToCart" type="button" id="addToCart" data-product-id="${requestScope.product.productID}">
                                                 <i class="bi-cart-fill me-1"></i>
                                                 Add to cart
@@ -154,12 +173,16 @@
                 var productID = $(this).data('product-id');
                 var quantity = $('#inputQuantity').val();
                 addToCart(productID, quantity);
+                editToCart(productID, quantity);
             });
 
             $('#inputQuantity').on('change', function () {
+                var productID = $(this).data('product-id');
                 var quantity = $('#inputQuantity').val();
                 if (quantity > ${requestScope.product.productStock}) {
                     quantity = ${requestScope.product.productStock};
+                } else if (quantity < 1) {
+                    quantity = 1;
                 }
                 $('#inputQuantity').val(quantity);
             });
@@ -181,10 +204,27 @@
                     }
                 });
             }
+
+            function editToCart(productID, quantity) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/ProjectJSP/EditCartServlet',
+                    data: {
+                        edit_productID: productID,
+                        edit_quantity: parseInt(quantity) + parseInt(<%= quantityFromCart%>),
+                        btn_action: "update"
+                    },
+                    success: function (data) {
+
+                    },
+                    error: function () {
+                        alert('Error updating order status');
+                    }
+                });
+            }
         });
     </script>
-    <% 
-        
+    <%
     %>
     <%@include file="../../common/web/footer.jsp" %>   
 </body>

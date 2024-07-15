@@ -100,7 +100,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="user" items="${sessionScope.users}">
+                            <c:forEach var="user" items="${requestScope.users}">
                                 <c:if test="${user.status == 0}">
                                     <tr style="font-size: medium">
                                         <td><img src="${user.avatar}" alt="${user.userID}" width="100" height="100"/></td>
