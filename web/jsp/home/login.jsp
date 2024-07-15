@@ -42,7 +42,37 @@
                             <p>Username<input type="text" class="form-control" name="register_username" placeholder="Enter Username" required=""/></p>
                             <p>Email<input type="email" class="form-control" name="register_email" placeholder="Enter Email" required=""/></p>  
                             <p>Số điện thoại<input type="text" class="form-control" name="register_phone" placeholder="Enter Phone" required=""/></p>
-                            <p>Địa chỉ<input type="text" class="form-control" name="register_address" placeholder="Enter Address" required=""/></p>
+                            <div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <select class=" form-control" id="city" aria-label=".form-select-sm" required="">
+                                            <option value="" selected>Chọn tỉnh thành</option>           
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <select class="form-control" id="district" aria-label=".form-select-sm" required="">
+                                            <option value="" selected>Chọn quận huyện</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4" style="margin-bottom: 1rem">
+                                        <select class="form-control" id="ward" aria-label=".form-select-sm" required="">
+                                            <option value="" selected>Chọn phường xã</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="numAddress">
+                                    </div>
+                                </div>   
+                                <br>
+                                <div>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">Địa chỉ:</span>
+                                        </div>
+                                        <input type="text" class="form-control" id="fullAddress" name="register_address" aria-describedby="basic-addon1" readonly >
+                                    </div>
+                                </div>    
+                            </div>
                             <p>Mật khẩu<input type="password" class="form-control" name="register_password" placeholder="Enter password" required=""/></p>
                             <p><input type="submit" class="btn btn-primary" value="Register"/></p>
                         </form>
@@ -52,4 +82,59 @@
             </div>
         </div>
     </body>
+    <script>
+        var citis = document.getElementById("city");
+        var districts = document.getElementById("district");
+        var wards = document.getElementById("ward");
+        var numAddress = document.getElementById("numAddress");
+
+        var Parameter = {
+            url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+            method: "GET",
+            responseType: "application/json",
+        };
+        var promise = axios(Parameter);
+        promise.then(function (result) {
+            console.log(result.data);
+            renderCity(result.data);
+        });
+
+        function renderCity(data) {
+            for (const x of data) {
+                citis.options[citis.options.length] = new Option(x.Name, x.Id);
+            }
+            citis.onchange = function () {
+                district.length = 1;
+                ward.length = 1;
+                console.log("When city onchange " + this.value);
+                if (this.value !== "") {
+                    const result = data.filter(n => n.Id === this.value);
+
+                    for (const k of result[0].Districts) {
+                        district.options[district.options.length] = new Option(k.Name, k.Id);
+                    }
+                }
+            };
+            district.onchange = function () {
+                ward.length = 1;
+                const dataCity = data.filter((n) => n.Id === citis.value);
+                if (this.value != "") {
+                    const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
+
+                    for (const w of dataWards) {
+                        wards.options[wards.options.length] = new Option(w.Name, w.Id);
+                    }
+                }
+            };
+            numAddress.onchange = function () {
+                if (citis.value && districts.value && wards.value && numAddress.value) {
+                    const cityName = citis.options[citis.selectedIndex].text;
+                    const districtName = districts.options[districts.selectedIndex].text;
+                    const wardName = wards.options[wards.selectedIndex].text;
+                    const numAddressName = numAddress.value;
+                    document.getElementById("fullAddress").value = numAddressName + ', ' + wardName + ', ' + districtName + ', ' + cityName;
+                }
+            };
+        }
+    </script>
 </html>

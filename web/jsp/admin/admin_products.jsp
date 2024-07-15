@@ -143,8 +143,6 @@
                                         // Lấy giá trị của select "order_product"
                                         var selectedValue = $(this).val();
 
-                                        // Nếu giá trị được chọn là productName, category, type, productPrice, productStock, hoặc productUnitSold
-                                        // Thì ẩn select có name là "order_type"
                                         if (selectedValue === '') {
                                             $('select[name="order_type"]').prop('disabled', true).val('');
                                         } else {
