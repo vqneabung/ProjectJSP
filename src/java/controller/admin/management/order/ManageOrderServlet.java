@@ -44,6 +44,13 @@ public class ManageOrderServlet extends HttpServlet {
             if (function.equals("order")) {
                 request.getRequestDispatcher("jsp/admin/admin_orders.jsp").forward(request, response);
             } else if (function.equals("orderByAddress")) {
+                ArrayList<String> add = new ArrayList<>();
+                for (String address : addressList) {
+                    String[] addArr = address.split(",");
+                    add.add(addArr[addArr.length - 1]);
+                }
+
+                request.setAttribute("add", add);
                 request.getRequestDispatcher("jsp/admin/admin_orders_sortby_address.jsp").forward(request, response);
             }
         }

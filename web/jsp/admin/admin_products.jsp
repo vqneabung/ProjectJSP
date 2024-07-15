@@ -277,7 +277,7 @@
                                 order_type: $('select[name="order_type"]').val()
                             },
                             success: function (data) {
-                                var html = ' <table class="styled-table" id="productListTable" style="font-size:15px"><thead><tr><th>ProductID</th><th>Product Name</th><th>Category</th><th>Type</th><th>Is Vegetarian</th><th>Is Vegan</th><th>Has Special Dietary Requirements</th><th>Product Size</th><th>Price</th><th>Discount (%)</th><th>Stock</th><th>Unit sold</th><th>Status</th><th>Remove</th><th>Update</th></tr></thead>';
+                                var html = ' <table class="styled-table" id="productListTable" style="font-size:15px"><thead><tr><th>ProductID</th><th>Image</th><th>Product Name</th><th>Category</th><th>Type</th><th>Is Vegetarian</th><th>Is Vegan</th><th>Has Special Dietary Requirements</th><th>Product Size</th><th>Price</th><th>Discount (%)</th><th>Stock</th><th>Unit sold</th><th>Status</th><th>Remove</th><th>Update</th></tr></thead>';
                                 html += '<tbody>';
                                 var productList = data; // Dựa vào cấu trúc dữ liệu trả về từ Servlet để xử lý
 
@@ -285,6 +285,7 @@
 
                                     html += '<tr>';
                                     html += '<td>' + product.productID + '</td>';
+                                    html += '<th><img src="' + product.productImage[0] + '" width="100" height="100"</th>';
                                     html += '<td>' + product.productName + '</td>';
                                     html += '<td>' + product.category.categoryName + '</td>';
                                     html += '<td>' + product.type.typeName + '</td>';

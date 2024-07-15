@@ -99,7 +99,7 @@
                     });
 
                     // Cập nhật tổng giá trị của giỏ hàng trên giao diện
-                    $('#totalCartValue').text(totalCart);
+                    $('#totalCartValue').text("Tổng: " + totalCart + " VND");
 
                     editToCart(productID, quantity);
 

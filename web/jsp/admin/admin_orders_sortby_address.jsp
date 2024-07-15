@@ -17,7 +17,7 @@
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
         <div class="main">
             <h1>Quản lí Đơn hàng</h1>
-            <c:forEach items="${requestScope.addressList}" var="address">
+            <c:forEach items="${requestScope.add}" var="address">
                 <h3 style="margin-top: 1rem">Địa chỉ: ${address}</h3>
                 <table class="styled-table orderList" >
                     <thead>
@@ -34,7 +34,7 @@
                     <thead>
                     <tbody>
                         <c:forEach var="order" items="${requestScope.orders}">
-                            <c:if test="${order.user.address == address}">
+                            <c:if test="${order.user.address.contains(address)}">
                                 <tr class="order-body">
                                     <td>${order.orderID}</td>
                                     <td>${order.user.userName}</td>
