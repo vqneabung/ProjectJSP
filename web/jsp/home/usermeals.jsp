@@ -64,9 +64,10 @@
                                                 </td>
                                                 <td>
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userMealDetail${userMeal.userMealID}">Chi tiết</button>
-                                                    <a class="btn btn-primary" href="/ProjectJSP/RemoveUserMealServlet?userMealID=${userMeal.userMealID}">Remove</a>
+
                                                 </td>
                                                 <td>
+                                                    <a class="btn btn-primary" href="/ProjectJSP/RemoveUserMealServlet?userMealID=${userMeal.userMealID}">Remove</a>
                                                     <button type="button" class="btn btn-secondary edit-btn">Edit</button>
                                                     <button type="button" class="btn btn-success save-btn d-none" data-user-meal-id="${userMeal.userMealID}">Save</button>
                                                     <button type="button" class="btn btn-danger cancel-btn d-none">Cancel</button>
