@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.PaymentDTO;
 import model.ProductDTO;
 import model.UserDTO;
 
@@ -45,9 +46,11 @@ public class OrderServlet extends HttpServlet {
             } else {
                 int userID = user.getUserID();
                 HashMap<ProductDTO, Integer> cart = (HashMap<ProductDTO, Integer>) session.getAttribute("cart");
+                Object paymentID = request.getParameter("paymentID");
+                System.out.println("payment: " + paymentID);
                 OrderDAO d = new OrderDAO();
 
-                int result = d.saveOrder(userID, cart);
+                int result = d.saveOrder(userID, cart, paymentID);
 
                 //
                 for (Map.Entry<ProductDTO, Integer> eachCart : cart.entrySet()) {

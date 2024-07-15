@@ -41,24 +41,8 @@ public class ManageUserServlet extends HttpServlet {
             UserDAO ud = new UserDAO();
             ArrayList<UserDTO> users = ud.getAllAcounts();
             HttpSession session = request.getSession();
-            //--------Tao thanh phan trang--------------------
-            int page = 1;
-            int recordsPerPage = 10;
-
-            if (request.getParameter("page") != null) {
-                page = Integer.parseInt(request.getParameter("page"));
-            }
-
-            int start = (page - 1) * recordsPerPage;
-            int end = Math.min(start + recordsPerPage, users.size());
-            List<UserDTO> usersPage = users.subList(start, end);
-
-            int noOfPages = (int) Math.ceil(users.size() * 1.0 / recordsPerPage);
-
-            request.setAttribute("usersPage", usersPage);
-            request.setAttribute("noOfPages", noOfPages);
-            request.setAttribute("currentPage", page);
-            session.setAttribute("users", users);
+            
+            request.setAttribute("users", users);
             request.setAttribute("msg", msg);
 
             //---------------------------------------------------------

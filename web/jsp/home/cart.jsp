@@ -1,3 +1,6 @@
+<%@page import="model.PaymentDTO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="dao.PaymentDAO"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="model.ProductDTO"%>
@@ -11,6 +14,11 @@
         <%@include file="../../common/web/header.jsp" %>
     </head>
     <body>
+        <%
+            PaymentDAO p = new PaymentDAO();
+            ArrayList<PaymentDTO> paymentList = p.getAllPayment();
+            System.out.println("paymentList" + paymentList);
+        %>
         <div class="container">
             <h1>Giỏ hàng</h1>
             <div class="card">
@@ -57,7 +65,18 @@
                     <h5>${requestScope.msgOrder}</h5>
                     <c:choose>
                         <c:when test="${not empty sessionScope.cart}">
-                            <p><a class="btn btn-primary" href="/ProjectJSP/OrderServlet">Xác nhận mua hàng</a></p>
+                            <form action="/ProjectJSP/OrderServlet" method="post">
+                                Chọn phương thức thanh toán: 
+                                <select name="paymentID" class="form-control" style="width: 20%">
+                                    <c:forEach items="<%= paymentList%>" var="payment">
+                                        <option value="${payment.paymentID}">
+                                            ${payment.paymentName}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                                <br>
+                                <input type="submit" class="btn btn-primary" value="Xác nhận mua hàng"> 
+                            </form>
                         </c:when>
                         <c:otherwise>
                             <p>Giỏ hàng này đang trống</p>

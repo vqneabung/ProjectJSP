@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.OrderDTO;
@@ -171,9 +172,10 @@ public class OrderDAO {
         return rs;
     }
 
-    public int saveOrder(int userID, HashMap<ProductDTO, Integer> cart) {
+    public int saveOrder(int userID, HashMap<ProductDTO, Integer> cart, Object paymentID) {
         int result = 0;
         Connection cn = null;
+        java.util.Date utilDate = new java.util.Date();
         try {
             int totalPrice = 0;
             for (ProductDTO p : cart.keySet()) {
@@ -186,12 +188,13 @@ public class OrderDAO {
                 //b2:viet query va exec query
                 cn.setAutoCommit(false);
                 //Insert 1 dong vao bang Order
-                String sql = "INSERT INTO [dbo].[Orders]([UserID],[TotalPrice],[PaymentID],[OrderDate],[OrderStatus]) VALUES(?,?,1,?,1)";
+                String sql = "INSERT INTO [dbo].[Orders]([UserID],[TotalPrice],[PaymentID],[OrderDate],[OrderStatus]) VALUES(?,?,?,?,1)";
                 //Lay order vua chen 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userID);
                 pst.setInt(2, totalPrice); //1: pending
-                pst.setDate(3, new Date(System.currentTimeMillis()));
+                pst.setObject(3, paymentID); //1: pending
+                pst.setTimestamp(4, new Timestamp(utilDate.getTime()));
                 result = pst.executeUpdate();
 
                 if (result >= 1) {

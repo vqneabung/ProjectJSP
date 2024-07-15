@@ -102,7 +102,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="user" items="${requestScope.usersPage}">
+                        <c:forEach var="user" items="${requestScope.users}">
                             <c:if test="${user.status == 1}">
                                 <tr style="font-size: medium" class="text-center">
                                     <td><img src="${user.avatar}" alt="${user.userID}" width="100" height="100"/></td>
@@ -128,17 +128,6 @@
                     </tbody>
                 </table>
             </div>
-            <div class="pagination">
-                <c:if test="${currentPage > 1}">
-                    <a href="ManageUserServlet?page=${currentPage - 1}">Previous</a>
-                </c:if>
-                <c:forEach var="i" begin="1" end="${noOfPages}">
-                    <a href="ManageUserServlet?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
-                </c:forEach>
-                <c:if test="${currentPage < noOfPages}">
-                    <a href="ManageUserServlet?page=${currentPage + 1}">Next</a>
-                </c:if>
-            </div>
         </div>
     </div>
     <script>
@@ -155,7 +144,6 @@
 
         $(document).ready(function () {
             $('#userListTable').DataTable({
-                "paging": false,
                 "searching": false,
                 "info": false,
                 "columnDefs": [
@@ -209,7 +197,6 @@
                         html += '</table>';
                         $('#userList').html(html);
                         $('#userListTable').DataTable({
-                            "paging": false,
                             "searching": false,
                             "info": false,
                             "columnDefs": [
