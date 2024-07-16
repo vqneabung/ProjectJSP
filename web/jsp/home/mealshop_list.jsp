@@ -127,7 +127,7 @@
                                 <script>
                                     productListSearch.push('${product.productName}');
                                 </script>
-                                <div class="col-4" style="margin-bottom: 1rem">
+                                <div class="col-4 productLength" style="margin-bottom: 1rem">
                                     <div class="card p-4 bg-white">
                                         <div class="about-product text-center mt-2"><img src="${product.productImage[0]}" style="width: 100%; height: 150px; margin-bottom: 1rem">
                                             <div>
@@ -149,6 +149,9 @@
                                 </div>
                             </c:forEach>
                         </div>
+                        <div>
+                            <a id="btn_loadmore" class="btn btn-primary" style="width: 100%" value="btn" onclick="productLoad()" >Load more</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -163,6 +166,56 @@
                 source: productListSearch
             });
         });
+
+
+
+        function productLoad() {
+            var productLength = document.getElementsByClassName("productLength").length;
+            console.log(productLength);
+            $.ajax({
+                type: 'POST',
+                url: '/ProjectJSP/MealShopServlet',
+                data: {
+                    productLength: productLength,
+                    btn_loadmore: "btn"
+                },
+                success: function (data) {
+                    var productList = data.productList; // Danh sách sản phẩm từ server
+                    var html = '';
+                    $.each(productList, function (index, product) {
+                        // Tạo HTML cho mỗi sản phẩm
+                        html += '<div class="col-4 productLength" style="margin-bottom: 1rem">';
+                        html += '<div class="card p-4 bg-white">';
+                        html += '<div class="about-product text-center mt-2"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem">';
+                        html += '<div>';
+                        html += '<h4>' + product.productName + '</h4>';
+                        html += '<h6 class="mt-0 text-black-50">Loại: ' + product.type.typeName + '</h6>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '<div class="stats mt-2">';
+                        html += '<div class="d-flex justify-content-between p-price"><span>Giá gốc</span><span><del>' + product.productPrice + 'Đ</del></span></div>';
+                        html += '<div class="d-flex justify-content-between p-price"><span>Giảm đến: </span><span>' + product.discount + '%</span></div>';
+                        html += '<div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>' + product.discount * product.productPrice / 100 + 'Đ</span></div>';
+                        html += '</div>';
+                        html += '<div class="d-flex justify-content-between total font-weight-bold mt-2"><span>Total</span><span>' + (product.productPrice - (product.discount * product.productPrice / 100)) + 'Đ</span>';
+                        html += '</div>';
+                        html += '<div class="text-center" style="padding-top: 1rem;">';
+                        html += '<button class="btn btn-outline-dark addToCard" onclick="console.log("text")" data-product-id="' + product.productID + '">Mua</button> <a class="btn btn-primary mt-auto" href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '">Chi tiết</a>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    });
+                    if (data.productSize < 9) {
+                        document.getElementById("btn_loadmore").setAttribute("hidden", "");
+                    }
+                    $('#productList').append(html);
+                },
+                error: function () {
+                    alert('Error updating order status');
+                }
+            });
+        }
+
         $(document).ready(function () {
         <c:if test="${requestScope.categorySearch != null}">
             $('#${requestScope.categorySearch}').prop('checked', true);
@@ -175,8 +228,8 @@
                 $("input[name='categoryCheck']:checked").each(function () {
                     categoryCheck.push($(this).val());
                 });
-              
-                ;
+
+
                 var find = $("#find").val();
                 searchMealShop(typeCheck, peopleCheck, find);
                 function searchMealShop(typeCheck, peopleCheck, find) {
@@ -215,6 +268,7 @@
                                 html += '</div>';
                                 html += '</div>';
                             });
+                            $('#productList').html(html);
                         },
                         error: function () {
                             alert('Error updating order status');

@@ -54,6 +54,8 @@ public class ProductDAO {
 
     public static final String GET_DATA_BY_CATEGORYID = "SELECT TOP 3 * FROM [WEEKLYMEAL].[dbo].[Product] WHERE CategoryID = ? ORDER BY NEWID()";
 
+    public static final String GET_9_DATA = "select ProductID, ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage, Discount from Product WHERE IsStatus = 1 ORDER BY ProductID OFFSET ? ROW FETCH NEXT 9 ROW ONLY";
+
     public ArrayList<ProductDTO> getAllProducts() {
         ArrayList<ProductDTO> productList = new ArrayList<>();
 
@@ -124,6 +126,64 @@ public class ProductDAO {
                 String sql = GET_DATA_RAMDOM;
                 Statement st = cn.createStatement();
                 ResultSet rs = st.executeQuery(sql);
+                if (rs != null) {
+                    //b3: Doc cac dong trong rs va cat vao ArrayList
+                    while (rs.next()) {
+                        int productID = rs.getInt("ProductID");
+                        String productName = rs.getString("ProductName");
+                        CategoryDTO category = c.getCategory(rs.getInt("CategoryID"));
+                        TypeDTO type = t.getType(rs.getInt("TypeID"));
+                        int isVegetarian = rs.getInt("IsVegetarian");
+                        int isVegan = rs.getInt("IsVegan");
+                        int hasSpecialDietaryRequirements = rs.getInt("HasSpecialDietaryRequirements");
+                        String[] productSize = utils.Utils.stringToArray(rs.getString("ProductSize"));
+                        int productPrice = rs.getInt("ProductPrice");
+                        int productStock = rs.getInt("ProductStock");
+                        int productUnitSold = rs.getInt("ProductUnitSold");
+                        String productDescribe = rs.getString("ProductDescribe");
+                        int isStatus = rs.getInt("IsStatus");
+                        String[] productImage = utils.Utils.stringToArray(rs.getString("ProductImage"));
+                        int discount = rs.getInt("Discount");
+
+                        ProductDTO product = new ProductDTO(productID, productName, category, type, isVegetarian, isVegan, hasSpecialDietaryRequirements, productSize, productPrice, productStock, productUnitSold, productDescribe, isStatus, productImage, discount);
+                        productList.add(product);
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return productList;
+
+    }
+
+    public ArrayList<ProductDTO> getNineRowProducts(int productLength) {
+        ArrayList<ProductDTO> productList = new ArrayList<>();
+
+        TypeDAO t = new TypeDAO();
+        CategoryDAO c = new CategoryDAO();
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+
+                String sql = GET_9_DATA;
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setInt(1, productLength);
+                ResultSet rs = pst.executeQuery();
+
                 if (rs != null) {
                     //b3: Doc cac dong trong rs va cat vao ArrayList
                     while (rs.next()) {
