@@ -52,11 +52,20 @@
                                             <span>Giá: ${requestScope.product.productPrice} Đ</span>
                                         </div>  
                                         <div class="d-flex">
-                                            <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 5rem">
-                                            <button class="btn btn-outline-dark flex-shrink-0 addToCart" type="button" id="addToCart" data-product-id="${requestScope.product.productID}">
-                                                <i class="bi-cart-fill me-1"></i>
-                                                Add to cart
-                                            </button>
+                                            <c:if test="${requestScope.product.productStock != 0}">
+                                                <input class="form-control text-center me-3" id="inputQuantity" type="number" value="1" min="1" max="${requestScope.product.productStock}" style="max-width: 5rem">
+                                                <button class="btn btn-outline-dark flex-shrink-0 addToCart" type="button" id="addToCart" data-product-id="${requestScope.product.productID}">
+                                                    <i class="bi-cart-fill me-1"></i>
+                                                    Add to cart
+                                                </button>
+                                            </c:if>
+                                            <c:if test="${requestScope.product.productStock == 0}">
+                                                <input class="form-control text-center me-3" id="inputQuantity" type="number" value="0" disabled="" style="max-width: 5rem">
+                                                <button class="btn btn-outline-dark flex-shrink-0 addToCart" type="button" id="addToCart" data-product-id="${requestScope.product.productID}" disabled="">
+                                                    <i class="bi-cart-fill me-1"></i>
+                                                    Add to cart
+                                                </button>
+                                            </c:if>
                                         </div>
                                         <h5 style="margin-top: 1rem">Còn lại: ${requestScope.product.productStock} </h5>
                                     </div>
@@ -174,17 +183,6 @@
                 var quantity = $('#inputQuantity').val();
                 addToCart(productID, quantity);
                 editToCart(productID, quantity);
-            });
-
-            $('#inputQuantity').on('change', function () {
-                var productID = $(this).data('product-id');
-                var quantity = $('#inputQuantity').val();
-                if (quantity > ${requestScope.product.productStock}) {
-                    quantity = ${requestScope.product.productStock};
-                } else if (quantity < 1) {
-                    quantity = 1;
-                }
-                $('#inputQuantity').val(quantity);
             });
 
 

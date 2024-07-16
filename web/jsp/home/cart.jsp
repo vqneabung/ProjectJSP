@@ -49,7 +49,14 @@
                                     <td>${p.productName}</td>
                                     <td><img style="width: 150px;" src="${p.productImage[0]}" ></td>
                                     <td>${p.productPrice}</td>
-                                    <td><input type="number" value="${quantity}" name="edit_quantity"></td>
+                                    <td>
+                                        <c:if test="${quantity > p.productStock}">
+                                            <input type="number" value="${p.productStock}" name="edit_quantity" min="0" max="${p.productStock}">
+                                        </c:if>
+                                        <c:if test="${quantity <= p.productStock}">
+                                            <input type="number" value="${quantity}" name="edit_quantity" min="0" max="${p.productStock}">
+                                        </c:if>
+                                    </td>
                                     <td>${quantity * p.productPrice}</td>
                                     <td>
                                         <input class="btn btn-primary" type="submit" value="Remove" name="btn_action">
@@ -88,6 +95,8 @@
             <p><a class="btn btn-primary" href="/ProjectJSP/MealShopServlet">Quay lại</a></p>
         </div>
         <script>
+
+
             $(document).ready(function () {
                 // Bắt sự kiện khi thay đổi số lượng sản phẩm
                 $('input[name="edit_quantity"]').on('change', function () {
@@ -95,7 +104,6 @@
 
                     // Tìm phần tử cha (tr) chứa thông tin sản phẩm
                     var $tr = $(this).closest('tr');
-
                     // Lấy giá sản phẩm từ phần tử tr
                     var price = $tr.find('td:eq(3)').text(); // Cột thứ tư trong bảng là giá
 
@@ -105,7 +113,6 @@
 
                     // Tính toán tổng giá trị cho sản phẩm này
                     var total = quantity * price;
-
                     // Hiển thị lại tổng giá trị cho sản phẩm này trên giao diện
                     $tr.find('td:eq(5)').text(total); // Cột thứ sáu trong bảng là cột tổng giá trị
 
@@ -116,14 +123,10 @@
                         var price = $(this).closest('tr').find('td:eq(3)').text(); // Lấy giá từ cột thứ tư
                         totalCart += qty * price;
                     });
-
                     // Cập nhật tổng giá trị của giỏ hàng trên giao diện
                     $('#totalCartValue').text("Tổng: " + totalCart + " VND");
-
                     editToCart(productID, quantity);
-
                 });
-
                 function editToCart(productID, quantity) {
                     $.ajax({
                         type: 'POST',
