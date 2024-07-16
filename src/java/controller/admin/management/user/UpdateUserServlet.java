@@ -76,6 +76,8 @@ public class UpdateUserServlet extends HttpServlet {
             request.setAttribute("email", user.getEmail());
             request.setAttribute("password", user.getPassword());
             request.setAttribute("avatar", user.getAvatar());
+            request.setAttribute("roleID", user.getRoleID());
+            request.setAttribute("status", user.getStatus());
             request.getRequestDispatcher(url).forward(request, response);
 
         } catch (Exception e) {
@@ -151,7 +153,7 @@ public class UpdateUserServlet extends HttpServlet {
                 String phone = (String) params.get("update_phone");
                 String address = (String) params.get("update_address");
                 String email = (String) params.get("update_email");
-                String roleID = (String) params.get("update_role");
+                String roleID = (String) params.get("update_roleID");
                 String status = (String) params.get("update_status");
                 String avatar = user.getAvatar();
                 if (!pathName.isEmpty()) {

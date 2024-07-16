@@ -25,6 +25,18 @@
                         <p>Số điện thoại <input type="text" class="form-control" name="update_phone" placeholder="Enter Phone" value="${requestScope.phone}" required=""/></p>
                         <p>Mật khẩu <input type="password" class="form-control" name="update_password" placeholder="Enter password" value="${requestScope.password}" required=""/></p>
                         <p>Địa chỉ <input type="text" class="form-control" name="update_address" placeholder="Enter Address" value="${requestScope.address}" required=""/></p>
+                        <p>Điền vai trò 
+                            <select class="form-control" name="update_roleID">
+                                <option value="0">Admin</option>
+                                <option value="1" ${requestScope.roleID == 1 ? "selected" : ""}>User</option>
+                            </select>
+                        </p>
+                        <p>Điền trạng thái
+                            <select class="form-control" name="update_status">
+                                <option value="0">Deactivate</option>
+                                <option value="1" ${requestScope.status == 1 ? "selected" : ""}>Activate</option>
+                            </select>
+                        </p>
                         <div>
                             Chọn ảnh <input class="form-control" type="file" name="insert_avatar" value="" onchange='previewFile()' /> <br>
                             <img src="/ProjectJSP/assets/home/image/1200px-Picture_icon_BLACK.svg.png" height="200" alt="avatar" id="image" >
