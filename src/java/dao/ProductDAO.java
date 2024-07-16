@@ -35,7 +35,7 @@ public class ProductDAO {
 
     public static final String GET_PRODUCT_BY_SEARCH = "SELECT * FROM Product WHERE ProductName LIKE ?";
 
-    public static final String GET_PRODUCT_BY_SEARCH_MULTIDATA = "SELECT  * FROM [WEEKLYMEAL].[dbo].[Product] Where TypeID Like ? AND IsVegan Like ? AND IsVegetarian like ? AND ProductName Like ?";
+    public static final String GET_PRODUCT_BY_SEARCH_MULTIDATA = "SELECT  * , (ProductPrice - (ProductPrice * ISNULL(Discount,0) /100 )) AS ProductPriceAfterDiscount  FROM [WEEKLYMEAL].[dbo].[Product]  Where TypeID Like ? AND IsVegan Like ? AND IsVegetarian like ? AND ProductName Like ? AND (ProductPrice - (ProductPrice * ISNULL(Discount,0) /100 )) BETWEEN ? AND ? ";
 
     public static final String GET_PRODUCT_BY_SEARCH_ALLDATA = "SELECT [ProductID],[ProductName],[CategoryID],[TypeID],[IsVegetarian],[IsVegan],[HasSpecialDietaryRequirements],[ProductSize],[ProductPrice],[ProductStock],[ProductUnitSold],[ProductDescribe],[ProductImage],[IsStatus], Discount FROM [dbo].[Product] WHERE [ProductName] LIKE ? AND [CategoryID] LIKE ? AND [TypeID] LIKE ? AND [IsVegetarian] LIKE ? AND [IsVegan] LIKE ? AND [ProductSize] LIKE ? AND [ProductPrice] BETWEEN ? AND ? AND [ProductStock] LIKE ? AND [ProductUnitSold] LIKE ?";
 
@@ -55,6 +55,8 @@ public class ProductDAO {
     public static final String GET_DATA_BY_CATEGORYID = "SELECT TOP 3 * FROM [WEEKLYMEAL].[dbo].[Product] WHERE CategoryID = ? ORDER BY NEWID()";
 
     public static final String GET_9_DATA = "select ProductID, ProductName, CategoryID, TypeID, IsVegetarian, IsVegan, HasSpecialDietaryRequirements, ProductSize, ProductPrice, ProductStock, ProductUnitSold, ProductDescribe, IsStatus, ProductImage, Discount from Product WHERE IsStatus = 1 ORDER BY ProductID OFFSET ? ROW FETCH NEXT 9 ROW ONLY";
+
+    public static final String GET_MAX_MIN_PRICE = "select min(productPrice) as priceMin,  max(productPrice) as priceMax from Product";
 
     public ArrayList<ProductDTO> getAllProducts() {
         ArrayList<ProductDTO> productList = new ArrayList<>();
@@ -500,7 +502,7 @@ public class ProductDAO {
 
     }
 
-    public ArrayList<ProductDTO> getProductBySearchMultiData(String searchTypeID, String searchIsVegan, String searchIsVegetarian, String searchProductName, String[] searchCategoryCheckArr) {
+    public ArrayList<ProductDTO> getProductBySearchMultiData(String searchTypeID, String searchIsVegan, String searchIsVegetarian, String searchProductName, String[] searchCategoryCheckArr, int price1, int price2, int productLength) {
         ArrayList<ProductDTO> productList = new ArrayList<>();
         TypeDAO t = new TypeDAO();
         CategoryDAO c = new CategoryDAO();
@@ -520,6 +522,9 @@ public class ProductDAO {
                         sql = sql.substring(0, sql.length() - 1);
                     }
                     sql += ")";
+                    sql += " ORDER BY ProductID OFFSET ? ROW FETCH NEXT 9 ROW ONLY";
+                } else {
+                    sql += " ORDER BY ProductID OFFSET ? ROW FETCH NEXT 9 ROW ONLY";
                 }
                 //-------------------------------------------
                 PreparedStatement pst = cn.prepareStatement(sql);
@@ -527,6 +532,9 @@ public class ProductDAO {
                 pst.setString(2, "%" + searchIsVegan + "%");
                 pst.setString(3, "%" + searchIsVegetarian + "%");
                 pst.setString(4, "%" + searchProductName + "%");
+                pst.setInt(5, price1);
+                pst.setInt(6, price2);
+                pst.setInt(7, productLength);
                 ResultSet rs = pst.executeQuery();
                 while (rs.next()) {
                     int productID = rs.getInt("ProductID");
@@ -799,6 +807,42 @@ public class ProductDAO {
         }
 
         return rs;
+    }
+
+    public int[] getPriceMaxMin() {
+        int[] priceMaxMin = new int[2];
+        //with [0] is min, [1] is max
+
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //B2: Viet query va exec query
+
+                String sql = GET_MAX_MIN_PRICE;
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs != null && rs.next()) {
+                    //b3: Doc cac dong trong rs va cat vao ArrayList
+                    priceMaxMin[0] = rs.getInt("priceMin");
+                    priceMaxMin[1] = rs.getInt("priceMax");
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return priceMaxMin;
+
     }
 
 }

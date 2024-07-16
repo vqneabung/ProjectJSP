@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.ProductDTO;
+import controller.web.mealshop.Data;
 
 /**
  *
@@ -47,7 +48,9 @@ public class MealShopSearchServlet extends HttpServlet {
             String typeCheck = request.getParameter("typeCheck");
             String peopleCheck = request.getParameter("peopleCheck");
             String[] categoryCheckArr = request.getParameterValues("categoryCheck[]");
-
+            int price1 = Integer.parseInt(request.getParameter("price1"));
+            int price2 = Integer.parseInt(request.getParameter("price2"));
+            int productLength = Integer.parseInt(request.getParameter("productLength"));
 
             String veganCheck = "";
             String vegetarianCheck = "";
@@ -59,14 +62,14 @@ public class MealShopSearchServlet extends HttpServlet {
             }
 
             ProductDAO pd = new ProductDAO();
-            ArrayList<ProductDTO> productList = pd.getProductBySearchMultiData(typeCheck, veganCheck, vegetarianCheck, find, categoryCheckArr);
+            ArrayList<ProductDTO> productList = pd.getProductBySearchMultiData(typeCheck, veganCheck, vegetarianCheck, find, categoryCheckArr, price1, price2, productLength);
 
             Gson gson = new Gson();
             String jsonProductList = gson.toJson(productList);
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(jsonProductList);
+            response.getWriter().write(gson.toJson(new Data(productList, productList.size())));
 
         }
     }

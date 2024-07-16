@@ -108,6 +108,7 @@ public class HomeFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String url = req.getServletPath();
+        System.out.println("url " + url);
         if (url.endsWith(".jsp")) {
             res.sendRedirect("ErrorServlet");
         }
