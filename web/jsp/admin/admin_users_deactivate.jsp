@@ -194,7 +194,6 @@
                     html += '</table>';
                     $('#userList').html(html);
                     $('#userListTable').DataTable({
-                        "searching": false,
                         "info": false,
                         "columnDefs": [
                             {"orderable": false, "targets": [7, 8]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
@@ -210,7 +209,6 @@
 
         $(document).ready(function () {
             $('#userListTable').DataTable({
-                "searching": false,
                 "info": false,
                 "columnDefs": [
                     {"orderable": false, "targets": [7, 8]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
