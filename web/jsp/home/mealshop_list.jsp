@@ -39,6 +39,19 @@
                                     </div>
                                     <br>
                                     <div>
+                                        <h4>+ Giá</h4>
+                                        <div class="row">
+                                            <div style="width: 48%">
+                                                <input class="form-control" type="number" value="" id="price1" name="price1">
+                                            </div>
+                                            ~ 
+                                            <div style="width: 48%">
+                                                <input class="form-control" type="number" value="" id="price2" name="price2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
                                         <h4>+ Thể loại</h4>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" value="" id="allTypeCheck" name="typeCheck" checked>
@@ -162,6 +175,7 @@
                 $("input[name='categoryCheck']:checked").each(function () {
                     categoryCheck.push($(this).val());
                 });
+              
                 ;
                 var find = $("#find").val();
                 searchMealShop(typeCheck, peopleCheck, find);

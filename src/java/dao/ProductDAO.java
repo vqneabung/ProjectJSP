@@ -379,7 +379,7 @@ public class ProductDAO {
 
     }
 
-    public ArrayList<ProductDTO> getProductBySearchAllData(String searchProductName, String searchCategoryID, String searchTypeID, String searchIsVegetarian, String searchIsVegan, String searchSize, String searchPriceArr[], String searchStock, String searchUnitSold, String order_product, String order_type) {
+    public ArrayList<ProductDTO> getProductBySearchAllData(String searchProductName, String searchCategoryID, String searchTypeID, String searchIsVegetarian, String searchIsVegan, String searchSize, String searchPriceArr[], String searchStock, String searchUnitSold) {
         ArrayList<ProductDTO> productList = new ArrayList<>();
         TypeDAO t = new TypeDAO();
         CategoryDAO c = new CategoryDAO();
@@ -390,9 +390,6 @@ public class ProductDAO {
             cn = DBUtils.makeConnection();
             if (cn != null) {
                 String sql = GET_PRODUCT_BY_SEARCH_ALLDATA;
-                if (!order_product.equals("")) {
-                    sql += " ORDER BY " + order_product + " " + order_type;
-                }
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setString(1, "%" + searchProductName + "%");
                 pst.setString(2, "%" + searchCategoryID + "%");

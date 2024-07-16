@@ -55,12 +55,12 @@
                                         </select>
                                     </div>
                                     <div class="col-4" style="margin-bottom: 1rem">
-                                        <select class="form-control" id="ward" aria-label=".form-select-sm" required="">
+                                        <select class="form-control" id="ward" aria-label=".form-select-sm" required="" onchange="enableNumAdress()">
                                             <option value="" selected>Chọn phường xã</option>
                                         </select>
                                     </div>
                                     <div class="col-12">
-                                        <input type="text" class="form-control" id="numAddress">
+                                        <input type="text" class="form-control" id="numAddress" disabled="" >
                                     </div>
                                 </div>   
                                 <br>
@@ -91,13 +91,36 @@
         var Parameter = {
             url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
             method: "GET",
-            responseType: "application/json",
+            responseType: "application/json"
         };
         var promise = axios(Parameter);
         promise.then(function (result) {
             console.log(result.data);
             renderCity(result.data);
         });
+
+        function enableNumAdress() {
+            if (citis.value && districts.value && wards.value) {
+                numAddress.removeAttribute("disabled");
+            } else {
+                numAddress.setAttribute("disabled", "");
+            }
+
+        }
+
+
+        numAddress.addEventListener("change", () => {
+            if (citis.value && districts.value && wards.value && numAddress.value) {
+                const cityName = citis.options[citis.selectedIndex].text;
+                const districtName = districts.options[districts.selectedIndex].text;
+                const wardName = wards.options[wards.selectedIndex].text;
+                const numAddressName = numAddress.value;
+                document.getElementById("fullAddress").value = numAddressName + ', ' + wardName + ', ' + districtName + ', ' + cityName;
+            } else {
+                document.getElementById("fullAddress").value = "";
+            }
+        });
+
 
         function renderCity(data) {
             for (const x of data) {
@@ -118,7 +141,7 @@
             district.onchange = function () {
                 ward.length = 1;
                 const dataCity = data.filter((n) => n.Id === citis.value);
-                if (this.value != "") {
+                if (this.value !== "") {
                     const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
 
                     for (const w of dataWards) {
@@ -126,15 +149,8 @@
                     }
                 }
             };
-            numAddress.onchange = function () {
-                if (citis.value && districts.value && wards.value && numAddress.value) {
-                    const cityName = citis.options[citis.selectedIndex].text;
-                    const districtName = districts.options[districts.selectedIndex].text;
-                    const wardName = wards.options[wards.selectedIndex].text;
-                    const numAddressName = numAddress.value;
-                    document.getElementById("fullAddress").value = numAddressName + ', ' + wardName + ', ' + districtName + ', ' + cityName;
-                }
-            };
+
+
         }
     </script>
 </html>

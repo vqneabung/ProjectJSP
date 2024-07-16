@@ -16,7 +16,7 @@
         <%@include file="../../common/web/header.jsp" %>
         <%@include file="../../common/admin/sidebar.jsp" %>
         <div class="main" style="margin-top: 1rem">
-            <div class="card">
+            <div class="card" id="searchAdvance" hidden="hidden">
                 <div class="card-body">
                     <div class="card-title">
                         <h6>Tìm sản phẩm</h6>
@@ -27,7 +27,7 @@
                                 <div class="col-4" >Tên sản phầm <input type="text" class="form-control" name="search_productName" placeholder="Enter Produce Name" /></div>
                                 <div  class="col-4">Tên loại
                                     <select class="form-control" name="search_typeID" onchange="">
-                                        <option value="">--Chọn--</option>F
+                                        <option value="">--Chọn--</option>
                                         <option value="1">Thức ăn</option>
                                         <option value="2">Nguyên liệu</option>
                                     </select>
@@ -72,25 +72,6 @@
                                     <div class="row">
                                         <div class="col-4" style="padding-left: 2.5rem; padding-top: 1rem">
                                             <input type="submit" name="btn_search" id="btn_search" class="btn btn-primary" value="Tìm kiếm"/>
-                                        </div>
-                                        <div class="col-4">
-                                            Sắp xếp theo
-                                            <select class="form-control" name="order_product">
-                                                <option value="">--Chọn--</option>
-                                                <option value="productName">Tên sản phẩm</option>
-                                                <option value="category">Thể loại</option>
-                                                <option value="productPrice ">Giá sản phẩm</option>
-                                                <option value="productStock ">Số lượng tồn</option>
-                                                <option value="productUnitSold ">Số lượng bán</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-4">
-                                            Sắp xếp kiểu
-                                            <select class="form-control" name="order_type">
-                                                <option value="">--Chọn--</option>
-                                                <option value="ASC">Thấp đến cao</option>
-                                                <option value="DESC">Cao đến thấp</option>
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -162,6 +143,7 @@
             <h1>Quản lí sản phẩm</h1>
             <p><a class="btn btn-secondary btn-lg active" href="/ProjectJSP/InsertProductServlet" >Insert Product</a>
                 <a class="btn btn-primary btn-lg active" type="button" title="In" onclick="myApp.printTable()"> <i class="fas fa-print"></i> In dữ liệu</a>
+                <a class="btn btn-primary btn-lg active" type="button" onclick="searchAdvance()"> <i class="fas fa-print"></i> Tìm nâng cao</a>
             </p> 
             <div id="productList">
                 <table class="styled-table" id="productListTable" style="font-size:15px">
@@ -187,7 +169,7 @@
                     <tbody>
                         <c:forEach var="product" items="${requestScope.products}">
                             <c:if test= "${product.isStatus != 0}" >
-                                <tr>
+                                <tr style="text-align: center">
                                     <th>${product.productID}</th>
                                     <th><img src="${product.productImage[0]}" width="100" height="100"</th>
                                     <th>${product.productName}</th>
@@ -204,7 +186,7 @@
                                     <th>${product.productUnitSold}</th>
                                     <th>${product.isStatus == 1 ? "Activate" : "Deactivate"}</th>
                                     <th><a class="btn btn-primary" href="RemoveProduceServlet?productID=${product.productID}">Xóa</a></th>
-                                    <th><a class="btn btn-primary" href="UpdateProductServlet?productID=${product.productID}">Cập nhật</a><button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#describeBox${product.productID}">Describe</button>
+                                    <th><a class="btn btn-primary" href="UpdateProductServlet?productID=${product.productID}">Cập nhật</a><button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#describeBox${product.productID}">Mô tả</button>
                                     </th>
                                 </tr>  
                             <div>
@@ -241,12 +223,122 @@
                     };
                 };
 
+                function searchAdvance() {
+                    var searchAdvance = document.getElementById("searchAdvance");
+
+                    if (searchAdvance.getAttribute("hidden") === "hidden") {
+                        searchAdvance.removeAttribute("hidden");
+                    } else {
+                        searchAdvance.setAttribute("hidden", "hidden");
+                        reset();
+                    }
+                }
+
+                function reset() {
+                    var searchForm = document.getElementById("searchForm");
+                    searchForm.reset();
+                    search(event);
+                }
+
+                function search(event) {
+                    // Ngăn chặn hành động mặc định của form (tải lại trang)
+                    event.preventDefault();
+                    // Gửi yêu cầu Ajax
+                    $.ajax({
+                        type: 'POST',
+                        url: '/ProjectJSP/SearchProductServlet',
+                        data: {
+                            productName: $('input[name="search_productName"]').val().trim(),
+                            typeID: $('select[name="search_typeID"]').val(),
+                            categoryID: $('select[name="search_categoryID"]').val(),
+                            isVegetarian: $('select[name="search_isVegetarian"]').val(),
+                            isVegan: $('select[name="search_isVegan"]').val(),
+                            size: $('input[name="search_size"]').val().trim(),
+                            price: $("#productPriceSlider").val(),
+                            stock: $('input[name="search_stock"]').val().trim(),
+                            unitSold: $('input[name="search_unitSold"]').val().trim()
+                        },
+                        success: function (data) {
+                            var html = ' <table class="styled-table" id="productListTable" style="font-size:15px"><thead><tr><th>ProductID</th><th>Image</th><th>Product Name</th><th>Category</th><th>Type</th><th>Is Vegetarian</th><th>Is Vegan</th><th>Has Special Dietary Requirements</th><th>Product Size</th><th>Price</th><th>Discount (%)</th><th>Stock</th><th>Unit sold</th><th>Status</th><th>Remove</th><th>Update</th></tr></thead>';
+                            html += '<tbody>';
+                            var productList = data; // Dựa vào cấu trúc dữ liệu trả về từ Servlet để xử lý
+
+                            $.each(productList, function (index, product) {
+
+                                html += '<tr style="text-align: center">';
+                                html += '<td>' + product.productID + '</td>';
+                                html += '<th><img src="' + product.productImage[0] + '" width="100" height="100"</th>';
+                                html += '<td>' + product.productName + '</td>';
+                                html += '<td>' + product.category.categoryName + '</td>';
+                                html += '<td>' + product.type.typeName + '</td>';
+                                html += '<td>' + (product.isVegetarian === 1 ? "True" : "False") + '</td>';
+                                html += '<td>' + (product.isVegan === 1 ? "True" : "False") + '</td>';
+                                html += '<td>' + (product.hasSpecialDietaryRequirements === 1 ? "True" : "False") + '</td>';
+                                html += '<td>';
+                                $.each(product.productSize, function (sizeIndex, size) {
+                                    html += size;
+                                    if (sizeIndex < product.productSize.length - 1) {
+                                        html += ', ';
+                                    }
+                                });
+                                html += '</td>';
+                                html += '<td>' + product.productPrice + '</td>';
+                                html += '<td>' + product.discount + '</td>';
+                                html += '<td>' + product.productStock + '</td>';
+                                html += '<td>' + product.productUnitSold + '</td>';
+                                html += '<td>' + (product.isStatus === 1 ? "Activate" : "Deactivate") + '</td>';
+                                html += '<th><a class="btn btn-primary" href="RemoveProduceServlet?productID=' + product.productID + '">Xóa</a></th>';
+                                html += '<td><a class="btn btn-primary" href="UpdateProductServlet?productID=' + product.productID + '">Cập nhật</a>';
+                                html += '<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#describeBox' + product.productID + '">Mô tả</button></td>';
+                                html += '</tr>';
+                                html += '<div>';
+                                html += '<div class="modal fade" id="describeBox' + product.productID + '" tabindex="-1" aria-hidden="true">';
+                                html += '<div class="modal-dialog">';
+                                html += '<div class="modal-content">';
+                                html += '<div class="modal-header">';
+                                html += '<h5 class="modal-title" id="exampleModalLabel">Mô tả</h5>';
+                                html += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+                                html += '</div>';
+                                html += '<div class="modal-body">';
+                                html += '<p>' + product.productDescribe + '</p>';
+                                html += '</div>';
+                                html += '<div class="modal-footer">';
+                                html += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</div>';
+                                html += '</div>';
+                            });
+                            html += '</tbody>';
+                            html += '</table>';
+
+                            // Thay thế nội dung của bảng với HTML mới xây dựng
+                            $('#productList').html(html); // Thay thế nội dung trong #productList bằng danh sách sản phẩm mới
+                            $('#productListTable').DataTable({
+                                "info": false,
+                                "columnDefs": [
+                                    {"orderable": false, "targets": [12, 13, 14]}
+                                ],
+                                "language": {
+                                    "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
+                                }
+                            });
+                            $('[data-toggle="tooltip"]').tooltip();
+                            $('.dropdown-toggle').dropdown();
+                        },
+                        error: function () {
+                            alert('Đã xảy ra lỗi khi gửi yêu cầu tìm kiếm sản phẩm.');
+                        }
+                    });
+                }
+
+
+                $('#searchProductForm').submit(search);
 
 
                 $(document).ready(function () {
-
                     $('#productListTable').DataTable({
-                        "searching": false,
                         "info": false,
                         "columnDefs": [
                             {"orderable": false, "targets": [12, 13, 14]}
@@ -254,105 +346,6 @@
                         "language": {
                             "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
                         }
-                    });
-
-                    $('#searchProductForm').on('submit', function (event) {
-                        // Ngăn chặn hành động mặc định của form (tải lại trang)
-                        event.preventDefault();
-                        // Gửi yêu cầu Ajax
-                        $.ajax({
-                            type: 'POST',
-                            url: '/ProjectJSP/SearchProductServlet',
-                            data: {
-                                productName: $('input[name="search_productName"]').val().trim(),
-                                typeID: $('select[name="search_typeID"]').val(),
-                                categoryID: $('select[name="search_categoryID"]').val(),
-                                isVegetarian: $('select[name="search_isVegetarian"]').val(),
-                                isVegan: $('select[name="search_isVegan"]').val(),
-                                size: $('input[name="search_size"]').val().trim(),
-                                price: $("#productPriceSlider").val(),
-                                stock: $('input[name="search_stock"]').val().trim(),
-                                unitSold: $('input[name="search_unitSold"]').val().trim(),
-                                order_product: $('select[name="order_product"]').val(),
-                                order_type: $('select[name="order_type"]').val()
-                            },
-                            success: function (data) {
-                                var html = ' <table class="styled-table" id="productListTable" style="font-size:15px"><thead><tr><th>ProductID</th><th>Image</th><th>Product Name</th><th>Category</th><th>Type</th><th>Is Vegetarian</th><th>Is Vegan</th><th>Has Special Dietary Requirements</th><th>Product Size</th><th>Price</th><th>Discount (%)</th><th>Stock</th><th>Unit sold</th><th>Status</th><th>Remove</th><th>Update</th></tr></thead>';
-                                html += '<tbody>';
-                                var productList = data; // Dựa vào cấu trúc dữ liệu trả về từ Servlet để xử lý
-
-                                $.each(productList, function (index, product) {
-
-                                    html += '<tr>';
-                                    html += '<td>' + product.productID + '</td>';
-                                    html += '<th><img src="' + product.productImage[0] + '" width="100" height="100"</th>';
-                                    html += '<td>' + product.productName + '</td>';
-                                    html += '<td>' + product.category.categoryName + '</td>';
-                                    html += '<td>' + product.type.typeName + '</td>';
-                                    html += '<td>' + (product.isVegetarian === 1 ? "True" : "False") + '</td>';
-                                    html += '<td>' + (product.isVegan === 1 ? "True" : "False") + '</td>';
-                                    html += '<td>' + (product.hasSpecialDietaryRequirements === 1 ? "True" : "False") + '</td>';
-                                    html += '<td>';
-                                    $.each(product.productSize, function (sizeIndex, size) {
-                                        html += size;
-                                        if (sizeIndex < product.productSize.length - 1) {
-                                            html += ', ';
-                                        }
-                                    });
-                                    html += '</td>';
-                                    html += '<td>' + product.productPrice + '</td>';
-                                    html += '<td>' + product.discount + '</td>';
-                                    html += '<td>' + product.productStock + '</td>';
-                                    html += '<td>' + product.productUnitSold + '</td>';
-                                    html += '<td>' + (product.isStatus === 1 ? "Activate" : "Deactivate") + '</td>';
-                                    html += '<td><a class="btn btn-primary" href="RemoveProduceServlet?productID=' + product.productID + '">remove</a></td>';
-                                    html += '<td><a class="btn btn-primary" href="UpdateProductServlet?productID=' + product.productID + '">update</a>';
-                                    html += '<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#describeBox' + product.productID + '">Describe</button></td>';
-                                    html += '</tr>';
-                                    html += '<div>';
-                                    html += '<div class="modal fade" id="describeBox' + product.productID + '" tabindex="-1" aria-hidden="true">';
-                                    html += '<div class="modal-dialog">';
-                                    html += '<div class="modal-content">';
-                                    html += '<div class="modal-header">';
-                                    html += '<h5 class="modal-title" id="exampleModalLabel">Mô tả</h5>';
-                                    html += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
-                                    html += '</div>';
-                                    html += '<div class="modal-body">';
-                                    html += '<p>' + product.productDescribe + '</p>';
-                                    html += '</div>';
-                                    html += '<div class="modal-footer">';
-                                    html += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
-                                    html += '</div>';
-                                    html += '</div>';
-                                    html += '</div>';
-                                    html += '</div>';
-                                    html += '</div>';
-                                });
-                                html += '</tbody>';
-                                html += '</table>';
-
-                                // Thay thế nội dung của bảng với HTML mới xây dựng
-                                $('#productList').html(html); // Thay thế nội dung trong #productList bằng danh sách sản phẩm mới
-                                $('#productListTable').DataTable({
-                                    "searching": false,
-                                    "info": false,
-                                    "columnDefs": [
-                                        {"orderable": false, "targets": [12, 13, 14]}
-                                    ],
-                                    "language": {
-                                        "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
-                                    }
-                                });
-                                $('[data-toggle="tooltip"]').tooltip();
-                                $('.dropdown-toggle').dropdown();
-                            },
-                            error: function () {
-                                alert('Đã xảy ra lỗi khi gửi yêu cầu tìm kiếm sản phẩm.');
-                            }
-                        });
-
-
-
                     });
                 });
 
