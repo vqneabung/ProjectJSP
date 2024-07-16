@@ -44,6 +44,7 @@ public class InsertUserServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            request.setCharacterEncoding("UTF-8");
             boolean isMultPart = ServletFileUpload.isMultipartContent(request);
             String fileName = null;
             System.out.println(isMultPart);
@@ -90,7 +91,7 @@ public class InsertUserServlet extends HttpServlet {
                 String userName = (String) params.get("insert_username");
                 String email = (String) params.get("insert_email");
                 String phone = (String) params.get("insert_phone");
-                String address = (String) params.get("insert_address");
+                String address = new String(((String) params.get("insert_address")).getBytes("iso-8859-1"), "utf-8");
                 String password = (String) params.get("insert_password");
                 String stringRoleID = (String) params.get("insert_role");
                 int roleID = Integer.parseInt(stringRoleID);

@@ -282,7 +282,7 @@ public class UserDAO {
                 pst.setInt(5, roleID);
                 pst.setString(6, password);
                 pst.setString(7, address);
-                pst.setString(8, "https://cdn-icons-png.flaticon.com/512/149/149071.png");
+                pst.setString(8, avatar);
 
                 rs = pst.executeUpdate();
             }

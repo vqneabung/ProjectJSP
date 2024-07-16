@@ -32,7 +32,7 @@
                             </select>
                         </p>
                         <div>
-                            Chọn tệp <input class="form-control" type="file" name="insert_avatar" value="" onchange='previewFile()' /><br>
+                            Chọn tệp <input class="form-control" type="file" name="insert_avatar" id="insert_avatar" value="" onchange='previewFile()' /><br>
                             <img src="/ProjectJSP/assets/home/image/1200px-Picture_icon_BLACK.svg.png" height="200" alt="avatar" id="image" >
                             <input type="button" value="Remove Image" name="remove_image" onclick="removeFile()"/>
                         </div>
@@ -40,7 +40,7 @@
                     </form>
                     <script type="text/javascript">
                         function previewFile() {
-                            var preview = document.querySelector('img');
+                            var preview = document.querySelector('#image');
                             var file = document.querySelector('input[type=file]').files[0];
                             var reader = new FileReader();
 
