@@ -31,7 +31,7 @@
                                 <option value="1">User</option>
                             </select>
                         </p>
-                        <div >
+                        <div>
                             Chọn tệp <input class="form-control" type="file" name="insert_avatar" value="" onchange='previewFile()' /><br>
                             <img src="/ProjectJSP/assets/home/image/1200px-Picture_icon_BLACK.svg.png" height="200" alt="avatar" id="image" >
                             <input type="button" value="Remove Image" name="remove_image" onclick="removeFile()"/>
@@ -69,6 +69,10 @@
                                 $("#insert_username").after('<span class="error">Only printable ASCII is allowed.</span>');
                             }
                         });
+
+
+
+                      
                     </script>
                 </div>
             </div>

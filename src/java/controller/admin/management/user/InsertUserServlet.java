@@ -102,12 +102,12 @@ public class InsertUserServlet extends HttpServlet {
                 if (user == null) { //email khong trung
                     int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address, avatar);
                     if (rs >= 1) {
-                        request.getRequestDispatcher("/ManagerUserServlet").forward(request, response);
+                        response.sendRedirect("ManageUserServlet?msg=insertComplete");
                     } else {
-                        request.getRequestDispatcher("/ManagerUserServlet").forward(request, response);
+                        response.sendRedirect("ManageUserServlet?msg=insertFail");
                     }
                 } else {
-                    request.getRequestDispatcher("/ManagerUserServlet").forward(request, response);
+                    response.sendRedirect("ManageUserServlet?msg=emailTrung");
                 }
             }
         }

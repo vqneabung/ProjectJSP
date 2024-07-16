@@ -232,6 +232,21 @@
         }
         );
 
+        <c:if test="${msg == 'emailTrung'}">
+        window.onload = () => {
+            alert("Email Trùng");
+        };
+        </c:if>
+        <c:if test="${msg == 'insertComplete'}">
+        window.onload = () => {
+            alert("Chèn người dùng thành công!");
+        };
+        </c:if>
+        <c:if test="${msg == 'insertFail'}">
+        window.onload = () => {
+            alert("Chèn người dùng thất bại!");
+        };
+        </c:if>
     </script>
 </body>
 </html>
