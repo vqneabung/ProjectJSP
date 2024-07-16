@@ -35,7 +35,8 @@
                                         </c:if>
                                     </p>
                                     <c:if test="${requestScope.STATUS == 'confirm'}">
-                                        <p style="position: relative">   
+                                        <p style="position: relative">
+                                            ${sessionScope.code}
                                             <label>Code - 6 digit <span>*</span></label>
                                             <input  type="number" class="form-control" name="txtCode" value="${requestScope.code}"/>
                                         </p>

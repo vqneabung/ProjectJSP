@@ -192,8 +192,8 @@ public class OrderDAO {
                 //Lay order vua chen 
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, userID);
-                pst.setInt(2, totalPrice); //1: pending
-                pst.setObject(3, paymentID); //1: pending
+                pst.setInt(2, totalPrice);
+                pst.setObject(3, paymentID);
                 pst.setTimestamp(4, new Timestamp(utilDate.getTime()));
                 result = pst.executeUpdate();
 
@@ -203,6 +203,7 @@ public class OrderDAO {
                     ResultSet table = pst.executeQuery();
                     if (table != null && table.next()) {
                         int orderID = table.getInt("OrderID");
+                        //Duyet cart de insert vao bang order details
                         for (ProductDTO p : cart.keySet()) {
                             sql = "INSERT INTO [dbo].[OrderDetails]([ProductID],[Quantity],[OrderID]) VALUES(?,?,?)";
                             pst = cn.prepareStatement(sql);
@@ -214,8 +215,8 @@ public class OrderDAO {
                         cn.commit();
                     }
                 }
-                System.out.println("Da toi day");
-                //Duyet cart de insert vao bang order details
+
+
             }
         } catch (Exception e) {
             e.printStackTrace();

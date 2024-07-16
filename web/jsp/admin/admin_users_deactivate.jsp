@@ -11,10 +11,10 @@
         <%@ include file="../../common/admin/sidebar.jsp" %>
         <div class="main card">
             <div class="card-body">
-                <h1>Deactivate Users</h1>
+                <h1>Quản lí người dùng không hoạt động</h1>
                 <div>
-                    <a class="btn btn-secondary btn-lg active" href="${pageContext.request.contextPath}/InsertUserServlet">Insert User</a> 
-                    <a class="btn btn-third btn-lg active" href="${pageContext.request.contextPath}/ManageUserServlet?action=activateUser">Activate Users</a> 
+                    <a class="btn btn-secondary btn-lg active" href="${pageContext.request.contextPath}/InsertUserServlet">Chèn người dùng</a> 
+                    <a class="btn btn-third btn-lg active" href="${pageContext.request.contextPath}/ManageUserServlet?action=activateUser">Người dùng đang hoạt động</a> 
                     <a class="btn btn-primary btn-lg active" type="button" onclick="searchAdvance()"> <i class="fas fa-print"></i> Tìm nâng cao</a> 
                 </div>
                 <br>
