@@ -26,7 +26,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="id="login_password"">Password</label>
-                                <p><input type="password" id="login_password" class="form-control" name="login_password" placeholder="Enter Password" required=""/></p>
+                                <p><input id="login_password" class="form-control" type="password"  name="login_password" placeholder="Enter Password" required=""/></p>
                             </div>
                             <p><input type="submit"  class="btn btn-primary" value="Login"/><a class="btn btn-detail" href="ForgotPasswordServlet?status=forgot">Quên mật khẩu</a></p>
                         </form>

@@ -78,7 +78,7 @@ public class RegisterServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             String fullName = request.getParameter("register_fullname");
-String userName = request.getParameter("register_username");
+            String userName = request.getParameter("register_username");
             String email = request.getParameter("register_email");
             String phone = request.getParameter("register_phone");
             String address = request.getParameter("register_address");

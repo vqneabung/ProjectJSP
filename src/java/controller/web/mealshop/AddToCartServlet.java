@@ -56,6 +56,10 @@ public class AddToCartServlet extends HttpServlet {
                 }
                 if (findProduct == null) {
                     cart.put(productName, 1);
+                }else{
+                    int quantity = cart.get(findProduct);
+                    quantity++;
+                    cart.put(findProduct, quantity);
                 }
             }
             session.setAttribute("cart", cart);

@@ -55,7 +55,7 @@
                                         <input class="btn btn-primary" type="submit" value="Remove" name="btn_action">
                                     </td>
                                 </form>
-                                </txr>
+                                </tr>
                             </c:forEach>
                         </c:if>
                         </tbody>

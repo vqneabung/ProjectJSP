@@ -124,11 +124,7 @@ public class LoginServlet extends HttpServlet {
                         System.out.println("Da luu that bai");
                     }
                     if (user.getRoleID() == 0) {
-                        if (lastVisitedURL == null) {
-                            response.sendRedirect(ADMIN_DASHBOARD);
-                        } else {
-                            response.sendRedirect(url);
-                        }
+                        response.sendRedirect(ADMIN_DASHBOARD);
                     } else {
                         response.sendRedirect(url);
                     }
