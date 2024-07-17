@@ -73,25 +73,30 @@
                     <h5><span id="totalCartValue">Tổng: ${total} VND</span></h5>
                     <h5>Ngày : <%= new Date()%></h5>
                     <h5>${requestScope.msgOrder}</h5>
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.cart}">
-                            <form action="/ProjectJSP/OrderServlet" method="post">
-                                Chọn phương thức thanh toán: 
-                                <select name="paymentID" class="form-control" style="width: 20%">
-                                    <c:forEach items="<%= paymentList%>" var="payment">
-                                        <option value="${payment.paymentID}">
-                                            ${payment.paymentName}
-                                        </option>
-                                    </c:forEach>
-                                </select>
-                                <br>
-                                <input type="submit" class="btn btn-primary" value="Xác nhận mua hàng"> 
-                            </form>
-                        </c:when>
-                        <c:otherwise>
-                            <p>Giỏ hàng này đang trống</p>
-                        </c:otherwise>
-                    </c:choose>
+                    <c:if test="${sessionScope.User.roleID == 1}">
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.cart}">
+                                <form action="/ProjectJSP/OrderServlet" method="post">
+                                    Chọn phương thức thanh toán: 
+                                    <select name="paymentID" class="form-control" style="width: 20%">
+                                        <c:forEach items="<%= paymentList%>" var="payment">
+                                            <option value="${payment.paymentID}">
+                                                ${payment.paymentName}
+                                            </option>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+                                    <input type="submit" class="btn btn-primary" value="Xác nhận mua hàng"> 
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <p>Giỏ hàng này đang trống</p>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                    <c:if test="${sessionScope.User.roleID == 0}">
+                        <p>Admin không được phép mua hàng</p>
+                    </c:if>
                 </div>
             </div>
             <br>
