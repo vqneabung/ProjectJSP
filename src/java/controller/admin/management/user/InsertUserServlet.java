@@ -12,6 +12,9 @@ import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +44,7 @@ public class InsertUserServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, InterruptedException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             request.setCharacterEncoding("UTF-8");
@@ -102,6 +105,7 @@ public class InsertUserServlet extends HttpServlet {
                 UserDTO user = ud.getUser(email);
                 if (user == null) { //email khong trung
                     int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address, avatar);
+                    TimeUnit.SECONDS.sleep(1);
                     if (rs >= 1) {
                         response.sendRedirect("ManageUserServlet?msg=insertComplete");
                     } else {
@@ -140,7 +144,11 @@ public class InsertUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(InsertUserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

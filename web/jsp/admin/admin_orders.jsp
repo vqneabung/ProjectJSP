@@ -25,35 +25,35 @@
                 <thead>
                     <tr class="order-head">
                         <th class='text-center'>Order ID</th>
-                        <th>User</th>
-                        <th>Total Price</th>
-                        <th>Payment Method</th>
-                        <th>Order Date</th>
-                        <th>Order Address</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                        <th>Detail</th>
+                        <th class='text-center'>User</th>
+                        <th class='text-center'>Total Price</th>
+                        <th class='text-center'>Payment Method</th>
+                        <th class='text-center'>Order Date</th>
+                        <th class='text-center'>Order Address</th>
+                        <th class='text-center'>Status</th>
+                        <th class='text-center'>Actions</th>
+                        <th class='text-center'>Detail</th>
                     </tr>
                 <thead>
                 <tbody>
                     <c:forEach var="order" items="${requestScope.orders}">
                         <tr class="order-body">
-                            <td>${order.orderID}</td>
-                            <td>${order.user.userName}</td>
-                            <td>${order.totalPrice}</td>
-                            <td>${order.payment.paymentName}</td> 
-                            <td><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
-                            <td>${order.user.address}</td>
+                            <td class='text-center'>${order.orderID}</td>
+                            <td class='text-center'>${order.user.userName}</td>
+                            <td class='text-center'>${order.totalPrice}</td>
+                            <td class='text-center'>${order.payment.paymentName}</td> 
+                            <td class='text-center'><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
+                            <td class='text-center'>${order.user.address}</td>
                             <td id="status_id_${order.orderID}">
                                 ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
                             </td> 
-                            <td id="action_id_${order.orderID}">
+                            <td id="action_id_${order.orderID}" class='text-center'>
                                 <c:if test="${order.orderStatus != 2 && order.orderStatus != 3}">
                                     <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
                                     <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
                                 </c:if>
                             </td>
-                            <td>                           
+                            <td class='text-center'>                           
                                 <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
                             </td>
                         </tr>
