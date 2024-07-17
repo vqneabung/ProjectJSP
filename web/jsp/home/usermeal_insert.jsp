@@ -150,8 +150,6 @@
                                                                             <th style="width: 10%">Buổi</th>
                                                                             <th style="width: 20%">Hình ảnh</th>
                                                                             <th style="width: 20%">Product Name</th>
-                                                                            <th>Remove</th>
-                                                                            <th>Update</th>
                                                                         </tr>
                                                                     <thead>
                                                                     <tbody>

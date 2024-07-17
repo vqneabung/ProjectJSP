@@ -5,16 +5,19 @@
 package controller.web.mealshop;
 
 import com.google.gson.Gson;
+import dao.OrderDAO;
 import dao.ProductDAO;
 import model.ProductDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.OrderDTO;
 
 /**
  *
@@ -56,7 +59,7 @@ public class AddToCartServlet extends HttpServlet {
                 }
                 if (findProduct == null) {
                     cart.put(productName, 1);
-                }else{
+                } else {
                     int quantity = cart.get(findProduct);
                     quantity++;
                     cart.put(findProduct, quantity);

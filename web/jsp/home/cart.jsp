@@ -1,3 +1,5 @@
+<%@page import="dao.OrderDAO"%>
+<%@page import="model.OrderDTO"%>
 <%@page import="model.PaymentDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dao.PaymentDAO"%>
@@ -6,6 +8,7 @@
 <%@page import="model.ProductDTO"%>
 <%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -93,7 +96,45 @@
             </div>
             <br>
             <p><a class="btn btn-primary" href="/ProjectJSP/MealShopServlet">Quay lại</a></p>
+            <h1> Lịch sử mua hàng </h1>
+            <div>
+                <table class="styled-table" id="orderList" style="width: 100%">
+                    <thead>
+                        <tr class="order-head">
+                            <th class='text-center'>Order ID</th>
+                            <th class='text-center'>User</th>
+                            <th class='text-center'>Total Price</th>
+                            <th class='text-center'>Payment Method</th>
+                            <th class='text-center'>Order Date</th>
+                            <th class='text-center'>Order Address</th>
+                            <th class='text-center'>Status</th>
+                        </tr>
+                    <thead>
+                    <tbody>
+                        <%
+                            OrderDAO o = new OrderDAO();
+                            ArrayList<OrderDTO> orderList = o.getAllOrders();
+                        %>
+                        <c:forEach var="order" items="<%= orderList%>">
+                            <c:if test="${order.user.userID == sessionScope.User.userID}">
+                                <tr class="order-body">
+                                    <td class='text-center'>${order.orderID}</td>
+                                    <td class='text-center'>${order.user.userName}</td>
+                                    <td class='text-center'>${order.totalPrice}</td>
+                                    <td class='text-center'>${order.payment.paymentName}</td> 
+                                    <td class='text-center'><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
+                                    <td class='text-center'>${order.user.address}</td>
+                                    <td id="status_id_${order.orderID}">
+                                        ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
+                                    </td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
         <script>
 
 
