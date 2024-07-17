@@ -134,7 +134,7 @@
                 </table>
             </div>
         </div>
-
+        <%@include file="../../common/web/footer.jsp" %>
         <script>
 
 
