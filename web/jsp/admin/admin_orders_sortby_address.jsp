@@ -17,48 +17,62 @@
         <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
         <div class="main">
             <h1>Quản lí Đơn hàng</h1>
-            <c:forEach items="${requestScope.add}" var="address">
-                <h3 style="margin-top: 1rem">Địa chỉ: ${address}</h3>
-                <table class="styled-table orderList" >
-                    <thead>
-                        <tr class="order-head">
-                            <th class='text-center'>Order ID</th>
-                            <th>User</th>
-                            <th>Total Price</th>
-                            <th>Payment Method</th>
-                            <th>Order Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                            <th>Detail</th>
-                        </tr>
-                    <thead>
-                    <tbody>
-                        <c:forEach var="order" items="${requestScope.orders}">
-                            <c:if test="${order.user.address.contains(address)}">
-                                <tr class="order-body">
-                                    <td>${order.orderID}</td>
-                                    <td>${order.user.userName}</td>
-                                    <td>${order.totalPrice}</td>
-                                    <td>${order.payment.paymentName}</td> 
-                                    <td><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
-                                    <td id="status_id_${order.orderID}">
-                                        ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
-                                    </td> 
-                                    <td id="action_id_${order.orderID}">
-                                        <c:if test="${order.orderStatus != 2 && order.orderStatus != 3}">
-                                            <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
-                                            <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
-                                        </c:if>
-                                    </td>
-                                    <td>                           
-                                        <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
-                                    </td>
+            <div class="card" style="width: 30%">
+                <div class="card-body">
+                    <form id="searchAddressForm">
+                        <h5>Tìm kiếm đơn hàng</h5>
+                        <input type="text" id="searchAddress" class="form-control">
+                        <br>
+                        <input type="submit" style="width: 30%" class="form-control btn btn-primary" value="Tìm kiếm">
+                    </form>
+                </div>
+            </div>
+            <div id="searchAddressTable">
+                <c:forEach items="${requestScope.add}" var="address">
+                    <div id="${address}" class="address">
+                        <h3 style="margin-top: 1rem">Địa chỉ: ${address}</h3>
+                        <table class="styled-table orderList" >
+                            <thead>
+                                <tr class="order-head">
+                                    <th class='text-center'>Order ID</th>
+                                    <th>User</th>
+                                    <th>Total Price</th>
+                                    <th>Payment Method</th>
+                                    <th>Order Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                    <th>Detail</th>
                                 </tr>
-                            </c:if>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </c:forEach>
+                            <thead>
+                            <tbody>
+                                <c:forEach var="order" items="${requestScope.orders}">
+                                    <c:if test="${order.user.address.contains(address)}">
+                                        <tr class="order-body">
+                                            <td>${order.orderID}</td>
+                                            <td>${order.user.userName}</td>
+                                            <td>${order.totalPrice}</td>
+                                            <td>${order.payment.paymentName}</td> 
+                                            <td><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
+                                            <td id="status_id_${order.orderID}">
+                                                ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
+                                            </td> 
+                                            <td id="action_id_${order.orderID}">
+                                                <c:if test="${order.orderStatus != 2 && order.orderStatus != 3}">
+                                                    <button class="btn btn-primary btn-confirm" data-order-id="${order.orderID}" id="confirm_order">Confirm</button>
+                                                    <button class="btn btn-outline-primary btn-cancel" data-order-id="${order.orderID}" id="cancel_order">Cancel</button>
+                                                </c:if>
+                                            </td>
+                                            <td>                           
+                                                <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
+                                            </td>
+                                        </tr>
+                                    </c:if>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </c:forEach>
+            </div>
             <script>
 
                 var myApp = new function () {
@@ -70,6 +84,25 @@
                         win.print();
                     };
                 };
+
+
+                document.getElementById("searchAddressForm").addEventListener("submit", (event) => {
+                    event.preventDefault(); // Ngăn form submit mặc định
+                    let searchValue = document.getElementById("searchAddress").value.toLowerCase();
+                    let addressElements = document.querySelectorAll(".address");
+
+                    addressElements.forEach(addressElement => {
+                        let address = addressElement.id.toLowerCase();
+                        if (address.includes(searchValue)) {
+                            addressElement.style.display = ""; // Hiển thị địa chỉ khớp
+                        } else {
+                            addressElement.style.display = "none"; // Ẩn địa chỉ không khớp
+                        }
+                    });
+                });
+
+
+
 
 
                 $(document).ready(function () {
