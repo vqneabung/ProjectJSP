@@ -114,7 +114,9 @@
                                     <td>${user.address}</td>
                                     <td>${user.dateCreate}</td>
                                     <td>
-                                        <a class="btn btn-primary" href="/ProjectJSP/RemoveUserServlet?userID=${user.userID}">Xóa</a>
+                                        <c:if test="${user.userID != sessionScope.User.userID}">
+                                            <a class="btn btn-primary" href="/ProjectJSP/RemoveUserServlet?userID=${user.userID}">Xóa</a>
+                                        </c:if>
                                         <a class="btn btn-outline-primary" href="/ProjectJSP/UpdateUserServlet?userID=${user.userID}">Cập nhật</a>
                                     </td>
                                     <td>
