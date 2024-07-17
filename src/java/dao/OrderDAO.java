@@ -67,6 +67,49 @@ public class OrderDAO {
         return orderList;
     }
 
+    public ArrayList<OrderDTO> getAllOrdersByUserID(Object userID) {
+        ArrayList<OrderDTO> orderList = new ArrayList<>();
+        Connection cn = null;
+        try {
+            UserDAO u = new UserDAO();
+            PaymentDAO p = new PaymentDAO();
+            //b1tao ket noi
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //b2:viet query va exec query
+                String sql = "SELECT [OrderID],[UserID],[TotalPrice],[PaymentID],[OrderDate],[OrderStatus] FROM [WEEKLYMEAL].[dbo].[Orders] where UserID = ? Order by OrderID desc";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setObject(1, userID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int orderID = rs.getInt("OrderID");
+                        UserDTO user = u.getUser(rs.getInt("UserID"));
+                        int totalPrice = rs.getInt("TotalPrice");
+                        PaymentDTO payment = p.getPayment(rs.getInt("PaymentID"));
+                        Date date = rs.getDate("OrderDate");
+                        int status = rs.getInt("OrderStatus");
+
+                        OrderDTO order = new OrderDTO(orderID, user, totalPrice, payment, date, status);
+                        orderList.add(order);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return orderList;
+    }
+
     public ArrayList<OrderDetailDTO> getOrderDetailByID(int orderID) {
         ArrayList<OrderDetailDTO> orderDetailList = new ArrayList<>();
         Connection cn = null;
@@ -87,6 +130,47 @@ public class OrderDAO {
                         int orderDetailID = rs.getInt("OrderItemID");
                         ProductDTO product = pd.getProduct(rs.getInt("ProductID"));
                         int quantity = rs.getInt("Quantity");
+
+                        OrderDetailDTO orderDetail = new OrderDetailDTO(orderDetailID, product, quantity, orderID);
+                        orderDetailList.add(orderDetail);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return orderDetailList;
+    }
+
+    public ArrayList<OrderDetailDTO> getOrderDetailByUserID(Object userID) {
+        ArrayList<OrderDetailDTO> orderDetailList = new ArrayList<>();
+        Connection cn = null;
+        try {
+            PaymentDAO p = new PaymentDAO();
+            ProductDAO pd = new ProductDAO();
+            //b1tao ket noi
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                //b2:viet query va exec query
+                String sql = "SELECT [OrderItemID],[ProductID],[Quantity],o.OrderID, UserID FROM [dbo].[OrderDetails] od INNER JOIN  [dbo].[Orders] o on od.OrderID = o.OrderID Where userID = ?";
+                PreparedStatement pst = cn.prepareStatement(sql);
+                pst.setObject(1, userID);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null) {
+                    while (rs.next()) {
+                        int orderDetailID = rs.getInt("OrderItemID");
+                        ProductDTO product = pd.getProduct(rs.getInt("ProductID"));
+                        int quantity = rs.getInt("Quantity");
+                        int orderID = rs.getInt("OrderID");
 
                         OrderDetailDTO orderDetail = new OrderDetailDTO(orderDetailID, product, quantity, orderID);
                         orderDetailList.add(orderDetail);
@@ -215,7 +299,6 @@ public class OrderDAO {
                         cn.commit();
                     }
                 }
-
 
             }
         } catch (Exception e) {
