@@ -56,7 +56,7 @@
                                             <div class="stats mt-2">
                                                 <div class="d-flex justify-content-between p-price"><span>Giá gốc</span><span>${product.productPrice}VND</span></div>
                                                 <div class="d-flex justify-content-between p-price"><span>Giảm đến: </span><span>${product.discount}%`</span></div>
-                                                <div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>${product.discount*product.productPrice/100}</span></div>
+                                                <div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>${product.discount*product.productPrice/100} Đ</span></div>
                                             </div>
                                             <div class="d-flex justify-content-between total font-weight-bold mt-2"><span>Total</span><span>${product.productPrice - product.discount*product.productPrice/100}Đ</span>
                                             </div>

@@ -59,8 +59,8 @@
                                             <tr id="speclMealDetail_${specMealDetail.specMealDetailID}" style="font-size: medium;" class="text-center">
                                                 <th class="text-center"><img src="${specMealDetail.product.productImage[0]}" width="100" height="100"></th>
                                                 <th class="text-center">${specMealDetail.product.productName}</th>
-                                                <th><button class="btn btn-primary btn-remove" data-specmeal-detail-id="${specMealDetail.specMealDetailID}">remove</button></th>
-                                                <th><a href="UpdateSpecMealServlet?specMealDetailID=${specMealDetail.specMealDetailID}" class="btn btn-secondary">update</a></th>
+                                                <th><button class="btn btn-primary btn-remove" data-specmeal-detail-id="${specMealDetail.specMealDetailID}">Xóa</button></th>
+                                                <th><a href="UpdateSpecMealServlet?specMealDetailID=${specMealDetail.specMealDetailID}" class="btn btn-secondary">Cập nhập</a></th>
                                             </tr>
                                         </c:if>
                                     </c:forEach>   

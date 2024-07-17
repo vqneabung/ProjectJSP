@@ -22,7 +22,7 @@
                         <form action="/ProjectJSP/LoginServlet" method="post">
                             <div class="form-group">
                                 <label for="login_email">Email</label>
-                                <p><input id="login_email" class="form-control" type="text" name="login_email" placeholder="Enter Email" required=""/></p>
+                                <p><input id="login_email" class="form-control" type="email" name="login_email" placeholder="Enter Email" required=""/></p>
                             </div>
                             <div class="form-group">
                                 <label for="id="login_password"">Password</label>
@@ -33,29 +33,42 @@
                         <p>${requestScope.msg}</p>
                     </div>
                 </div>
+                <style>
+
+                    input:invalid + span::after {
+                        content: "✖";
+                        color: #8b0000;
+                    }
+
+                    input:valid + span::after {
+                        content: "✓";
+                        color: #009000;
+                    }
+
+                </style>
                 <div class="col-md-1"></div>
                 <div class="col-md-5 card">
                     <div class="card-body">
                         <h1>Register</h1>
                         <form action="/ProjectJSP/RegisterServlet" method="post">
-                            <p>Tên đầy đủ<input type="text" class="form-control" name="register_fullname" placeholder="Enter Fullname" required=""/></p>
-                            <p>Username<input type="text" class="form-control" name="register_username" placeholder="Enter Username" required=""/></p>
-                            <p>Email<input type="email" class="form-control" name="register_email" placeholder="Enter Email" required=""/></p>  
-                            <p>Số điện thoại<input type="text" class="form-control" name="register_phone" placeholder="Enter Phone" required=""/></p>
+                            <p>Tên đầy đủ(*)<input type="text" class="form-control" name="register_fullname" placeholder="Enter Fullname" required/></p>
+                            <p>Username(*)<input type="text" class="form-control" name="register_username" placeholder="Enter Username" required/></p>
+                            <p>Email(*)<input type="email" class="form-control" name="register_email" placeholder="Enter Email" required/></p>  
+                            <p style="margin-bottom: 0rem">Số điện thoại(*)<div style="display: flex"><input style="width: 90%" type="tel" class="form-control" name="register_phone" id="register_phone" placeholder="Enter Phone" required pattern="[0-9]{10}"/><span style="margin-top: 0.35rem; margin-left: 0.25rem" class="validity"></span></div></p>
                             <div>
                                 <div class="row">
                                     <div class="col-4">
-                                        <select class=" form-control" id="city" aria-label=".form-select-sm" required="">
+                                        <select class=" form-control" id="city" aria-label=".form-select-sm" required>
                                             <option value="" selected>Chọn tỉnh thành</option>           
                                         </select>
                                     </div>
                                     <div class="col-4">
-                                        <select class="form-control" id="district" aria-label=".form-select-sm" required="">
+                                        <select class="form-control" id="district" aria-label=".form-select-sm" required>
                                             <option value="" selected>Chọn quận huyện</option>
                                         </select>
                                     </div>
                                     <div class="col-4" style="margin-bottom: 1rem">
-                                        <select class="form-control" id="ward" aria-label=".form-select-sm" required="" onchange="enableNumAdress()">
+                                        <select class="form-control" id="ward" aria-label=".form-select-sm" required onchange="enableNumAdress()">
                                             <option value="" selected>Chọn phường xã</option>
                                         </select>
                                     </div>
@@ -67,13 +80,13 @@
                                 <div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">Địa chỉ:</span>
+                                            <span class="input-group-text" id="basic-addon1">Địa chỉ(*):</span>
                                         </div>
-                                        <input type="text" class="form-control" id="fullAddress" name="register_address" aria-describedby="basic-addon1" readonly >
+                                        <input type="text" class="form-control" id="fullAddress" name="register_address" aria-describedby="basic-addon1" readonly required>
                                     </div>
                                 </div>    
                             </div>
-                            <p>Mật khẩu<input type="password" class="form-control" name="register_password" placeholder="Enter password" required=""/></p>
+                            <p>Mật khẩu(*)<input type="password" class="form-control" name="register_password" placeholder="Enter password" required/></p>
                             <p><input type="submit" class="btn btn-primary" value="Register"/></p>
                         </form>
                         <p>${requestScope.mesg}</p>

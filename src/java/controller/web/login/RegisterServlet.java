@@ -7,6 +7,8 @@ package controller.web.login;
 import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +72,14 @@ public class RegisterServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX
+            = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.matches();
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -85,6 +95,11 @@ public class RegisterServlet extends HttpServlet {
             String password = request.getParameter("register_password");
             String avatar = request.getParameter("register_avatar");
             int roleID = 1;
+
+            if (!validate(email)) {
+                request.setAttribute("mesg", "Email không hợp lệ");
+                request.getRequestDispatcher(LOGIN).forward(request, response);
+            }
 
             UserDAO ud = new UserDAO();
             UserDTO user = ud.getUser(email);

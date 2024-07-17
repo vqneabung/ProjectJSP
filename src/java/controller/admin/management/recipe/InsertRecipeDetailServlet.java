@@ -60,10 +60,10 @@ public class InsertRecipeDetailServlet extends HttpServlet {
                 request.setAttribute("ingredientList", ingredientList);
                 request.setAttribute("food", food);
                 request.setAttribute("recipeDetailList", recipeDetailList);
-                response.sendRedirect("/ProjectJSP/InsertRecipeDetailServlet?foodID=" + String.valueOf(foodID) + "&msg=insertThanhCong");
+                response.sendRedirect("/ProjectJSP/InsertRecipeDetailServlet?foodID=" + String.valueOf(foodID) + "&msg=insertSuccessfully");
 
             } else {
-                response.sendRedirect("/ProjectJSP/InsertRecipeDetailServlet?foodID=" + String.valueOf(foodID) + "&msg=insertThatBai");
+                response.sendRedirect("/ProjectJSP/InsertRecipeDetailServlet?foodID=" + String.valueOf(foodID) + "&msg=insertFailed");
             }
 
         }

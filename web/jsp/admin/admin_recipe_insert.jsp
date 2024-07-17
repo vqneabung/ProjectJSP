@@ -33,7 +33,7 @@
                                 </c:forEach> 
                             </select>
                         </div>
-                        Thêm khối lượng (Gram): <input name="insert_weight" class="form-control" id="insert_weight" value="0">
+                        Thêm khối lượng (Gram): <input name="insert_weight" type="number" class="form-control" id="insert_weight" value="0">
                         <input hidden name="insert_foodID" value="${food.productID}">
                         <br>
                         <p><input type="submit" name="btn_insert" class="btn btn-primary" value="Insert"/></p>

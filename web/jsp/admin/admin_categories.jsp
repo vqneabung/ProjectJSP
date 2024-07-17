@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : admin_categories
     Created on : Jul 4, 2024, 8:05:33 AM
@@ -23,19 +24,19 @@
             <table class="styled-table" id="categoryList">
                 <thead>
                     <tr class="category-head">
-                        <th class='text-center'>Order ID</th>
-                        <th>CategoryID</th>
-                        <th>Tên thể loại</th>
-                        <th>Hành động</th>
+                        <th class='text-center'>CategoryID</th>
+                        <th class="text-center">Tên dạng</th>
+                        <th class="text-center">Tên thể loại</th>
+                        <th class="text-center">Hành động</th>
                     </tr>
                 <thead>
                 <tbody>
                     <c:forEach var="category" items="${requestScope.categories}">
                         <tr class="category-body">
-                            <td>${category.categoryID}</td>
-                            <td>${category.categoryName}</td>
-                            <td>${category.type.typeName}</td>
-                            <td><a class="btn btn-primary" href="RemoveCategoryServlet?categoryID=${category.categoryID}">Xóa</a></td>                
+                            <td class="text-center">${category.categoryID}</td>
+                            <td class="text-center">${category.categoryName}</td>
+                            <td class="text-center">${category.type.typeName}</td>
+                            <td class="text-center"><a class="btn btn-primary" href="RemoveCategoryServlet?categoryID=${category.categoryID}">Xóa</a></td>                
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -78,61 +79,19 @@
                 };
 
 
-                $(document).ready(function () {
-                    // Xử lý khi click vào nút Confirm
 
-                    $('#orderList').DataTable({
+                $(document).ready(function () {
+                    $('#categoryList').DataTable({
+                        "info": false,
+                        "columnDefs": [
+                            {"orderable": false, "targets": [3]}
+                        ],
                         "language": {
                             "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
                         }
                     });
-
-                    $('.btn-confirm').click(function () {
-                        var orderID = $(this).data('order-id');
-                        updateOrderStatus(orderID, 2);
-                    });
-
-                    // Xử lý khi click vào nút Cancel
-                    $('.btn-cancel').click(function () {
-                        var orderID = $(this).data('order-id');
-                        updateOrderStatus(orderID, 3);
-                    });
-
-
-                    // Hàm gửi yêu cầu AJAX để cập nhật trạng thái đơn hàng
-                    function updateOrderStatus(orderID, newStatus) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/ProjectJSP/UpdateOrderServlet', // Đường dẫn API hoặc servlet để xử lý yêu cầu cập nhật trạng thái
-                            data: {
-                                orderID: orderID,
-                                newStatus: newStatus
-                            },
-                            success: function (response) {
-                                // Xử lý phản hồi từ máy chủ nếu cần thiết
-                                if (response.success) {
-                                    // Cập nhật giao diện người dùng nếu muốn
-                                    // Ví dụ: thay đổi văn bản "Pending" thành "Confirmed" hoặc "Cancelled"
-                                    // Đây là phần bạn có thể thay đổi giao diện người dùng mà không cần tải lại trang
-                                    if (newStatus === 2) {
-                                        // Cập nhật status cell
-                                        $('#action_id_' + orderID).find('button').hide();
-                                        $('#status_id_' + orderID).text("Confirmed");
-                                    } else if (newStatus === 3) {
-                                        // Cập nhật status cell
-                                        $('#action_id_' + orderID).find('button').hide();
-                                        $('#status_id_' + orderID).text("Cancelled");
-                                    }
-                                } else {
-                                    alert('Update failed');
-                                }
-                            },
-                            error: function () {
-                                alert('Error updating order status');
-                            }
-                        });
-                    }
                 });
+
             </script>
         </div>
     </body>

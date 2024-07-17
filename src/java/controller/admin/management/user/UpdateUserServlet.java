@@ -164,9 +164,9 @@ public class UpdateUserServlet extends HttpServlet {
 
                 if (result > 0) {
                     Thread.sleep(2000);
-                    response.sendRedirect(url + "?msg=Update Succefully");
+                    response.sendRedirect(url + "?msg=updateSuccessfully");
                 } else {
-                    response.sendRedirect(url + "?msg=Update Failed");
+                    response.sendRedirect(url + "?msg=updateFailed");
                 }
             }
         } catch (Exception e) {

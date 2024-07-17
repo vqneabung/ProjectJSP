@@ -46,7 +46,7 @@
                                 <option value="0" ${requestScope.isVegetarian == 0 ? "selected" : ""}>Không</option>
                             </select>
                         </p>
-                        <p>Có phải là thức ăn dành cho Vegan không
+                        <p>Có phải là thức ăn dành cho ăn chay trường không
                             <select class="form-control" name="update_isVegan">
                                 <option value="1">Có</option>
                                 <option value="0" ${requestScope.isVegan == 0 ? "selected" : ""} >Không</option>

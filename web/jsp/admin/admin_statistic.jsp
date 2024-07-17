@@ -33,8 +33,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="card col-5" style="margin-top: 1rem">
+                    <div class="card-body">
+                        <div>
+                            <h5>Số lượng đơn đặt hàng: ${requestScope.orders.size()}</h5>
+                        </div>
+                    </div>
+                </div>
             </div>
-                        <table class="styled-table" style="width: 100%">
+            <table class="styled-table" style="width: 100%">
                 <tr>
                     <th>Order ID</th>
                     <th>User</th>

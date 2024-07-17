@@ -34,7 +34,8 @@
                                     <c:if test= "${(specMealDetail.isStatus != 0 && specMealDetail.specMeal.specMealID == specMeal.specMealID) && (day.dayNum == specMealDetail.day.dayNum  && specMealDetail.dish.dishID == 1)}" >
                                         <a href="SingleMealShopServlet?productID=${specMealDetail.product.productID}">${specMealDetail.product.productName}:</a>    
                                         <br/>
-                                        * ${specMealDetail.product.productDescribe} </br>  
+                                        <p>${specMealDetail.product.productDescribe}</p> 
+
                                         <div>
                                             <table class="styled-table" style="width: 100%">
                                                 <tr class="text-center">

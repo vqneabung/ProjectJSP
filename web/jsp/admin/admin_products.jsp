@@ -186,19 +186,29 @@
                                     <th>${product.productUnitSold}</th>
                                     <th>${product.isStatus == 1 ? "Activate" : "Deactivate"}</th>
                                     <th><a class="btn btn-primary" href="RemoveProduceServlet?productID=${product.productID}">Xóa</a></th>
-                                    <th><a class="btn btn-primary" href="UpdateProductServlet?productID=${product.productID}">Cập nhật</a><button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#describeBox${product.productID}">Mô tả</button>
+                                    <th><a class="btn btn-primary" href="UpdateProductServlet?productID=${product.productID}">Cập nhật</a><button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#describeBox${product.productID}">Mô tả và hình ảnh</button>
                                     </th>
                                 </tr>  
                             <div>
                                 <div class="modal fade" id="describeBox${product.productID}" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Mô tả</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">Mô tả và hình ảnh</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>${product.productDescribe}</p>
+                                                <div>
+                                                    <h1>Mô tả</h1>
+                                                    <p>${product.productDescribe}</p>
+                                                </div>
+                                                <div>
+                                                    <h1>Hình ảnh</h1>
+                                                    <c:forEach items="${product.productImage}" var="image">
+                                                        <img src="${image}" style="width: 100%; margin-bottom: 1rem">
+ 
+                                                    </c:forEach>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
