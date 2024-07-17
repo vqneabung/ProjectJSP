@@ -77,7 +77,7 @@
         <br>
         <div id="productList">
             <c:forEach items="${requestScope.foodList}" var="food">
-                <div class="card" style="width: 4   0%">
+                <div class="card"  style="width: 4   0%">
                     <div class="card-body" >
                         <h2>${food.productName} </h2>
                         <table class="styled-table">

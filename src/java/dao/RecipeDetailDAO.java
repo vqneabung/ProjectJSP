@@ -125,7 +125,7 @@ public class RecipeDetailDAO {
 
     }
 
-    public int insertRecipeDetail(int foodID, int ingredientID) {
+    public int insertRecipeDetail(int foodID, int ingredientID, int weight) {
         int rs = 0;
         Connection cn = null;
         try {
@@ -136,6 +136,7 @@ public class RecipeDetailDAO {
                 PreparedStatement pst = cn.prepareStatement(sql);
                 pst.setInt(1, foodID);
                 pst.setInt(2, ingredientID);
+                pst.setInt(3, weight);
 
                 rs = pst.executeUpdate();
             }

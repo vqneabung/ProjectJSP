@@ -19,37 +19,51 @@
         <%@include file="../../common/web/header.jsp" %>
         <%@include file="../../common/admin/sidebar.jsp" %>
         <div class="main">
-            <h1>Insert Recipe</h1>
-            <p><a href="jsp/admin/admin_home.jsp"><--Back to homepage</a></p> 
-            <h1>${food.productName}</h1>
-            <c:if test="${requestScope.msg != null}">
-                <h2>${requestScope.msg}</h2>
-            </c:if>
-            <form action="/ProjectJSP/InsertRecipeDetailServlet" method="get">
-                <div> Điền nguyên liệu
-                    <select name="insert_ingredientID" id="insert_ingredientID">
-                        <c:forEach items="${requestScope.ingredientList}" var="ingredient">
-                            <option id="${ingredient.productID}" value="${ingredient.productID}">${ingredient.productID}.${ingredient.productName}</option>
-                        </c:forEach> 
-                    </select>
-                </div>
-                <input hidden name="insert_foodID" value="${food.productID}">
-                <p><input type="submit" name="btn_insert" value="Insert"/></p>
-            </form>
-            <table class="table table-hover">
-                <tr>
-                    <th>Ingredient</th>
-                    <th>Remove</th>
-                </tr>
-                <c:forEach var="recipeDetail" items="${requestScope.recipeDetailList}">
-                    <c:if test= "${recipeDetail.food.productName == food.productName}" >
-                        <tr>
-                            <th>${recipeDetail.ingredient.productName}</th>
-                            <th><a href="RemoveRecipeDetailServlet?recipeDetailID=${recipeDetail.recipeDetailID}">remove</a></th>
-                        </tr>
+            <div class="card">
+                <div class="card-body">
+                    <h1>Chèn thành phần: ${food.productName}</h1>
+                    <c:if test="${msg != null}">
+                        <h2>${msg}</h2>
                     </c:if>
-                </c:forEach>   
-            </table>
+                    <form action="/ProjectJSP/InsertRecipeDetailServlet" method="post">
+                        <div> Điền nguyên liệu
+                            <select name="insert_ingredientID" id="insert_ingredientID" class="form-control">
+                                <c:forEach items="${requestScope.ingredientList}" var="ingredient">
+                                    <option id="${ingredient.productID}" value="${ingredient.productID}">${ingredient.productID}.${ingredient.productName}</option>
+                                </c:forEach> 
+                            </select>
+                        </div>
+                        Thêm khối lượng (Gram): <input name="insert_weight" class="form-control" id="insert_weight" value="0">
+                        <input hidden name="insert_foodID" value="${food.productID}">
+                        <br>
+                        <p><input type="submit" name="btn_insert" class="btn btn-primary" value="Insert"/></p>
+                    </form>
+                    <table class="styled-table" style="width: 100%">
+                        <tr>
+                            <th>Ingredient</th>
+                            <th>Remove</th>
+                        </tr>
+                        <c:forEach var="recipeDetail" items="${requestScope.recipeDetailList}">
+                            <c:if test= "${recipeDetail.food.productName == food.productName}" >
+                                <tr>
+                                    <th>${recipeDetail.ingredient.productName}</th>
+                                    <th><a class="btn btn-primary" href="RemoveRecipeDetailServlet?recipeDetailID=${recipeDetail.recipeDetailID}">Xoá</a></th>
+                                </tr>
+                            </c:if>
+                        </c:forEach>   
+                    </table>
+                </div>
+            </div>
+            <script>
+                var weight = document.getElementById("insert_weight");
+
+                weight.addEventListener("change", () => {
+                    if (!weight.value) {
+                        weight.value = 0;
+                    }
+                });
+
+            </script>
         </div>
     </body>
 </html>

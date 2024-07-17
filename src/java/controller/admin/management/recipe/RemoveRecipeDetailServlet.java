@@ -39,12 +39,9 @@ public class RemoveRecipeDetailServlet extends HttpServlet {
             int rs = rdd.removeRecipeDetail(recipeDetailID);
 
             if (rs >= 1) {
-                request.setAttribute("msg", "Da delete thanh cong");
-
-                request.getRequestDispatcher("/ManageRecipeDetailServlet").forward(request, response);
+                response.sendRedirect("/ProjectJSP/ManageRecipeDetailServlet");
             } else {
-                request.setAttribute("msg", "Delete that bai");
-                request.getRequestDispatcher("/ManageRecipeDetailServlet").forward(request, response);
+                response.sendRedirect("/ProjectJSP/ManageRecipeDetailServlet");
             }
         }
     }
