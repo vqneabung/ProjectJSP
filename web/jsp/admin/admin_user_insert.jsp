@@ -27,8 +27,8 @@
                         <p>Điền địa chỉ <input class="form-control" type="text" name="insert_address" placeholder="Enter Address" size="50" required=""/></p>
                         <p>Điền vai trò 
                             <select class="form-control" name="insert_role">
-                                <option value="0">Admin</option>
-                                <option value="1">User</option>
+<!--                                <option value="0">Admin</option>-->
+                                <option value="1" selected="">User</option>
                             </select>
                         </p>
                         <div>
