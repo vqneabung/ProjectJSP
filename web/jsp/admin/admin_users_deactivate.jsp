@@ -70,7 +70,7 @@
                                     </div>
                                     <br>
                                     <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-                                    <a class="btn btn-primary" id="reset">Xoá tất cả</a>
+                                    <a class="btn btn-primary" id="reset" onclick="reset()">Xóa tất cả</a>
                                 </form>
                             </div>
                         </div>

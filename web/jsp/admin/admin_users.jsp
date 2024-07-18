@@ -72,7 +72,7 @@
                                     </div>
                                     <br>
                                     <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-                                    <a class="btn btn-primary" id="reset">Xóa tất cả</a>
+                                    <a class="btn btn-primary" id="reset" onclick="reset()">Xóa tất cả</a>
                                 </form>
                             </div>
                         </div>
@@ -198,7 +198,6 @@
         }
 
         function search(event) {
-            // Ngăn chặn hành động mặc định của form (tải lại trang)
             event.preventDefault();
             $.ajax({
                 type: 'POST',
