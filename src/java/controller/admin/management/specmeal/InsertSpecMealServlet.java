@@ -57,9 +57,9 @@ public class InsertSpecMealServlet extends HttpServlet {
             int rs = smd.insertSpecMealDetail(dayNum, productID, dishID, specMealID);
 
             if (rs >= 1) {
-                response.sendRedirect("ManageSpecMealServlet");
+                response.sendRedirect("ManageSpecMealServlet?specMealID=" + specMealID);
             } else {
-                response.sendRedirect("ManageSpecMealServlet");
+                response.sendRedirect("ManageSpecMealServlet?specMealID=" + specMealID);    
             }
         }
     }

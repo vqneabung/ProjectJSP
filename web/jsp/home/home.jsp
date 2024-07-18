@@ -47,7 +47,7 @@
                                 <c:forEach items="${requestScope.bestSellerProductList}" begin="1" end="3" var="product">
                                     <div class="col-4" style="margin-bottom: 1rem">
                                         <div class="card p-4 bg-white">
-                                            <div class="about-product text-center mt-2"><img src="${product.productImage[0]}" style="width: 100%; height: 150px; margin-bottom: 1rem">
+                                            <div class="about-product text-center mt-2"><a href="SingleMealShopServlet?productID=${product.productID}&categoryID=${product.category.categoryID}"><img src="${product.productImage[0]}" style="width: 100%; height: 150px; margin-bottom: 1rem"></a> 
                                                 <div>
                                                     <h4>${product.productName}</h4>
                                                     <h6 class="mt-0 text-black-50">Loại: ${product.type.typeName}</h6>

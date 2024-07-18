@@ -178,11 +178,25 @@
     </div>
     <script>
         $(document).ready(function () {
+            if (!!window.performance && window.performance.navigation.type === 2)
+            {
+                window.location.reload();
+            }
+                
+            
             $("#addToCart").click(function () {
                 var productID = $(this).data('product-id');
                 var quantity = $('#inputQuantity').val();
-                addToCart(productID, quantity);
-                editToCart(productID, quantity);
+                var productIDCart = [];
+        <c:forEach items="${sessionScope.cart}" var="cart">
+                productIDCart.push(${cart.key.productID});
+        </c:forEach>
+                if (!productIDCart.includes(productID)) {
+                    addToCart(productID, quantity);
+                    editToCart(productID, quantity);
+                } else {
+                    editToCart(productID, quantity);
+                }
             });
 
 

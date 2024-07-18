@@ -4,6 +4,8 @@
  */
 package controller.admin.management.user;
 
+import static controller.web.login.RegisterServlet.LOGIN;
+import static controller.web.login.RegisterServlet.validate;
 import dao.UserDAO;
 import java.io.File;
 import java.io.IOException;
@@ -101,15 +103,19 @@ public class InsertUserServlet extends HttpServlet {
                 String avatar = "/ProjectJSP/assets/home/image/" + fileName;
                 System.out.println("avatar   " + avatar);
 
+                if (!validate(email)) {
+                    response.sendRedirect("ManageUserServlet?msg=insertFail");
+                }
+
                 UserDAO ud = new UserDAO();
                 UserDTO user = ud.getUser(email);
                 if (user == null) { //email khong trung
                     int rs = ud.insertUser(userName, fullName, email, phone, roleID, password, address, avatar);
                     TimeUnit.SECONDS.sleep(1);
                     if (rs >= 1) {
-                        response.sendRedirect("ManageUserServlet?msg=insertComplete");
+                        response.sendRedirect("ManageUserServlet?msg=insertSuccessfully");
                     } else {
-                        response.sendRedirect("ManageUserServlet?msg=insertFail");
+                        response.sendRedirect("ManageUserServlet?msg=insertFailed");
                     }
                 } else {
                     response.sendRedirect("ManageUserServlet?msg=emailTrung");

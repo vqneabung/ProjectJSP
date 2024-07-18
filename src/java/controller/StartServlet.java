@@ -40,7 +40,7 @@ public class StartServlet extends HttpServlet {
     private final String WELCOME = "/jsp/home/home.jsp";
     private final String LOGIN_SERVLET = "/jsp/home/login.jsp";
     private final String SEARCH_SERVLET = "SearchServlet";
-    private final String CART_SERVLET = "jsp/home/cart.jsp";
+    private final String CART_SERVLET = "/jsp/home/cart.jsp";
     private final String SHOP_SERVLET = "/MealShopServlet";
     private final String ABOUT = "about";
     private final String ABOUT_PAGE = "/jsp/home/about.jsp";

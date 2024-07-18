@@ -25,14 +25,15 @@
                 <thead>
                     <tr class="order-head">
                         <th class='text-center'>Order ID</th>
-                        <th class='text-center'>User</th>
-                        <th class='text-center'>Total Price</th>
-                        <th class='text-center'>Payment Method</th>
-                        <th class='text-center'>Order Date</th>
-                        <th class='text-center'>Order Address</th>
-                        <th class='text-center'>Status</th>
+                        <th class='text-center'>Nguời dùng</th>
+                        <th class='text-center'>Số điện thoại</th>
+                        <th class='text-center'>Tổng tiền</th>
+                        <th class='text-center'>Phương thức thanh toán</th>
+                        <th class='text-center'>Ngày đặt</th>
+                        <th class='text-center'>Địa chỉ đặt</th>
+                        <th class='text-center'>Trạng thái</th>
                         <th class='text-center'>Actions</th>
-                        <th class='text-center'>Detail</th>
+                        <th class='text-center'>Chi tiết</th>
                     </tr>
                 <thead>
                 <tbody>
@@ -40,6 +41,7 @@
                         <tr class="order-body">
                             <td class='text-center'>${order.orderID}</td>
                             <td class='text-center'>${order.user.userName}</td>
+                            <td class='text-center'>${order.user.phone}</td>
                             <td class='text-center'>${order.totalPrice}</td>
                             <td class='text-center'>${order.payment.paymentName}</td> 
                             <td class='text-center'><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
@@ -54,7 +56,7 @@
                                 </c:if>
                             </td>
                             <td class='text-center'>                           
-                                <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Detail</a>
+                                <a class="btn btn-secondary btn-detail" data-order-id="${order.orderID}" id="detail_order" href="/ProjectJSP/ManageOrderDetailServlet?orderID=${order.orderID}">Chi tiết</a>
                             </td>
                         </tr>
                     </c:forEach>

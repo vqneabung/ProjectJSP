@@ -31,7 +31,6 @@ public class MealShopServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -39,8 +38,10 @@ public class MealShopServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             ProductDAO p = new ProductDAO();
             ArrayList<ProductDTO> productList = p.getNineRowProducts(0);
+            ArrayList<ProductDTO> allProductList = p.getAllProducts();
 
             request.setAttribute("productList", productList);
+            request.setAttribute("allProductList", allProductList);
             request.setAttribute("categorySearch", request.getParameter("categoryID"));
 
             request.setAttribute("priceMin", p.getPriceMaxMin()[0]);

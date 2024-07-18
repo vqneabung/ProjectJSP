@@ -54,6 +54,7 @@ public class EditCartServlet extends HttpServlet {
                         cart.remove(find);
                     } else {
                         cart.put(find, Integer.parseInt(quantity.trim()));
+                        System.out.println("Cart-Quantity: " + cart.values());
                     }
                 }
             }

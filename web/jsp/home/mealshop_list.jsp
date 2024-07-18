@@ -120,16 +120,11 @@
                     </div>
                     <div class="col-9">
                         <div class="row justify-content-center" id="productList">
-                            <script>
-                                var productListSearch = [];
-                            </script>
+
                             <c:forEach items="${requestScope.productList}" var="product">
-                                <script>
-                                    productListSearch.push('${product.productName}');
-                                </script>
                                 <div class="col-4 productLength" style="margin-bottom: 1rem">
                                     <div class="card p-4 bg-white">
-                                        <div class="about-product text-center mt-2"><img src="${product.productImage[0]}" style="width: 100%; height: 150px; margin-bottom: 1rem">
+                                        <div class="about-product text-center mt-2"><a href="SingleMealShopServlet?productID=${product.productID}&categoryID=${product.category.categoryID}"><img src="${product.productImage[0]}" style="width: 100%; height: 150px; margin-bottom: 1rem"></a> 
                                             <div>
                                                 <h4>${product.productName}</h4>
                                                 <h6 class="mt-0 text-black-50">Loại: ${product.type.typeName}</h6>
@@ -138,7 +133,7 @@
                                         <div class="stats mt-2">
                                             <div class="d-flex justify-content-between p-price"><span>Giá gốc</span><span>${product.productPrice} VND</span></div>
                                             <div class="d-flex justify-content-between p-price"><span>Giảm đến: </span><span>${product.discount}%</span></div>
-                                            <div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>${product.discount*product.productPrice/100}</span></div>
+                                            <div class="d-flex justify-content-between p-price"><span>Giảm: </span><span>${product.discount*product.productPrice/100} Đ</span></div>
                                         </div>
                                         <div class="d-flex justify-content-between total font-weight-bold mt-2"><span>Total</span><span>${product.productPrice - product.discount*product.productPrice/100} VND</span>
                                         </div>
@@ -175,6 +170,12 @@
             console.log(document.getElementsByClassName("btn_loadMoreSearch"));
         }
 
+        var productListSearch = [];
+        window.onload = function () {
+        <c:forEach items="${requestScope.allProductList}" var="product">
+            productListSearch.push('${product.productName}');
+        </c:forEach>
+        };
 
 
         function productLoad() {
@@ -194,7 +195,7 @@
                         // Tạo HTML cho mỗi sản phẩm
                         html += '<div class="col-4 productLength" style="margin-bottom: 1rem">';
                         html += '<div class="card p-4 bg-white">';
-                        html += '<div class="about-product text-center mt-2"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem">';
+                        html += '<div class="about-product text-center mt-2"><a href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem"></a>';
                         html += '<div>';
                         html += '<h4>' + product.productName + '</h4>';
                         html += '<h6 class="mt-0 text-black-50">Loại: ' + product.type.typeName + '</h6>';
@@ -224,6 +225,7 @@
             });
         }
 
+
         $(document).ready(function () {
         <c:if test="${requestScope.categorySearch != null}">
             $('#${requestScope.categorySearch}').prop('checked', true);
@@ -236,7 +238,6 @@
                 $("input[name='categoryCheck']:checked").each(function () {
                     categoryCheck.push($(this).val());
                 });
-
                 var find = $("#find").val();
                 searchMealShop(typeCheck, peopleCheck, find);
                 function searchMealShop(typeCheck, peopleCheck, find) {
@@ -256,7 +257,7 @@
                                 // Tạo HTML cho mỗi sản phẩm
                                 html += '<div class="col-4" style="margin-bottom: 1rem">';
                                 html += '<div class="card p-4 bg-white">';
-                                html += '<div class="about-product text-center mt-2"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem">';
+                                html += '<div class="about-product text-center mt-2"><a href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem"></a>';
                                 html += '<div>';
                                 html += '<h4>' + product.productName + '</h4>';
                                 html += '<h6 class="mt-0 text-black-50">Loại: ' + product.type.typeName + '</h6>';
@@ -301,8 +302,8 @@
                 }
             });
         });
-
-        $(document).on('click', '.addToCart', function () {
+        $(document).on('click', '.addToCart', function ()
+        {
             var productID = $(this).data('product-id');
             addToCart(productID);
             function addToCart(productID) {
@@ -323,7 +324,8 @@
             }
 
         });
-        $(document).on('click', '#findProduct', function () {
+        $(document).on('click', '#findProduct', function ()
+        {
 
             var typeCheck = $("input[name='typeCheck']:checked").val();
             var peopleCheck = $("input[name='peopleCheck']:checked").val();
@@ -333,14 +335,12 @@
             });
             var price1 = document.getElementById("price1").value;
             var price2 = document.getElementById("price2").value;
-
             console.log("Tu " + price1 + " den " + price2);
-
             var find = $("#find").val();
             searchMealShop(typeCheck, peopleCheck, categoryCheck, price1, price2, find, 0, false);
         });
-
-        $(document).on('click', '.btn_loadMoreSearch', function () {
+        $(document).on('click', '.btn_loadMoreSearch', function ()
+        {
 
             var typeCheck = $("input[name='typeCheck']:checked").val();
             var peopleCheck = $("input[name='peopleCheck']:checked").val();
@@ -350,16 +350,13 @@
             });
             var price1 = document.getElementById("price1").value;
             var price2 = document.getElementById("price2").value;
-
             var productLength = document.getElementsByClassName("productLength").length;
-
             console.log("Tu " + price1 + " den " + price2);
-
             var find = $("#find").val();
             searchMealShop(typeCheck, peopleCheck, categoryCheck, price1, price2, find, productLength, true);
         });
-
-        function searchMealShop(typeCheck, peopleCheck, categoryCheck, price1, price2, find, productLength, isBtnLoadMore) {
+        function searchMealShop(typeCheck, peopleCheck, categoryCheck, price1, price2, find, productLength, isBtnLoadMore)
+        {
 
 
             $.ajax({
@@ -381,7 +378,7 @@
                         // Tạo HTML cho mỗi sản phẩm
                         html += '<div class="col-4 productLength" style="margin-bottom: 1rem">';
                         html += '<div class="card p-4 bg-white">';
-                        html += '<div class="about-product text-center mt-2"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem">';
+                        html += '<div class="about-product text-center mt-2"><a href="SingleMealShopServlet?productID=' + product.productID + '&categoryID=' + product.category.categoryID + '"><img src="' + product.productImage[0] + '" style="width: 100%; height: 150px; margin-bottom: 1rem"></a>';
                         html += '<div>';
                         html += '<h4>' + product.productName + '</h4>';
                         html += '<h6 class="mt-0 text-black-50">Loại: ' + product.type.typeName + '</h6>';
@@ -400,9 +397,7 @@
                         html += '</div>';
                         html += '</div>';
                     });
-
                     document.getElementById("btn_loadmore").setAttribute("class", "btn btn-primary btn_loadMoreSearch");
-
                     if (data.productSize < 9) {
                         document.getElementById("btn_loadmore").setAttribute("hidden", "");
                     }
@@ -418,6 +413,7 @@
                 }
             });
         }
+
 
     </script>
 </html>

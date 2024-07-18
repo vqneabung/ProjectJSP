@@ -40,13 +40,15 @@
                     </form>
                     <table class="styled-table" style="width: 100%">
                         <tr>
-                            <th>Ingredient</th>
-                            <th>Remove</th>
+                            <th>Nguyên liệu</th>
+                            <th>Trọng lượng(Gram)</th>
+                            <th>Xóa</th>
                         </tr>
                         <c:forEach var="recipeDetail" items="${requestScope.recipeDetailList}">
                             <c:if test= "${recipeDetail.food.productName == food.productName}" >
                                 <tr>
                                     <th>${recipeDetail.ingredient.productName}</th>
+                                    <th >${recipeDetail.weight}</th>
                                     <th><a class="btn btn-primary" href="RemoveRecipeDetailServlet?recipeDetailID=${recipeDetail.recipeDetailID}">Xoá</a></th>
                                 </tr>
                             </c:if>

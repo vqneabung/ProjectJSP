@@ -55,12 +55,14 @@
                                 <td><img style="width: 150px;" src="${p.productImage[0]}" ></td>
                                 <td>${p.productPrice}</td>
                                 <td>
-                                    <c:if test="${quantity > p.productStock}">
-                                        <input type="number" value="${p.productStock}" name="edit_quantity" min="0" max="${p.productStock}">
-                                    </c:if>
-                                    <c:if test="${quantity <= p.productStock}">
-                                        <input type="number" value="${quantity}" name="edit_quantity" min="0" max="${p.productStock}">
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${quantity > p.productStock}">
+                                            <input type="number" value="${p.productStock}" name="edit_quantity" min="0" max="${p.productStock}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input type="number" value="${quantity}" name="edit_quantity" min="0" max="${p.productStock}">
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                                 <td>${quantity * p.productPrice}</td>
                                 <td>
@@ -75,7 +77,7 @@
                 <h5><span id="totalCartValue">Tổng: ${total} VND</span></h5>
                 <h5>Ngày : <%= new Date()%></h5>
                 <h5>${requestScope.msgOrder}</h5>
-                <c:if test="${sessionScope.User.roleID == 1}">
+                <c:if test="${sessionScope.User.roleID == 1 || sessionScope.User == null}">
                     <c:choose>
                         <c:when test="${not empty sessionScope.cart}">
                             <form action="/ProjectJSP/OrderServlet" method="post">
@@ -122,81 +124,88 @@
                     <%
                         OrderDAO o = new OrderDAO();
                         UserDTO user = (UserDTO) session.getAttribute("User");
-                        ArrayList<OrderDTO> orderList = o.getAllOrdersByUserID(user.getUserID());
-                        ArrayList<OrderDetailDTO> orderDetailList = o.getOrderDetailByUserID(user.getUserID());
-                        System.out.println("orderDetailList" + orderDetailList);
+
+                        ArrayList<OrderDTO> orderList = new ArrayList<OrderDTO>();
+                        ArrayList<OrderDetailDTO> orderDetailList = new ArrayList<OrderDetailDTO>();
+
+                        if (user != null) {
+                            orderList = o.getAllOrdersByUserID(user.getUserID());
+                            orderDetailList = o.getOrderDetailByUserID(user.getUserID());
+                        }
                     %>
-                    <c:forEach var="order" items="<%= orderList%>">
-                        <tr class="order-body">
-                            <td class='text-center'>${order.orderID}</td>
-                            <td class='text-center'>${order.user.userName}</td>
-                            <td class='text-center'>${order.totalPrice}</td>
-                            <td class='text-center'>${order.payment.paymentName}</td> 
-                            <td class='text-center'><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
-                            <td class='text-center'>${order.user.address}</td>
-                            <td id="status_id_${order.orderID}">
-                                ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#order${order.orderID}">
-                                    Chi tiết
-                                </button>
-                                <div>
-                                    <div class="modal fade" id="order${order.orderID}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div>
-                                                        <table class="table table-hover text-center">
-                                                            <tr>
-                                                                <th>Mã</th>
-                                                                <th>Tên sản phẩm</th>
-                                                                <th>Số lượng</th>
-                                                                <th>Giá</th>
-                                                                <th>Tổng</th>
-                                                                <th>Hình ảnh</th>
-                                                            </tr>
-                                                            <c:forEach var="orderDetail" items="<%= orderDetailList%>">
-                                                                <c:if test="${order.orderID == orderDetail.orderID}">
-                                                                    <tr style="font-size: medium">               
-                                                                        <td>${orderDetail.orderDetailID}</td>
-                                                                        <td>${orderDetail.product.productName}</td>
-                                                                        <td>${orderDetail.quantity}</td>
-                                                                        <td>${orderDetail.product.productPrice}</td>
-                                                                        <td>${orderDetail.product.productPrice * orderDetail.quantity}</td>
-                                                                        <td><img src="${orderDetail.product.productImage[0]}" alt="${orderDetail.product.productImage[0]}" weight="100" height="100" image"/></td>
-                                                                    </tr>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                            <tr>
-                                                                <th colspan="3">
-                                                                </th>
-                                                                <th>
-                                                                    <h5>Tổng:</h5>
-                                                                </th>
-                                                                <th>
-                                                                    <span id="totalCartValue">${order.totalPrice} VND</span>
-                                                                </th>
-                                                                <th>
-                                                                </th>
-                                                            </tr>
-                                                        </table> 
+                    <c:if test="<%= user != null%>">
+                        <c:forEach var="order" items="<%= orderList%>">
+                            <tr class="order-body">
+                                <td class='text-center'>${order.orderID}</td>
+                                <td class='text-center'>${order.user.userName}</td>
+                                <td class='text-center'>${order.totalPrice}</td>
+                                <td class='text-center'>${order.payment.paymentName}</td> 
+                                <td class='text-center'><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
+                                <td class='text-center'>${order.user.address}</td>
+                                <td id="status_id_${order.orderID}">
+                                    ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#order${order.orderID}">
+                                        Chi tiết
+                                    </button>
+                                    <div>
+                                        <div class="modal fade" id="order${order.orderID}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <div class="modal-body">
+                                                        <div>
+                                                            <table class="table table-hover text-center">
+                                                                <tr>
+                                                                    <th>Mã</th>
+                                                                    <th>Tên sản phẩm</th>
+                                                                    <th>Số lượng</th>
+                                                                    <th>Giá</th>
+                                                                    <th>Tổng</th>
+                                                                    <th>Hình ảnh</th>
+                                                                </tr>
+                                                                <c:forEach var="orderDetail" items="<%= orderDetailList%>">
+                                                                    <c:if test="${order.orderID == orderDetail.orderID}">
+                                                                        <tr style="font-size: medium">               
+                                                                            <td>${orderDetail.orderDetailID}</td>
+                                                                            <td>${orderDetail.product.productName}</td>
+                                                                            <td>${orderDetail.quantity}</td>
+                                                                            <td>${orderDetail.product.productPrice}</td>
+                                                                            <td>${orderDetail.product.productPrice * orderDetail.quantity}</td>
+                                                                            <td><img src="${orderDetail.product.productImage[0]}" alt="${orderDetail.product.productImage[0]}" weight="100" height="100" image"/></td>
+                                                                        </tr>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                                <tr>
+                                                                    <th colspan="3">
+                                                                    </th>
+                                                                    <th>
+                                                                        <h5>Tổng:</h5>
+                                                                    </th>
+                                                                    <th>
+                                                                        <span id="totalCartValue">${order.totalPrice} VND</span>
+                                                                    </th>
+                                                                    <th>
+                                                                    </th>
+                                                                </tr>
+                                                            </table> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </c:forEach>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
                 </tbody>
             </table>
         </div>
