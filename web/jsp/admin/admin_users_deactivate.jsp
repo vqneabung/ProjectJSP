@@ -53,8 +53,8 @@
                                             <label for="search_role">Vai trò:</label>
                                             <select class="form-control" id="search_role" name="search_role">
                                                 <option value="">-- Chọn vai trò --</option>
-                                                <option value="0">Người dùng</option>
-                                                <option value="1">Admin</option>
+                                                <option value="0">Admin</option>
+                                                <option value="1">Người dùng</option>
                                             </select>
                                         </div>
                                         <br>
@@ -69,6 +69,7 @@
                                         </div>
                                     </div>
                                     <br>
+                                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                                     <a class="btn btn-primary" id="reset">Xoá tất cả</a>
                                 </form>
                             </div>
@@ -218,7 +219,7 @@
                 }
 
             });
-            $('#searchForm').keyup(search);
+            $('#searchForm').submit(search);
             $('#reset').click(reset());
 
         });

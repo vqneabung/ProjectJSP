@@ -44,11 +44,11 @@
             <table class="styled-table" style="width: 100%">
                 <tr>
                     <th>Order ID</th>
-                    <th>User</th>
-                    <th>Total Price</th>
-                    <th>Payment Method</th>
-                    <th>Order Date</th>
-                    <th>Status</th>
+                    <th>Người dùng</th>
+                    <th>Tổng tiền</th>
+                    <th>Phương thức thanh toán</th>
+                    <th>Ngày giao hàng</th>
+                    <th>Trạng thái</th>
                 </tr>
                 <br>
                 <c:forEach var="order" items="${requestScope.orders}">
