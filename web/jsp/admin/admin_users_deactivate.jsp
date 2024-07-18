@@ -198,7 +198,10 @@
                         "info": false,
                         "columnDefs": [
                             {"orderable": false, "targets": [7, 8]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
-                        ]
+                        ],
+                        "language": {
+                            "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
+                        }
 
                     });
                 },
