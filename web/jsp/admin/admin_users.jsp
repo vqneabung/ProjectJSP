@@ -47,7 +47,7 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-4">
-                                            <label for="search_phone">Phone:</label>
+                                            <label for="search_phone">Số điện thoại:</label>
                                             <input class="form-control" type="tel" id="search_phone" name="search_phone">
                                         </div>
                                         <br>
@@ -124,7 +124,7 @@
                             <th>Username</th>
                             <th>Tên đầy đủ</th>
                             <th>Email</th>
-                            <th>Phone</th>
+                            <th>Số điện thoại</th>
                             <th>Vai trò</th>
                             <th>Địa chỉ</th>
                             <th>Thời gian tạo</h1>

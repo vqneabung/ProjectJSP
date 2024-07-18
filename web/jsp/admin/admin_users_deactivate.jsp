@@ -69,6 +69,7 @@
                                         </div>
                                     </div>
                                     <br>
+                                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                                     <a class="btn btn-primary" id="reset">Xoá tất cả</a>
                                 </form>
                             </div>
@@ -218,7 +219,7 @@
                 }
 
             });
-            $('#searchForm').keyup(search);
+            $('#searchForm').submit(search);
             $('#reset').click(reset());
 
         });
