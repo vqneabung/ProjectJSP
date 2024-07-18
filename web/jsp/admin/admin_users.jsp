@@ -117,6 +117,12 @@
                 </div>
             </c:if>
             <div id="userList">
+                <form>
+                    <div style="display: flex">
+                        Tìm kiếm thời gian tạo trong khoảng: Từ <input type="text" class="form-control" style="width: 10%; margin-left: 1rem; margin-right: 1rem" id="fromDate" name="fromDate"> đến <input type="text" style="width: 10%; margin-left: 1rem; margin-right: 1rem" id="toDate" class="form-control" name="toDate"> <input  style="width: 10%; margin-left: 1rem; margin-right: 1rem" class="form-control text-center" id="resetDate" type="reset" onclick="resetDateButton()" value="Đặt lại">
+                    </div>
+
+                </form>
                 <table class="styled-table" id="userListTable">
                     <thead>
                         <tr class="text-center" id="head"> 
@@ -158,6 +164,7 @@
                         </c:forEach>
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
@@ -178,7 +185,63 @@
             window.history.replaceState(null, '', '/ProjectJSP/ManageUserServlet');
         }
 
+        $(document).ready(function () {
+            $('#searchForm').submit(search);
+            $('#reset').click(reset);
+        });
 
+        let table = new DataTable('#userListTable', {
+            "info": false,
+            "columnDefs": [
+                {"orderable": false, "targets": [8, 9]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
+            ],
+            "language": {
+                "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
+            }
+        });
+
+        //------------------------------------------------
+        let fromDate, toDate;
+
+        // Custom filtering function which will search data in column four between two values
+
+
+        document.querySelectorAll('#fromDate, #toDate').forEach((el) => {
+            el.addEventListener('change', () => table.draw());
+        });
+
+        fromDate = new DateTime('#fromDate', {
+            format: 'MMMM Do YYYY'
+        });
+        toDate = new DateTime('#toDate', {
+            format: 'MMMM Do YYYY'
+        });
+
+        DataTable.ext.search.push(function (settings, data, dataIndex) {
+            let from = fromDate.val();
+            let to = toDate.val();
+            let date = new Date(data[7]);
+
+            if (
+                    (from === null && to === null) ||
+                    (from === null && date <= to) ||
+                    (from <= date && to === null) ||
+                    (from <= date && date <= to)
+                    )
+            {
+                return true;
+            }
+            return false;
+        });
+        //------------------------------------------------
+        function resetDateButton() {
+            // Reset the DateTime pickers
+            fromDate.val(null);
+            toDate.val(null);
+
+            // Redraw the table to remove the date filter
+            table.draw();
+        }
 
         function searchAdvance() {
             var searchAdvance = document.getElementById("searchAdvance");
@@ -255,21 +318,7 @@
             });
         }
 
-        $(document).ready(function () {
-            $('#userListTable').DataTable({
-                "info": false,
-                "columnDefs": [
-                    {"orderable": false, "targets": [8, 9]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
-                ],
-                "language": {
-                    "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
-                }
 
-            });
-            $('#searchForm').submit(search);
-            $('#reset').click(reset);
-        }
-        );
 
         <c:if test="${msg == 'emailTrung'}">
         window.onload = () => {
