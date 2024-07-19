@@ -57,10 +57,10 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${quantity > p.productStock}">
-                                            <input type="number" value="${p.productStock}" name="edit_quantity" min="0" max="${p.productStock}">
+                                            <input type="number" value="${p.productStock}" name="edit_quantity" min="1" max="${p.productStock}">
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="number" value="${quantity}" name="edit_quantity" min="0" max="${p.productStock}">
+                                            <input type="number" value="${quantity}" name="edit_quantity" min="1" max="${p.productStock}">
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
