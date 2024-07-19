@@ -24,7 +24,7 @@ public class SpecMealDetailDAO {
 
     private static final String GET_DATA = "select  [SpecPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [SpecPlanID] from SpecMealDetail";
 
-    private static final String GET_SPECMEALDETAIL_BY_SPECMEALID = "select  [SpecPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [SpecPlanID] from SpecMealDetail WHERE SpecPlanID = ?";
+    private static final String GET_SPECMEALDETAIL_BY_SPECMEALID = "select  [SpecPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [SpecPlanID] from SpecMealDetail WHERE SpecPlanID = ? AND IsStatus = 1";
 
     private static final String GET_SPECMEALDETAIL_BY_ID = "select  [SpecPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [SpecPlanID] from SpecMealDetail WHERE SpecPlanDetailID = ?";
 

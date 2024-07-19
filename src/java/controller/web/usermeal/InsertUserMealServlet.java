@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.DayDTO;
 import model.SpecMealDTO;
 import model.SpecMealDetailDTO;
+import model.UserMealDTO;
 
 /**
  *
@@ -43,18 +44,20 @@ public class InsertUserMealServlet extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-
+            
             UserMealDAO um = new UserMealDAO();
-
+            
             int userID = Integer.parseInt(request.getParameter("insert_userMealID").trim());
             String userMealName = request.getParameter("insert_userMealName");
-
+            
             int rs = um.insertUserMeal(userMealName, userID);
-
+            ArrayList<UserMealDTO> userMealList = (ArrayList<UserMealDTO>) request.getSession().getAttribute("userMealList");
+            
             if (rs >= 1) {
-                request.getRequestDispatcher("/ProjectJSP/StartServlet?action=mealUser").forward(request, response);
+                userMealList.add(um.getNewestUserMealByUserID(userID));
+                response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             } else {
-                request.getRequestDispatcher("/ProjectJSP/StartServlet?action=mealUser").forward(request, response);
+                response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             }
         }
     }
@@ -74,32 +77,32 @@ public class InsertUserMealServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
         String btn_insert = request.getParameter("btn_insert");
-
+        
         ProductDAO p = new ProductDAO();
         DishDAO dh = new DishDAO();
         UserMealDetailDAO umd = new UserMealDetailDAO();
         UserMealDAO um = new UserMealDAO();
         DayDAO d = new DayDAO();
         PrintWriter out = response.getWriter();
-
+        
         if (btn_insert == null) {
-
+            
             SpecMealDAO sm = new SpecMealDAO();
             SpecMealDetailDAO smd = new SpecMealDetailDAO();
-
+            
             ArrayList<SpecMealDTO> specMealList = sm.getAllSpecMeal();
             ArrayList<SpecMealDetailDTO> specMealDetailList = smd.getAllSpecMealDetail();
             ArrayList<DayDTO> dayList = d.getAllDay();
-
+            
             request.setAttribute("specMealList", specMealList);
             request.setAttribute("specMealDetailList", specMealDetailList);
             request.setAttribute("dayList", dayList);
-
+            
             int userID = Integer.parseInt(request.getParameter("userID"));
             request.setAttribute("userID", userID);
-
+            
             request.getRequestDispatcher("/jsp/home/usermeal_insert.jsp").forward(request, response);
-
+            
         } else {
             processRequest(request, response);
         }

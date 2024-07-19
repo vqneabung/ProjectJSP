@@ -26,6 +26,8 @@ public class UserMealDetailDAO {
 
     public static final String GET_DATA = "select [UserPlanDetailID],[ProductID],[DishID],[UserPlanID],[DayNum],[IsStatus] from [dbo].[UserMealDetail]";
 
+    public static final String GET_NEWEST_DATA = "select TOP 1 UserPlanDetailID WHERE IsStatus = 1 ORDER BY UserPlanDetailID DESC";
+
     public static final String GET_USERMEALDETAIL_BY_USERMEALID = "select  [UserPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [UserPlanID] from UserMealDetail WHERE UserPlanID = ?";
 
     public static final String GET_USERMEALDETAIL_BY_ID = "select  [UserPlanDetailID], [ProductID], [DishID], [IsStatus], DayNum, [UserPlanID] from UserMealDetail WHERE UserPlanDetailID = ?";
@@ -175,6 +177,35 @@ public class UserMealDetailDAO {
             }
         }
         return userMealDetail;
+
+    }
+
+    public int getNewestUserMealDetailID() {
+        int userMealDetailID = 0;
+        int result = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.makeConnection();
+            if (cn != null) {
+                String sql = GET_USERMEALDETAIL_BY_ID;
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs != null && rs.next()) {
+                    userMealDetailID = rs.getInt("UserPlanDetailID");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return userMealDetailID;
 
     }
 

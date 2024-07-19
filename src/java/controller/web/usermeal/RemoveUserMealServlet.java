@@ -7,11 +7,13 @@ package controller.web.usermeal;
 import dao.UserMealDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.UserMealDTO;
 
 /**
  *
@@ -38,7 +40,12 @@ public class RemoveUserMealServlet extends HttpServlet {
             System.out.println(userMealID);
             UserMealDAO um = new UserMealDAO();
             int result = um.removeUserMeal(Integer.parseInt(userMealID.trim()));
+
+            ArrayList<UserMealDTO> userMealList = (ArrayList<UserMealDTO>) request.getSession().getAttribute("userMealList");
             if (result > 0) {
+                userMealList.removeIf(userMeal -> {
+                    return userMeal.getUserMealID() == Integer.parseInt(userMealID);
+                });
                 response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             } else {
                 response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");

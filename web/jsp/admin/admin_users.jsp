@@ -117,8 +117,7 @@
                 </div>
             </c:if>
             <div id="userList">
-                <form>
-                    <div style="display: flex">
+                <form><div style="display: flex">
                         Tìm kiếm thời gian tạo trong khoảng: Từ <input type="text" class="form-control" style="width: 10%; margin-left: 1rem; margin-right: 1rem" id="fromDate" name="fromDate"> đến <input type="text" style="width: 10%; margin-left: 1rem; margin-right: 1rem" id="toDate" class="form-control" name="toDate"> <input  style="width: 10%; margin-left: 1rem; margin-right: 1rem" class="form-control text-center" id="resetDate" type="reset" onclick="resetDateButton()" value="Đặt lại">
                     </div>
 
@@ -201,7 +200,7 @@
         });
 
         //------------------------------------------------
-        let fromDate, toDate;
+        var fromDate, toDate;
 
         // Custom filtering function which will search data in column four between two values
 
@@ -243,6 +242,17 @@
             table.draw();
         }
 
+        var fromDate2, toDate2;
+        
+        function resetDateButton2() {
+            // Reset the DateTime pickers
+            fromDate2.val(null);
+            toDate2.val(null);
+
+            // Redraw the table to remove the date filter
+            table2.draw();
+        }
+
         function searchAdvance() {
             var searchAdvance = document.getElementById("searchAdvance");
 
@@ -250,7 +260,6 @@
                 searchAdvance.removeAttribute("hidden");
             } else {
                 searchAdvance.setAttribute("hidden", "hidden");
-                reset();
             }
         }
 
@@ -259,6 +268,8 @@
             searchForm.reset();
             search(event);
         }
+        
+        let table2 = null;
 
         function search(event) {
             event.preventDefault();
@@ -277,7 +288,9 @@
                 success: function (data) {
                     var html = '';
                     var userList = data;
-                    html += '<table class="styled-table" id="userListTable"><thead><tr class="text-center" id="head"> <th>Avatar</th><th>Username</th><th>Tên đầy đủ</th><th>Email</th><th>Phone</th><th>Vai trò</th><th>Password</th><th>Địa chỉ</th><th>Thời gian tạo</h1><th>Trạng thái</th><th>Hành động</th><th>Lịch sử hoạt đông</th></tr></thead>';
+                    html += '<table class="styled-table" id="userListTable"><thead><tr class="text-center" id="head">';
+                    html += '<form><div style="display: flex">Tìm kiếm thời gian tạo trong khoảng: Từ <input type="text" class="form-control" style="width: 10%; margin-left: 1rem; margin-right: 1rem" id="fromDate2" name="fromDate2"> đến <input type="text" style="width: 10%; margin-left: 1rem; margin-right: 1rem" id="toDate2" class="form-control" name="toDate2"> <input  style="width: 10%; margin-left: 1rem; margin-right: 1rem" class="form-control text-center" id="resetDate2" type="reset" onclick="resetDateButton2()" value="Đặt lại"></div></form>';
+                    html += '<th>Avatar</th><th>Username</th><th>Tên đầy đủ</th><th>Email</th><th>Phone</th><th>Vai trò</th><th>Địa chỉ</th><th>Thời gian tạo</h1><th>Hành động</th><th>Lịch sử hoạt đông</th></tr></thead>';
                     $.each(userList, function (index, user) {
                         if (user.status === 1) {
                             html += '<tr class="text-center" style="font-size: medium">';
@@ -287,10 +300,8 @@
                             html += '<td>' + user.email + '</td>';
                             html += '<td>' + user.phone + '</td>';
                             html += '<td>' + (user.roleID === 1 ? 'Người dùng' : 'Admin') + '</td>';
-                            html += '<td>' + user.password + '</td>';
                             html += '<td>' + user.address + '</td>';
                             html += '<td>' + user.dateCreate + '</td>';
-                            html += '<td>' + (user.status === 1 ? 'Hoạt động' : 'Không hoạt động') + '</td>';
                             html += '<td>';
                             html += '<a class="btn btn-primary" href="/ProjectJSP/RemoveUserServlet?userID=' + user.userID + '">Xóa</a>';
                             html += '<a class="btn btn-outline-primary" href="/ProjectJSP/UpdateUserServlet?userID=' + user.userID + '">Cập nhật</a>';
@@ -300,8 +311,9 @@
                         }
                     });
                     html += '</table>';
+                    resetDateButton();
                     $('#userList').html(html);
-                    $('#userListTable').DataTable({
+                    table2 = new DataTable('#userListTable', {
                         "info": false,
                         "columnDefs": [
                             {"orderable": false, "targets": [8, 9]} // Vô hiệu hóa sắp xếp cho cột "Hành động" và "Lịch sử hoạt động"
@@ -309,8 +321,39 @@
                         "language": {
                             "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
                         }
-
                     });
+                    //------------------------------------------------
+
+                    // Custom filtering function which will search data in column four between two values
+                    document.querySelectorAll('#fromDate2, #toDate2').forEach((el) => {
+                        el.addEventListener('change', () => table2.draw());
+                    });
+
+                    fromDate2 = new DateTime('#fromDate2', {
+                        format: 'MMMM Do YYYY'
+                    });
+                    toDate2 = new DateTime('#toDate2', {
+                        format: 'MMMM Do YYYY'
+                    });
+
+                    DataTable.ext.search.push(function (settings, data, dataIndex) {
+                        let from = fromDate2.val();
+                        let to = toDate2.val();
+                        let date = new Date(data[7]);
+
+                        if (
+                                (from === null && to === null) ||
+                                (from === null && date <= to) ||
+                                (from <= date && to === null) ||
+                                (from <= date && date <= to)
+                                )
+                        {
+                            return true;
+                        }
+                        return false;
+                    });
+
+                    //------------------------------------------------
                 },
                 error: function () {
                     alert('Đã xảy ra lỗi khi gửi yêu cầu tìm kiếm.');

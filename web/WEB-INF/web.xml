@@ -105,6 +105,43 @@
         <filter-name>AdminFilterServlet</filter-name>
         <servlet-name>ManageCategoryServlet</servlet-name>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-name>EditProfileServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>AddToUserMeal</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>UpdateUserMealDetailServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>InsertUserMealDetailServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>InsertUserMealServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>ManageUserMealServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>RemoveUserMealDetailServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>RemoveUserMealServlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilterServlet</filter-name>
+        <servlet-name>UpdateUserMealServlet</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>StartServlet</servlet-name>
         <servlet-class>controller.StartServlet</servlet-class>

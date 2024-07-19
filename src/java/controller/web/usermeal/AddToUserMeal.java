@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.SpecMealDTO;
 import model.SpecMealDetailDTO;
 import model.UserMealDTO;
+import model.UserMealDetailDTO;
 
 /**
  *
@@ -58,10 +59,19 @@ public class AddToUserMeal extends HttpServlet {
 
             System.out.println(userMealID);
 
+            ArrayList<UserMealDetailDTO> userMealDetailList = (ArrayList<UserMealDetailDTO>) request.getSession().getAttribute("userMealDetailList");
+
             for (SpecMealDetailDTO specMealDetail : specMealDetailList) {
                 resultFromAddUserMealDetail = umd.insertUserMealDetailFromSpecMealDetail(specMealDetail, userMealID);
+                userMealDetailList.add(new UserMealDetailDTO(umd.getNewestUserMealDetailID(), specMealDetail.getDay(), specMealDetail.getProduct(), specMealDetail.getDish(), um.getNewestUserMealByUserID(userID), 1));
+                request.getSession().setAttribute("userMealDetailList", userMealDetailList);
                 totalResultFromAddUserMealDetail += resultFromAddUserMealDetail;
             }
+
+            ArrayList<UserMealDTO> userMealList = (ArrayList<UserMealDTO>) request.getSession().getAttribute("userMealList");
+            userMealList.add(um.getNewestUserMealByUserID(userID));
+            request.getSession().setAttribute("userMealList", userMealList);
+
             if (totalResultFromAddUserMealDetail >= 1) {
                 response.sendRedirect("StartServlet?action=mealUser");
             } else {
