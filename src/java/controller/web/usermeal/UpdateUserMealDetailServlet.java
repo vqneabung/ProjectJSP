@@ -58,6 +58,16 @@ public class UpdateUserMealDetailServlet extends HttpServlet {
 
             int rs = umd.updateUserMealDetail(productID, dishID, userMealDetailID, dayNum);
 
+            ArrayList<UserMealDetailDTO> userMealDetailList = (ArrayList<UserMealDetailDTO>) request.getSession().getAttribute("userMealDetailList");
+            for (UserMealDetailDTO userMealDetail : userMealDetailList) {
+                if (userMealDetail.getUserMealDetailID() == userMealDetailID) {
+                    userMealDetail.setDay(d.getDay(dayNum));
+                    userMealDetail.setProduct(p.getProduct(productID));
+                    userMealDetail.setDish(dh.getDish(dishID));
+                    break;
+                }
+            }
+
             if (rs >= 1) {
 
                 out.println(dayNum);

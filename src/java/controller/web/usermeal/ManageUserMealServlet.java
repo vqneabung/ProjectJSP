@@ -57,21 +57,19 @@ public class ManageUserMealServlet extends HttpServlet {
             ArrayList<UserMealDTO> userMealList = new ArrayList<>();
             if (user != null) {
 
-                if (action != null) {
-                    userMealList = um.getAllUserMealByName(searchUserMeal, user.getUserID());
-                } else {
+                if (session.getAttribute("userMealList") == null) {
+                    ArrayList<DayDTO> dayList = d.getAllDay();
                     userMealList = um.getAllUserMealByUserID(user.getUserID());
+                    session.setAttribute("userMealList", userMealList);
+                    session.setAttribute("dayList", dayList);
                 }
-                ArrayList<DayDTO> dayList = d.getAllDay();
-
-                session.setAttribute("userMealList", userMealList);
-                session.setAttribute("dayList", dayList);
 
                 if (userMealList != null) {
                     request.getRequestDispatcher("jsp/home/usermeals.jsp").forward(request, response);
                 } else {
                     response.sendRedirect("/ProjectJSP/StartServlet");
                 }
+
             } else {
                 response.sendRedirect("/ProjectJSP/StartServlet");
             }

@@ -32,32 +32,24 @@
             <div id="loadFirst">
                 <h1>Kế hoạch của bạn</h1>
                 <p><a  href="/ProjectJSP/InsertUserMealServlet?userID=${sessionScope.User.userID}&insert" class="btn btn-primary">Thêm kế hoạch</a></p>   
-                <div class="card">
-                    <div class="card-body">
-                        <form action="/ProjectJSP/ManageUserMealServlet" method="get">
-                            <h3>Tra thực đơn theo tuần</h3> 
-                            <input type="text" class="form-control" name="searchUserMeal" placeholder="Nhập món ăn của bạn">
-                            <br>
-                            <input type="submit" class="btn btn-primary" name="searchUserMeal_btn" value="Chọn">
-                        </form>
-                    </div>
-                </div>
                 <br>
                 <div >
                     <div class="card">
                         <div class="card-body">
-                            <table class="styled-table" style="width: 100%">
+                            <table class="styled-table" style="width: 100%" id="userMealTable">
                                 <thead>
                                     <tr class="text-center">
-                                        <td>Thực đơn</td>
-                                        <td>Chi tiết</td>
-                                        <td>Chỉnh sủa</td>
+                                        <td class="text-center">ID Thực đơn</td>
+                                        <td class="text-center">Thực đơn</td>
+                                        <td class="text-center">Chi tiết</td>
+                                        <td class="text-center">Chỉnh sủa</td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach items="${sessionScope.userMealList}" var="userMeal">
                                         <c:if test="${userMeal.isStatus == 1}">
                                             <tr class="text-center">
+                                                <td class="text-center">${userMeal.userMealID}</td>
                                                 <td>
                                                     <span class="user-meal-name">${userMeal.userMealName}</span>
                                                     <input type="text" class="edit-user-meal-name form-control d-none" value="${userMeal.userMealName}" />
@@ -69,7 +61,7 @@
                                                 <td>
                                                     <a class="btn btn-primary" href="/ProjectJSP/RemoveUserMealServlet?userMealID=${userMeal.userMealID}">Remove</a>
                                                     <button type="button" class="btn btn-secondary edit-btn">Edit</button>
-                                                    <button type="button" class="btn btn-success save-btn d-none" data-user-meal-id="${userMeal.userMealID}">Save</button>
+                                                    <button type="button" class="btn btn-success save-btn d-none" id="${userMeal.userMealID}">Save</button>
                                                     <button type="button" class="btn btn-danger cancel-btn d-none">Cancel</button>
                                                 </td>
                                             </tr>
@@ -109,46 +101,233 @@
                         });
             });
 
+
+
+
             $(document).ready(function () {
-                $('.edit-btn').click(function () {
-                    var row = $(this).closest('tr');
-                    row.find('.user-meal-name').addClass('d-none');
-                    row.find('.edit-user-meal-name').removeClass('d-none');
-                    row.find('.edit-btn').addClass('d-none');
-                    row.find('.save-btn, .cancel-btn').removeClass('d-none');
+
+
+
+
+//                $('.edit-btn').click(function () {
+//                    var row = $(this).closest('tr');
+//                    row.find('.user-meal-name').addClass('d-none');
+//                    row.find('.edit-user-meal-name').removeClass('d-none');
+//                    row.find('.edit-btn').addClass('d-none');
+//                    row.find('.save-btn, .cancel-btn').removeClass('d-none');
+//                });
+//
+//                $('.cancel-btn').click(function () {
+//                    var row = $(this).closest('tr');
+//                    row.find('.user-meal-name').removeClass('d-none');
+//                    row.find('.edit-user-meal-name').addClass('d-none');
+//                    row.find('.edit-btn').removeClass('d-none');
+//                    row.find('.save-btn, .cancel-btn').addClass('d-none');
+//                });
+                var table = new DataTable('#userMealTable', {
+                    "columnDefs": [
+                        {"orderable": false, "targets": [2]}
+                    ],
+                    "language": {
+                        "lengthMenu": "Hiển thị _MENU_ mục mỗi trang"
+                    }
                 });
 
-                $('.cancel-btn').click(function () {
-                    var row = $(this).closest('tr');
-                    row.find('.user-meal-name').removeClass('d-none');
-                    row.find('.edit-user-meal-name').addClass('d-none');
-                    row.find('.edit-btn').removeClass('d-none');
-                    row.find('.save-btn, .cancel-btn').addClass('d-none');
+
+                table.on('page.dt', function () {
+                    // Hàm bạn muốn chạy khi chuyển trang
+                    console.log('Trang đã thay đổi');
+
                 });
 
-                $('.save-btn').click(function () {
-                    var row = $(this).closest('tr');
-                    var userMealID = $('.save-btn').data("user-meal-id");
-                    var newMealName = row.find('.edit-user-meal-name').val();
 
-                    $.ajax({
-                        url: '/ProjectJSP/UpdateUserMealServlet',
-                        method: 'GET',
-                        data: {
-                            userMealID: userMealID,
-                            userMealName: newMealName
-                        },
-                        success: function (response) {
-                            row.find('.user-meal-name').text(newMealName).removeClass('d-none');
-                            row.find('.edit-user-meal-name').addClass('d-none');
-                            row.find('.edit-btn').removeClass('d-none');
-                            row.find('.save-btn, .cancel-btn').addClass('d-none');
-                        },
-                        error: function (error) {
-                            alert('An error occurred while updating the meal name.');
-                        }
+                //---------------------------------------------------------
+                // Select the node that will be observed for mutations
+                const targetNode = document.getElementById("userMealTable");
+
+                // Options for the observer (which mutations to observe)
+                const config = {attributes: true, childList: true, subtree: true};
+
+                // Callback function to execute when mutations are observed
+                const callback = (mutationList, observer) => {
+                    var editButtons = document.querySelectorAll('.edit-btn');
+                    var cancelButtons = document.querySelectorAll('.cancel-btn');
+                    var saveUserMealNames = document.querySelectorAll(".save-btn");
+
+                    editButtons.forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            var row = button.closest('tr');
+                            row.querySelector('.user-meal-name').classList.add('d-none');
+                            row.querySelector('.edit-user-meal-name').classList.remove('d-none');
+                            button.classList.add('d-none');
+                            row.querySelector('.save-btn').classList.remove('d-none');
+                            row.querySelector('.cancel-btn').classList.remove('d-none');
+                        });
+                    });
+
+                    cancelButtons.forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            var row = button.closest('tr');
+                            row.querySelector('.user-meal-name').classList.remove('d-none');
+                            row.querySelector('.edit-user-meal-name').classList.add('d-none');
+                            row.querySelector('.edit-btn').classList.remove('d-none');
+                            row.querySelector('.save-btn').classList.add('d-none');
+                            row.querySelector('.cancel-btn').classList.add('d-none');
+                        });
+                    });
+
+                    saveUserMealNames.forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            // Tìm phần tử tr gần nhất
+                            var row = button.closest('tr');
+                            var userMealID = button.getAttribute('id');
+                            var newMealName = row.querySelector('.edit-user-meal-name').value;
+
+                            // Tạo một yêu cầu XMLHttpRequest
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', '/ProjectJSP/UpdateUserMealServlet?userMealID=' + encodeURIComponent(userMealID) + '&userMealName=' + encodeURIComponent(newMealName), true);
+
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4) { // Khi hoàn tất yêu cầu
+                                    if (xhr.status === 200) { // Nếu thành công
+                                        row.querySelector('.user-meal-name').textContent = newMealName;
+                                        row.querySelector('.user-meal-name').classList.remove('d-none');
+                                        row.querySelector('.edit-user-meal-name').classList.add('d-none');
+                                        row.querySelector('.edit-btn').classList.remove('d-none');
+                                        row.querySelector('.save-btn').classList.add('d-none');
+                                        row.querySelector('.cancel-btn').classList.add('d-none');
+                                    } else {
+                                        alert('An error occurred while updating the meal name.');
+                                    }
+                                }
+                            };
+
+                            xhr.send();
+                        });
+                    });
+
+                };
+
+                // Create an observer instance linked to the callback function
+                const observer = new MutationObserver(callback);
+
+                // Start observing the target node for configured mutations
+                observer.observe(targetNode, config);
+                //----------------------------------------------------------
+
+                var editButtons = document.querySelectorAll('.edit-btn');
+                var cancelButtons = document.querySelectorAll('.cancel-btn');
+                var saveUserMealNames = document.querySelectorAll(".save-btn");
+
+                editButtons.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        var row = button.closest('tr');
+                        row.querySelector('.user-meal-name').classList.add('d-none');
+                        row.querySelector('.edit-user-meal-name').classList.remove('d-none');
+                        button.classList.add('d-none');
+                        row.querySelector('.save-btn').classList.remove('d-none');
+                        row.querySelector('.cancel-btn').classList.remove('d-none');
                     });
                 });
+
+                var cancelButtons = document.querySelectorAll('.cancel-btn');
+
+                cancelButtons.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        var row = button.closest('tr');
+                        row.querySelector('.user-meal-name').classList.remove('d-none');
+                        row.querySelector('.edit-user-meal-name').classList.add('d-none');
+                        row.querySelector('.edit-btn').classList.remove('d-none');
+                        row.querySelector('.save-btn').classList.add('d-none');
+                        row.querySelector('.cancel-btn').classList.add('d-none');
+                    });
+                });
+
+                var saveUserMealNames = document.querySelectorAll(".save-btn");
+
+
+
+//                saveUserMealNames.forEach(save => {
+//                    save.addEventListener('click', () => {
+//                        console.log(save.id);
+//                        var row = $(this).closest('tr');
+//                        var userMealID = save.id;
+//                        var newMealName = row.find('.edit-user-meal-name').val();
+//
+//                        $.ajax({
+//                            url: '/ProjectJSP/UpdateUserMealServlet',
+//                            method: 'GET',
+//                            data: {
+//                                userMealID: userMealID,
+//                                userMealName: newMealName
+//                            },
+//                            success: function (response) {
+//                                row.find('.user-meal-name').text(newMealName).removeClass('d-none');
+//                                row.find('.edit-user-meal-name').addClass('d-none');
+//                                row.find('.edit-btn').removeClass('d-none');
+//                                row.find('.save-btn, .cancel-btn').addClass('d-none');
+//                            },
+//                            error: function (error) {
+//                                alert('An error occurred while updating the meal name.');
+//                            }
+//                        });
+//                    });
+//                });
+
+                saveUserMealNames.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        // Tìm phần tử tr gần nhất
+                        var row = button.closest('tr');
+                        var userMealID = button.getAttribute('id');
+                        var newMealName = row.querySelector('.edit-user-meal-name').value;
+
+                        // Tạo một yêu cầu XMLHttpRequest
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('GET', '/ProjectJSP/UpdateUserMealServlet?userMealID=' + encodeURIComponent(userMealID) + '&userMealName=' + encodeURIComponent(newMealName), true);
+
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) { // Khi hoàn tất yêu cầu
+                                if (xhr.status === 200) { // Nếu thành công
+                                    row.querySelector('.user-meal-name').textContent = newMealName;
+                                    row.querySelector('.user-meal-name').classList.remove('d-none');
+                                    row.querySelector('.edit-user-meal-name').classList.add('d-none');
+                                    row.querySelector('.edit-btn').classList.remove('d-none');
+                                    row.querySelector('.save-btn').classList.add('d-none');
+                                    row.querySelector('.cancel-btn').classList.add('d-none');
+                                } else {
+                                    alert('An error occurred while updating the meal name.');
+                                }
+                            }
+                        };
+
+                        xhr.send();
+                    });
+                });
+
+
+//                $('.save-btn').click(function () {
+//                    var row = $(this).closest('tr');
+//                    var userMealID = $(this).attr("id");
+//                    var newMealName = row.find('.edit-user-meal-name').val();
+//
+//                    $.ajax({
+//                        url: '/ProjectJSP/UpdateUserMealServlet',
+//                        method: 'GET',
+//                        data: {
+//                            userMealID: userMealID,
+//                            userMealName: newMealName
+//                        },
+//                        success: function (response) {
+//                            row.find('.user-meal-name').text(newMealName).removeClass('d-none');
+//                            row.find('.edit-user-meal-name').addClass('d-none');
+//                            row.find('.edit-btn').removeClass('d-none');
+//                            row.find('.save-btn, .cancel-btn').addClass('d-none');
+//                        },
+//                        error: function (error) {
+//                            alert('An error occurred while updating the meal name.');
+//                        }
+//                    });
+//                });
             });
 
 

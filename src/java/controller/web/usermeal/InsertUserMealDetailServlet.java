@@ -24,6 +24,7 @@ import model.ProductDTO;
 import model.SpecMealDTO;
 import model.SpecMealDetailDTO;
 import model.UserMealDTO;
+import model.UserMealDetailDTO;
 
 /**
  *
@@ -56,10 +57,12 @@ public class InsertUserMealDetailServlet extends HttpServlet {
             int dishID = Integer.parseInt(request.getParameter("insert_dishID").trim());
             int userMealID = Integer.parseInt(request.getParameter("insert_userMealID").trim());
 
-            //email khong trung
             int rs = umd.insertUserMealDetail(productID, dishID, userMealID, dayNum);
+            ArrayList<UserMealDetailDTO> userMealDetailList = (ArrayList<UserMealDetailDTO>) request.getSession().getAttribute("userMealDetailList");
+            userMealDetailList.add(new UserMealDetailDTO(userMealID, d.getDay(dayNum), p.getProduct(productID), dh.getDish(dishID), um.getUserMealByUserID(userMealID), 1));
 
             if (rs >= 1) {
+                userMealDetailList.add(new UserMealDetailDTO(userMealID, d.getDay(dayNum), p.getProduct(productID), dh.getDish(dishID), um.getUserMealByUserID(userMealID), 1));
                 response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             } else {
                 response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");

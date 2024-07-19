@@ -7,11 +7,13 @@ package controller.web.usermeal;
 import dao.UserMealDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.UserMealDTO;
 
 /**
  *
@@ -39,8 +41,18 @@ public class UpdateUserMealServlet extends HttpServlet {
             UserMealDAO um = new UserMealDAO();
             int rs = um.updateUserMeal(userMealName, Integer.parseInt(userMealID));
 
+            ArrayList<UserMealDTO> userMealList = (ArrayList<UserMealDTO>) request.getSession().getAttribute("userMealList");
+
             response.setContentType("application/json");
             if (rs >= 1) {
+                for (UserMealDTO userMeal : userMealList) {
+                    if (userMeal.getUserMealID() == Integer.parseInt(userMealID)) {
+                        userMeal.setUserMealName(userMealName);
+                        break;
+                    }
+                }
+                request.getSession().setAttribute("userMealList", userMealList);
+                
                 out.print("{\"status\":\"success\"}");
             } else {
                 out.print("{\"status\":\"error\"}");
