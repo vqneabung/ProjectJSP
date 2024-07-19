@@ -69,7 +69,7 @@ public class UpdateUserMealDetailServlet extends HttpServlet {
             }
 
             if (rs >= 1) {
-
+                request.getSession().setAttribute("userMealDetailList", userMealDetailList);
                 out.println(dayNum);
                 out.println(productID);
                 out.println(dishID);

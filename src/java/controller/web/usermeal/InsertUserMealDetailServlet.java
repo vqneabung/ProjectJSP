@@ -63,6 +63,7 @@ public class InsertUserMealDetailServlet extends HttpServlet {
 
             if (rs >= 1) {
                 userMealDetailList.add(new UserMealDetailDTO(userMealID, d.getDay(dayNum), p.getProduct(productID), dh.getDish(dishID), um.getUserMealByUserID(userMealID), 1));
+                request.getSession().setAttribute("userMealDetailList", userMealDetailList);
                 response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             } else {
                 response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");

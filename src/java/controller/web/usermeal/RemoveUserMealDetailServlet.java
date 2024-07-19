@@ -42,6 +42,7 @@ public class RemoveUserMealDetailServlet extends HttpServlet {
                 userMealDetailList.removeIf(userMeal -> {
                     return userMeal.getUserMealDetailID() == Integer.parseInt(userMealDetailID);
                 });
+                request.getSession().setAttribute("userMealDetailList", userMealDetailList);
                 response.sendRedirect("/ProjectJSP/StartServlet?action=mealUser");
             } else {
                 response.sendRedirect("/ProjectJSP/StartServlet");
