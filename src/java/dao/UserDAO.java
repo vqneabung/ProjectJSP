@@ -24,7 +24,7 @@ public class UserDAO {
 
     public static final String GET_DATA_BY_SEARCH = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users] WHERE UserName LIKE ? AND UserFullName LIKE ? AND UserEmail LIKE ? AND UserPhone LIKE ? AND UserRoleID LIKE ? AND UserAddress LIKE ? AND convert(varchar(25), UserDateCreate, 120) LIKE ?";
 
-    public static final String GET_USER_BY_EMAIL = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users] Where UserEmail=?";
+    public static final String GET_USER_BY_EMAIL = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users] Where UserEmail=? COLLATE Latin1_General_CS_AS";
 
     public static final String GET_USER_BY_ID = "Select UserID, UserName, UserFullName, UserEmail, UserPhone, UserRoleID, UserPassword, UserAddress, UserStatus, UserAvatar, UserDateCreate from [dbo].[Users] Where UserID=?";
 
