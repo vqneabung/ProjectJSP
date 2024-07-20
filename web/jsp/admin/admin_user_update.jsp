@@ -17,14 +17,14 @@
         <div class="main">
             <div class="card">
                 <div class="card-body">
-                    <h1>Update user</h1>
+                    <h1>Cập nhật người dùng</h1>
                     <form action="/ProjectJSP/UpdateUserServlet" method="post" enctype="multipart/form-data">
-                        <p>Tên đầy đủ <input class="form-control" type="hidden" name="update_fullname" placeholder="Enter Fullname" value="${requestScope.fullName}" required=""/></p>
-                        <p>User name <input type="hidden" class="form-control" name="update_username" placeholder="Enter Username" value="${requestScope.userName}" required=""/></p>
-                        <p>Email <input type="hidden" class="form-control" name="update_email" placeholder="Enter Email" value="${requestScope.email}" required=""/></p>  
-                        <p>Số điện thoại <input type="hidden" class="form-control" name="update_phone" placeholder="Enter Phone" value="${requestScope.phone}" required=""/></p>
-                        <p>Mật khẩu <input type="hidden" class="form-control" name="update_password" placeholder="Enter password" value="${requestScope.password}" required=""/></p>
-                        <p>Địa chỉ <input type="hidden" class="form-control" name="update_address" placeholder="Enter Address" value="${requestScope.address}" required=""/></p>
+                        <p><input class="form-control" type="hidden" name="update_fullname" placeholder="Enter Fullname" value="${requestScope.fullName}" required=""/></p>
+                        <p> <input type="hidden" class="form-control" name="update_username" placeholder="Enter Username" value="${requestScope.userName}" required=""/></p>
+                        <p> <input type="hidden" class="form-control" name="update_email" placeholder="Enter Email" value="${requestScope.email}" required=""/></p>  
+                        <p> <input type="hidden" class="form-control" name="update_phone" placeholder="Enter Phone" value="${requestScope.phone}" required=""/></p>
+                        <p> <input type="hidden" class="form-control" name="update_password" placeholder="Enter password" value="${requestScope.password}" required=""/></p>
+                        <p><input type="hidden" class="form-control" name="update_address" placeholder="Enter Address" value="${requestScope.address}" required=""/></p>
                         <p>Điền vai trò 
                             <select class="form-control" name="update_roleID">
                                 <option value="0">Admin</option>
