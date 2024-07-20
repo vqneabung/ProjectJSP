@@ -140,7 +140,7 @@
                                 <td class='text-center'>${order.user.userName}</td>
                                 <td class='text-center'>${order.totalPrice}</td>
                                 <td class='text-center'>${order.payment.paymentName}</td> 
-                                <td class='text-center'><fmt:formatDate value="${order.orderDate}" type = "both"/></td>
+                                <td class='text-center'> ${order.orderDate}</td>
                                 <td class='text-center'>${order.user.address}</td>
                                 <td id="status_id_${order.orderID}">
                                     ${order.orderStatus == 1 ? "Pending" : order.orderStatus == 2 ? "Confirmed" : "Cancelled"}
