@@ -99,6 +99,7 @@ public class RegisterServlet extends HttpServlet {
             if (!validate(email)) {
                 request.setAttribute("mesg", "Email không hợp lệ");
                 request.getRequestDispatcher(LOGIN).forward(request, response);
+                return;
             }
 
             UserDAO ud = new UserDAO();

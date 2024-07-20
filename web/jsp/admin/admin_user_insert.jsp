@@ -28,7 +28,7 @@
                         <p>Điền vai trò 
                             <select class="form-control" name="insert_role">
 <!--                                <option value="0">Admin</option>-->
-                                <option value="1" selected="">User</option>
+                                <option value="0" selected="">Admin</option>
                             </select>
                         </p>
                         <div>
